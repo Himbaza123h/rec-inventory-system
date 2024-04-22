@@ -36,7 +36,7 @@
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <form action="{{ route('admin.customer.store') }}" method="POST">
+                                    <form action="{{ route(auth()->user()->role . '.customer.store') }}" method="POST">
                                         @csrf
                                         <div class="inbox-widget nicescroll mx-box">
                                             Customer Name<br />
@@ -93,12 +93,13 @@
                                                     <td>{{ $item->customer_address }}</td>
                                                     <td>
                                                         <span class="btn btn-primary rounded p-2">
-                                                            <a href="" style="text-decoration: none"
+                                                            <a href="{{ route(auth()->user()->role . '.customer.edit', [$item->id]) }}"
+                                                                style="text-decoration: none"
                                                                 class="t-decoration-none text-white">{{ __('edit') }}</a>
                                                         </span>
 
                                                         <span class="btn btn-danger rounded p-2 m-2">
-                                                            <a href="{{ route('admin.customer.delete', ['id' => $item->id]) }}"
+                                                            <a href="{{ route(auth()->user()->role . '.customer.delete', ['id' => $item->id]) }}"
                                                                 onclick="event.preventDefault();
                                                                          if (confirm('Are you sure you want to delete this customer?')) {
                                                                              document.getElementById('delete-form-{{ $item->id }}').submit();
@@ -107,7 +108,7 @@
                                                                 class="text-white">{{ __('delete') }}</a>
                                                         </span>
                                                         <form id="delete-form-{{ $item->id }}"
-                                                            action="{{ route('admin.customer.delete', ['id' => $item->id]) }}"
+                                                            action="{{ route(auth()->user()->role . '.customer.delete', ['id' => $item->id]) }}"
                                                             method="POST" style="display: none;">
                                                             @csrf
                                                             @method('DELETE')

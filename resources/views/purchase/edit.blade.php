@@ -28,7 +28,7 @@
                 <div class="row">
                     <!-- USER LIST -->
                     <div class="col-lg-4 hidden-print">
-                        <div class="panel panel-inverse" style="height: 250px">
+                        <div class="panel panel-inverse" style="height: 300px">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -64,10 +64,6 @@
                                                     <i class="fa fa-plus"></i></a>
                                             </div>
                                         </div><br>
-
-
-
-
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="payment_method">PAYMENT METHOD </label><br>
@@ -82,6 +78,9 @@
                                             </div>
                                         </div><br>
                                         <br>
+                                        <button type="submit" class="btn btn-success waves-effect waves-light"
+                                            id="purchase_item">PURCHASE <i class="ion-ios7-cart-outline"></i></button>
+                                    </form>
 
                                 </div>
                             </div>
@@ -132,10 +131,10 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->code }}</td>
+                                                <td>{{ $item->item?->code?->code_name }}</td>
                                                 <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
                                                 </td>
-                                                <td>{{ $item->item?->color }}</td>
+                                                <td>{{ $item->item?->color?->color_name }}</td>
                                                 <td>{{ $item->qty }}</td>
                                                 <td>{{ $item->price }}</td>
                                                 <td>
@@ -179,9 +178,6 @@
                                 <div class="pull-right">
                                     <a href="javascript:window.print()" class="btn btn-inverse waves-effect waves-light"><i
                                             class="fa fa-print"></i></a>
-                                    <button type="submit" class="btn btn-success waves-effect waves-light"
-                                        id="purchase_item">PURCHASE <i class="ion-ios7-cart-outline"></i></button>
-                                    </form>
                                 </div>
                             </div>
                         </div>

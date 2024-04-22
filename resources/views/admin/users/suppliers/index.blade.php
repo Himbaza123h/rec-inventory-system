@@ -98,7 +98,8 @@
                                                     <td>{{ $item->supplier_work_place }}</td>
                                                     <td>
                                                         <span class="btn btn-primary rounded p-2">
-                                                            <a href="" style="text-decoration: none"
+                                                            <a href="{{ route('admin.supplier.edit', [$item->id]) }}"
+                                                                style="text-decoration: none"
                                                                 class="t-decoration-none text-white">{{ __('edit') }}</a>
                                                         </span>
 

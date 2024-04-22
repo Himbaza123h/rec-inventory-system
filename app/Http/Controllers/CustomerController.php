@@ -19,7 +19,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'customer_name' => 'required|string',
             'customer_tin_number' => 'required|string',
-            'customer_phone' => 'required|string',
+            'customer_phone' => 'nullable|string|min:10|max:10|regex:/^07\d{8}$/',
             'customer_address' => 'required|string',
         ]);
         if ($validator->fails()) {
@@ -43,30 +43,42 @@ class CustomerController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $user = Customer::findOrFail($id);
+
+        return view('admin.users.customers.edit', compact('user'));
+    }
+
     public function update(Request $request, $id)
     {
-        // Validate the form data
-        $request->validate([
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
             'customer_name' => 'required|string',
             'customer_tin_number' => 'required|string',
-            'customer_phone' => 'required|string',
+            'customer_phone' => 'nullable|string|min:10|max:10|regex:/^07\d{8}$/',
             'customer_address' => 'required|string',
         ]);
 
-        $category = Customer::findOrFail($id);
-
-        if (Auth::user()->role == 'admin') {
-            $category->update([
-                'customer_name' => $request->customer_name,
-                'customer_tin_number' => $request->customer_tin_number,
-                'customer_phone' => $request->customer_phone,
-                'customer_address' => $request->customer_address,
-            ]);
-
-            return redirect()->route('admin.items.index')->with('success', 'customer successfully updated!');
-        } else {
-            return redirect()->back()->with('error', 'Unauthorized action!');
+        // If validation fails, redirect back with errors
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        // Find the customer by ID
+        $customer = Customer::findOrFail($id);
+
+        // Update customer data with new values
+        $customer->customer_name = $request->input('customer_name');
+        $customer->customer_tin_number = $request->input('customer_tin_number');
+        $customer->customer_phone = $request->input('customer_phone');
+        $customer->customer_address = $request->input('customer_address');
+        $customer->save();
+
+        // Redirect to a success page or route
+        return redirect()
+            ->route(auth()->user()->role . '.customers.index')
+            ->with('success', 'Customer updated successfully.');
     }
 
     public function delete($id)

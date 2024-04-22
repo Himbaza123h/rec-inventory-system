@@ -91,7 +91,7 @@ class PurchaseLensController extends Controller
                     }
                 }
 
-                return redirect()->back()->with('success', 'Purchases and Stock successfully updated!');
+                return redirect()->route('admin.purchase.index')->with('success', 'Purchases and Stock successfully updated!');
             } catch (\Throwable $th) {
                 return redirect()->back()->with('error', $th->getMessage());
             }

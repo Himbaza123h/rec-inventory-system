@@ -39,7 +39,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="target_client">Target Client</label><br>
-                                                    <select name="target_client" id="target_client" class="select2 form-control">
+                                                    <select name="target_client" id="target_client"
+                                                        class="select2 form-control">
                                                         <option value="">Select Target
                                                             Clients</option>
                                                         <option value="Kids">Kids</option>
@@ -51,10 +52,12 @@
                                             @php
                                                 $category = \App\Models\Category::where('product', 'sunglasses')->get();
                                             @endphp
+
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label for="mark_glasses">Mark of Glasses</label><br>
-                                                    <select name="mark_glasses" id="mark_glasses" class="select2 form-control">
+                                                    <select name="mark_glasses" id="mark_glasses"
+                                                        class="select2 form-control">
                                                         <option value="">Select mark of
                                                             glasses</option>
                                                         @foreach ($category as $item)
@@ -63,10 +66,19 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                                @php
+                                                    $code = \App\Models\Code::all();
+                                                @endphp
                                                 <div class="col-md-6">
                                                     <label for="code">Code</label><br>
-                                                    <input type="text" name="code" id="code" class="form-control"
+                                                    <select name="code_id" id="code" class="form-control select2"
                                                         placeholder="Code">
+                                                        <option value="">Select code</option>
+                                                        @foreach ($code as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->code_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </div>
                                             <br>
@@ -87,11 +99,20 @@
                                                         class="form-control" placeholder="Temple Length">
                                                 </div>
                                             </div><br>
+                                            @php
+                                                $color = \App\Models\Color::all();
+                                            @endphp
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <label for="color">Color</label><br>
-                                                    <input type="text" name="color" id="color" class="form-control"
+                                                    <select name="color_id" id="color" class="form-control select2"
                                                         placeholder="Color">
+                                                        <option value="">Select color</option>
+                                                        @foreach ($color as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->color_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="price">Price</label><br>
@@ -139,14 +160,15 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->target_client }}</td>
                                                     <td>{{ $item->category?->category_name }}</td>
-                                                    <td>{{ $item->code }}</td>
+                                                    <td>{{ $item->code?->code_name }}</td>
                                                     <td>{{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
                                                     </td>
-                                                    <td>{{ $item->color }}</td>
+                                                    <td>{{ $item->color?->color_name }}</td>
                                                     <td>{{ $item->price }}</td>
                                                     <td>
                                                         <span class="btn btn-primary rounded p-2">
-                                                            <a href="" style="text-decoration: none"
+                                                            <a href="{{ route('admin.item.edit', [$item->id]) }}"
+                                                                style="text-decoration: none"
                                                                 class="t-decoration-none text-white">{{ __('edit') }}</a>
                                                         </span>
 

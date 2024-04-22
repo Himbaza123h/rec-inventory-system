@@ -20,7 +20,7 @@ class SupplierController extends Controller
         $validator = Validator::make($request->all(), [
             'supplier_name' => 'required|string',
             'supplier_tin_number' => 'required|string',
-            'supplier_phone' => 'required|string',
+            'supplier_phone' => 'nullable|string|min:10|max:10|regex:/^07\d{8}$/',
             'supplier_email' => 'required|email|unique:suppliers',
             'supplier_work_place' => 'required|string',
         ]);
@@ -46,32 +46,42 @@ class SupplierController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $user = Supplier::findOrFail($id);
+
+        return view('admin.users.suppliers.edit', compact('user'));
+    }
+
     public function update(Request $request, $id)
     {
-        // Validate the form data
-        $request->validate([
+        // Validate the request data
+        $validator = Validator::make($request->all(), [
             'supplier_name' => 'required|string',
             'supplier_tin_number' => 'required|string',
-            'supplier_phone' => 'required|string',
-            'supplier_email' => 'required|email|unique:suppliers',
+            'supplier_phone' => 'nullable|string|min:10|max:10|regex:/^07\d{8}$/',
+            'supplier_email' => 'required|email',
             'supplier_work_place' => 'required|string',
         ]);
 
-        $category = Supplier::findOrFail($id);
-
-        if (Auth::user()->role == 'admin') {
-            $category->update([
-                'supplier_name' => $request->supplier_name,
-                'supplier_tin_number' => $request->supplier_tin_number,
-                'supplier_phone' => $request->supplier_phone,
-                'supplier_email' => $request->supplier_email,
-                'supplier_work_place' => $request->supplier_work_place,
-            ]);
-
-            return redirect()->route('admin.items.index')->with('success', 'supplier successfully updated!');
-        } else {
-            return redirect()->back()->with('error', 'Unauthorized action!');
+        // If validation fails, redirect back with errors
+        if ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
+
+        // Find the customer by ID
+        $supplier = Supplier::findOrFail($id);
+
+        // Update customer data with new values
+        $supplier->supplier_name = $request->input('supplier_name');
+        $supplier->supplier_tin_number = $request->input('supplier_tin_number');
+        $supplier->supplier_phone = $request->input('supplier_phone');
+        $supplier->supplier_email = $request->input('supplier_email');
+        $supplier->supplier_work_place = $request->input('supplier_work_place');
+        $supplier->save();
+
+        // Redirect to a success page or route
+        return redirect()->route('admin.suppliers.index')->with('success', 'Supplier updated successfully.');
     }
 
     public function delete($id)

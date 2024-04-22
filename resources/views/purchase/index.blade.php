@@ -27,10 +27,6 @@
                 </div>
                 <!-- Page-Title -->
                 <div class="row">
-                    <div class="col-sm-8">
-                        <h3 class="pull-left page-title"><b> PURCHASE</b><i class="ion-ios7-cart-outline"></i></h3>
-                    </div>
-
                     <div class="col-sm-4" style="margin-bottom: 10px">
                         <div class="panel-heading" style="background-color: #3e4550;">
                             <div class="row" style="color: #ffffff;">
@@ -45,6 +41,14 @@
                             </div>
                         </div>
                     </div>
+                    <div class="col-sm-4">
+
+                    </div>
+                    <div class="col-sm-4">
+                        <h3 class="pull-right page-title"><b> PURCHASE</b><i class="ion-ios7-cart-outline"></i></h3>
+                    </div>
+
+
                 </div>
 
                 <!-- ADD PURCHASE ITEMS IN STOCK -->
@@ -57,49 +61,56 @@
                                     @php
                                         $items = \App\Models\Item::all();
                                     @endphp
-                                <form method="POST" action="{{ route('admin.purchase.store') }}">
-                                        <input type="hidden" class="text-dark" name="purchaseCode" value="{{ $randomCode }}" readonly>
-                                        @csrf
-                                        <table id="datatable-buttons" class="table table-striped" style="color: #ffffff">
-                                            <thead>
-                                                <tr>
-                                                    <th class="col-md-1">
-                                                        N/O
-                                                    </th>
-                                                    <th class="col-md-5">
-                                                        ITEM DETAILS
-                                                    </th>
-                                                    <th class="col-md-3">
-                                                        QUANTITY
-                                                    </th>
-
-                                                    <th class="col-md-3">
-                                                        UNIT PRICE
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($items as $index => $item)
+                                    @if (count($items) > 0)
+                                        <form method="POST" action="{{ route('admin.purchase.store') }}">
+                                            <input type="hidden" class="text-dark" name="purchaseCode"
+                                                value="{{ $randomCode }}" readonly>
+                                            @csrf
+                                            <table id="datatable-buttons" class="table table-striped"
+                                                style="color: #ffffff">
+                                                <thead>
                                                     <tr>
-                                                        <td class="col-md-1">{{ $index + 1 }}</td>
-                                                        <td>{{ $item->category?->category_name }} | {{ $item->code }} |
-                                                            {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
-                                                            | {{ $item->color }}
-                                                        </td>
-                                                        <td><input type="text" name="Qty_{{ $item->id }}"
-                                                                class="form-control qty-input" placeholder="Qty"
-                                                                data-item-id="{{ $item->id }}"></td>
-                                                        <td><input type="text" name="price_{{ $item->id }}"
-                                                                class="form-control" placeholder="Price"></td>
-                                                        <td><input type="checkbox" name="selected[]"
-                                                                value="{{ $item->id }}" class="checkbox"></td>
+                                                        <th class="col-md-1">
+                                                            N/O
+                                                        </th>
+                                                        <th class="col-md-5">
+                                                            ITEM DETAILS
+                                                        </th>
+                                                        <th class="col-md-3">
+                                                            QUANTITY
+                                                        </th>
+
+                                                        <th class="col-md-3">
+                                                            UNIT PRICE
+                                                        </th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        <button type="submit" class="btn btn-primary waves-effect waves-light">ADD
-                                            <i class="fa fa-plus"></i></button>
-                                    </form>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($items as $index => $item)
+                                                        <tr>
+                                                            <td class="col-md-1">{{ $index + 1 }}</td>
+                                                            <td>{{ $item->category?->category_name }} |
+                                                                {{ $item->code?->code_name }} |
+                                                                {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
+                                                                | {{ $item->color?->color_name }}
+                                                            </td>
+                                                            <td><input type="text" name="Qty_{{ $item->id }}"
+                                                                    class="form-control qty-input" placeholder="Qty"
+                                                                    data-item-id="{{ $item->id }}"></td>
+                                                            <td><input type="text" name="price_{{ $item->id }}"
+                                                                    class="form-control" placeholder="Price"></td>
+                                                            <td><input type="checkbox" name="selected[]"
+                                                                    value="{{ $item->id }}" class="checkbox"></td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <button type="submit" class="btn btn-primary waves-effect waves-light">ADD
+                                                <i class="fa fa-plus"></i></button>
+                                        </form>
+                                    @else
+                                        <div class="alert alert-info">No items available to purchase.</div>
+                                    @endif
                                 </div>
 
 
@@ -107,49 +118,54 @@
                                     @php
                                         $lens = \App\Models\Lens::all();
                                     @endphp
-                                    <form method="POST" action="{{ route('admin.purchase.lens.store') }}">
-                                        <input type="hidden" class="text-dark" name="purchase2Code" value="{{ $randomCode1 }}" readonly>
-                                        @csrf
-                                        <table id="datatable-buttons" class="table table-striped" style="color: #ffffff">
-                                            <thead>
-                                                <tr>
-                                                    <th class="col-md-1">
-                                                        N/O
-                                                    </th>
-                                                    <th class="col-md-5">
-                                                        ITEM DETAILS
-                                                    </th>
-                                                    <th class="col-md-3">
-                                                        QUANTITY
-                                                    </th>
-
-                                                    <th class="col-md-3">
-                                                        UNIT PRICE
-                                                    </th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($lens as $index => $item)
+                                    @if (count($lens) > 0)
+                                        <form method="POST" action="{{ route('admin.purchase.lens.store') }}">
+                                            <input type="hidden" class="text-dark" name="purchase2Code"
+                                                value="{{ $randomCode1 }}" readonly>
+                                            @csrf
+                                            <table id="datatable-buttons" class="table table-striped"
+                                                style="color: #ffffff">
+                                                <thead>
                                                     <tr>
-                                                        <td class="col-md-1">{{ $index + 1 }}</td>
-                                                        <td>{{ $item->category?->category_name }} |
-                                                            | {{ $item->lens_attribute }}
-                                                        </td>
-                                                        <td><input type="text" name="Qty2_{{ $item->id }}"
-                                                                class="form-control qty-input" placeholder="Qty"
-                                                                data-item-id="{{ $item->id }}"></td>
-                                                        <td><input type="text" name="price2_{{ $item->id }}"
-                                                                class="form-control" placeholder="Price"></td>
-                                                        <td><input type="checkbox" name="selected2[]"
-                                                                value="{{ $item->id }}" class="checkbox"></td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                        <button type="submit" class="btn btn-primary waves-effect waves-light">ADD
-                                            <i class="fa fa-plus"></i></button>
-                                    </form>
+                                                        <th class="col-md-1">
+                                                            N/O
+                                                        </th>
+                                                        <th class="col-md-5">
+                                                            ITEM DETAILS
+                                                        </th>
+                                                        <th class="col-md-3">
+                                                            QUANTITY
+                                                        </th>
 
+                                                        <th class="col-md-3">
+                                                            UNIT PRICE
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach ($lens as $index => $item)
+                                                        <tr>
+                                                            <td class="col-md-1">{{ $index + 1 }}</td>
+                                                            <td>{{ $item->category?->category_name }} |
+                                                                | {{ $item->lens_attribute }}
+                                                            </td>
+                                                            <td><input type="text" name="Qty2_{{ $item->id }}"
+                                                                    class="form-control qty-input" placeholder="Qty"
+                                                                    data-item-id="{{ $item->id }}"></td>
+                                                            <td><input type="text" name="price2_{{ $item->id }}"
+                                                                    class="form-control" placeholder="Price"></td>
+                                                            <td><input type="checkbox" name="selected2[]"
+                                                                    value="{{ $item->id }}" class="checkbox"></td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                            <button type="submit" class="btn btn-primary waves-effect waves-light">ADD
+                                                <i class="fa fa-plus"></i></button>
+                                        </form>
+                                    @else
+                                        <div class="alert alert-info">No items available to add.</div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -226,6 +242,13 @@
                 </div>
             </div>
 
+            <div class="alert alert-info" id="message-show" style="margin-left: 20px; margin-right: 20px;">
+                <p>
+                <h4 class="text-center" style="color: #000">SELECT PRODUCT TO PURCHASE</h4>
+                </p>
+            </div>
+
+
 
 
             <div class="row product-section" id="lens-table" style="color: #ffffff;">
@@ -297,6 +320,7 @@
                 // Hide all product sections and tables
                 $('.product-section').hide();
                 $('.product-table').hide();
+                $('#message-show').hide();
                 // Show the selected product section and table
                 $('#' + selectedProduct + '-field').show();
                 $('#' + selectedProduct + '-table').show();

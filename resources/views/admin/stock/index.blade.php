@@ -20,9 +20,7 @@
                         <div class="panel-heading" style="background-color: #3e4550;">
                             <div class="row" style="color: #ffffff;">
                                 <div class="col-md-12">
-                                    VALUE OF <br><br>
-
-                                    RWF REMAINING
+                                    SELECT PRODUCT STORE
                                 </div>
                             </div>
                         </div>
@@ -83,9 +81,9 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->code }}</td>
+                                                <td>{{ $item->item?->code?->code_name }}</td>
                                                 <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
-                                                <td>{{ $item->item?->color }}</td>
+                                                <td>{{ $item->item?->color?->color_name }}</td>
                                                 <td>{{ $item->item_quantity }}</td>
                                                 <td>{{ $item->gone }}</td>
                                                 <td>{{ $item->remaining }}</td>
@@ -122,10 +120,19 @@
                                                 <th>QUANTITY</th>
                                                 <th>GONE</th>
                                                 <th>REMAINING</th>
-                                                <th class="hidden-print">Actions</th>
                                             </tr>
                                         </thead>
-
+                                        @foreach ($data2 as $index => $item)
+                                            <tr>
+                                                <td>{{ $index + 1 }}</td>
+                                                <td>{{ $item->item?->category?->category_name }}</td>
+                                                <td>{{ $item->item?->lens_attribute }}</td>
+                                                <td>{{ $item->item?->lens_power }}</td>
+                                                <td>{{ $item->item_quantity }}</td>
+                                                <td>{{ $item->gone }}</td>
+                                                <td>{{ $item->remaining }}</td>
+                                            </tr>
+                                        @endforeach
 
                                         <tbody>
 

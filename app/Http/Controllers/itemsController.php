@@ -15,16 +15,23 @@ class itemsController extends Controller
         return view('items.glasses..index', compact('data'));
     }
 
+    public function edit($id)
+    {
+        $item = Item::findOrFail($id);
+
+        return view('items.glasses.edit', compact('item'));
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'target_client' => 'required|string',
             'mark_glasses' => 'required|string',
-            'code' => 'required|string',
+            'code_id' => 'required|string',
             'lens_width' => 'required|numeric',
             'bridge_width' => 'required|numeric',
             'temple_length' => 'required|numeric',
-            'color' => 'required|string',
+            'color_id' => 'required|string',
             'price' => 'required|numeric',
         ]);
         if ($validator->fails()) {
@@ -35,11 +42,11 @@ class itemsController extends Controller
                 $newItem = new Item();
                 $newItem->target_client = $request->target_client;
                 $newItem->mark_glasses = $request->mark_glasses;
-                $newItem->code = $request->code;
+                $newItem->code_id = $request->code_id;
                 $newItem->lens_width = $request->lens_width;
                 $newItem->bridge_width = $request->bridge_width;
                 $newItem->temple_length = $request->temple_length;
-                $newItem->color = $request->color;
+                $newItem->color_id = $request->color_id;
                 $newItem->price = $request->price;
                 $newItem->save();
                 return redirect()->back()->with('success', 'New Item successfully created!');
@@ -58,29 +65,29 @@ class itemsController extends Controller
         $request->validate([
             'target_client' => 'required|string',
             'mark_glasses' => 'required|string',
-            'code' => 'required|string',
+            'code_id' => 'required|string',
             'lens_width' => 'required|numeric',
             'bridge_width' => 'required|numeric',
             'temple_length' => 'required|numeric',
-            'color' => 'required|string',
+            'color_id' => 'required|string',
             'price' => 'required|numeric',
         ]);
 
-        $category = Item::findOrFail($id);
+        $item = Item::findOrFail($id);
 
         if (Auth::user()->role == 'admin') {
-            $category->update([
+            $item->update([
                 'target_client' => $request->target_client,
                 'mark_glasses' => $request->mark_glasses,
-                'code' => $request->code,
+                'code_id' => $request->code_id,
                 'lens_width' => $request->lens_width,
                 'bridge_width' => $request->bridge_width,
                 'temple_length' => $request->temple_length,
-                'color' => $request->color,
+                'color_id' => $request->color_id,
                 'price' => $request->price,
             ]);
 
-            return redirect()->route('admin.items.index')->with('success', 'category successfully updated!');
+            return redirect()->route('admin.items.index')->with('success', 'Item successfully updated!'); // Corrected success message
         } else {
             return redirect()->back()->with('error', 'Unauthorized action!');
         }

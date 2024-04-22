@@ -1,3 +1,86 @@
+<style>
+    /* Sidebar */
+    .left {
+        float: left;
+        width: 250px;
+        background: #f8f8f8;
+        height: 100%;
+    }
+
+    /* Sidebar Inner */
+    .sidebar-inner {
+        padding: 15px;
+    }
+
+    /* User Details */
+    .user-details {
+        margin-bottom: 20px;
+    }
+
+    /* Sidebar Menu */
+    #sidebar-menu ul {
+        list-style: none;
+        padding-left: 0;
+        margin-bottom: 0;
+    }
+
+    #sidebar-menu ul li {
+        position: relative;
+        margin-bottom: 10px;
+    }
+
+    #sidebar-menu ul li a {
+        display: block;
+        padding: 10px;
+        /* color: #fff; */
+        text-decoration: none;
+    }
+
+
+    /* Sidebar Menu */
+    #sidebar-menu ul li ul {
+        display: none;
+        list-style: none;
+        padding-left: 0;
+        width: 200px;
+        z-index: 1000;
+    }
+
+
+
+    #sidebar-menu ul li:hover ul {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 100%;
+        background: #fff;
+        border: 1px solid #ccc;
+        z-index: 1000;
+    }
+
+    #sidebar-menu ul li ul li a {
+        padding: 10px;
+        display: block;
+        color: #333;
+    }
+
+    #sidebar-menu ul li ul li a:hover {
+        background: #333;
+    }
+
+
+    #sidebar-menu ul li ul li a {
+        padding: 10px;
+    }
+
+    /* Active Menu */
+    #sidebar-menu ul li.active>a {
+        color: #fff;
+        background: #337ab7;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <div class="left side-menu">
     <div class="sidebar-inner slimscrollleft">
         <div class="user-details">
@@ -5,14 +88,10 @@
                 <img src="{{ asset('assets/images/users/avatar.png') }}" alt="" class="thumb-md img-circle">
             </div>
             <div class="user-info">
-                <div class="dropdown">
+                <div class="">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                         {{ Auth::user()->name }}
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="profile"><i class="md md-settings"></i> Password</a></li>
-                        <li><a href="logout"><i class="md md-settings-power"></i> Logout</a></li>
-                    </ul>
+                    </a>
                 </div>
                 <p class="text-muted m-0">
                     @if (Auth::user()->role == 'admin')
@@ -27,115 +106,163 @@
         <div id="sidebar-menu">
             @if (Auth::user()->role == 'admin')
                 <ul>
-                    <li class="">
+                    <li
+                        class="has_sub {{ request()->routeIs('home') || request()->routeIs('dashboard') ? 'active' : '' }}">
                         <a href="{{ route('home') }}" class="waves-effect waves-light "><i
                                 class="ion-ios7-gear"></i><span>Dashboard</span></a>
                     </li>
-                    <li class="">
+                    <li class="has_sub {{ request()->routeIs('admin.category.index') ? 'active' : '' }}">
                         <a href="{{ route('admin.category.index') }}" class="waves-effect waves-light "><i
                                 class="ion-document"></i><span>Categories</span></a>
                     </li>
-                    <li class="has_sub">
+                    <li
+                        class="has_sub {{ request()->routeIs('admin.items.index') || request()->routeIs('admin.items.lens.index') || request()->routeIs('admin.item.lens.edit') || request()->routeIs('admin.item.edit') ? 'active' : '' }}">
                         <a href="#" class="waves-effect waves-light"><i class="ion-bag"></i><span>Items</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
-                        <ul class="list-unstyled">
-                            <li><a href="users" class="waves-effect waves-light"><i
+                        <ul class="list-unstyle">
+                            <li><a href="{{ route('admin.items.index') }}" class="waves-effect waves-light"><i
                                         class="ion-android-contact"></i>Glasses</a></li>
-                            <li><a href="supplier" class="waves-effect waves-light"><i
+                            <li><a href="{{ route('admin.items.lens.index') }}" class="waves-effect waves-light"><i
                                         class="ion-android-social"></i>Lens</a></li>
 
                         </ul>
                     </li>
-                    <li class="">
+                    <li class="has_sub {{ request()->routeIs('admin.purchase.index') ? 'active' : '' }}">
                         <a href="{{ route('admin.purchase.index') }}" class="waves-effect waves-light "><i
                                 class="ion-ios7-pulse-strong"></i><span>Purchase</span></a>
                     </li>
-                    <li class="">
+                    <li class="has_sub {{ request()->routeIs('admin.stock.index') ? 'active' : '' }}">
                         <a href="{{ route('admin.stock.index') }}" class="waves-effect waves-light "><i
                                 class="ion-ios7-gear"></i><span>Stock</span></a>
                     </li>
-                    <li class="has_sub">
+                    <li
+                        class="has_sub {{ request()->routeIs('admin.invoice.index') || request()->routeIs('admin.invoice-by-sell-code.index') || request()->routeIs('admin.invoice.pro.index') || request()->routeIs('admin.invoice.req.index') ? 'active' : '' }}">
                         <a href="" class="waves-effect waves-light"><i
                                 class="ion-ios7-albums"></i><span>Invoices</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
-                        <ul class="list-unstyled">
-                            <li><a href="invoices" class="waves-effect waves-light"><i
+                        <ul class="list-unstyle">
+                            <li>
+                                <a href="{{ route('admin.invoice.index') }}" class="waves-effect waves-light"><i
                                         class="ion-document"></i>Invoices</a>
                             </li>
-                            <li><a href="pinv" class="waves-effect waves-light"><i class="ion-clipboard"></i>Proforma
+                            <li><a href="{{ route('admin.invoice.pro.index') }}" class="waves-effect waves-light"><i
+                                        class="ion-clipboard"></i>Proforma
                                     Invoice</a></li>
-                            <li><a href="requestInvoices" class="waves-effect waves-light"><i
+                            <li><a href="{{ route('admin.invoice.req.index') }}" class="waves-effect waves-light"><i
                                         class="ion-document-text"></i>Requested Invoices</a></li>
                         </ul>
                         </a>
                     </li>
-                    <li class="has_sub">
+                    <li
+                        class="has_sub {{ request()->routeIs('admin.suppliers.index') || request()->routeIs('admin.customers.index') || request()->routeIs('admin.users.index') || request()->routeIs('admin.user.edit') || request()->routeIs('admin.supplier.edit') || request()->routeIs('admin.customer.edit') ? 'active' : '' }}">
                         <a href="#" class="waves-effect waves-light"><i
                                 class="ion-android-contacts"></i><span>People</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
-                        <ul class="list-unstyled">
-                            <li><a href="users" class="waves-effect waves-light"><i
+                        <ul class="list-unstyle">
+                            <li><a href="{{ route('admin.users.index') }}" class="waves-effect waves-light"><i
                                         class="ion-android-contact"></i>Users</a></li>
-                            <li><a href="supplier" class="waves-effect waves-light"><i
+                            <li {{ request()->routeIs('admin.suppliers.index') ? 'active' : '' }}><a
+                                    href="{{ route('admin.suppliers.index') }}" class="waves-effect waves-light"><i
                                         class="ion-android-social"></i>Suppliers</a></li>
-                            <li><a href="customers" class="waves-effect waves-light"><i
+                            <li><a href="{{ route('admin.customers.index') }}" class="waves-effect waves-light"><i
                                         class="ion-android-social-user"></i>Customers</a></li>
 
                         </ul>
                     </li>
-                    <li class="has_sub">
+                    <li
+                        class="has_sub {{ request()->routeIs('admin.reports.index') || request()->routeIs('admin.reports.speed') || request()->routeIs('admin.reports.lens.index') ? 'active' : '' }}">
                         <a href="{{ route('admin.reports.index') }}" class="waves-effect waves-light"><i
                                 class="ion-ios7-pulse-strong"></i><span>Reports</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
-                        <ul class="list-unstyled">
-                            <li><a href="reports">General</a></li>
-                            <li><a href="rqreport">Requested Item</a></li>
-                            <li><a href="fmcg">Faster | Slow Items</a></li>
+                        <ul class="list-unstyle">
+                            <li>
+                                <a href="{{ route('admin.reports.index') }}" class="waves-effect waves-light">
+                                    <i class="ion-ios7-pulse-strong"></i> Glass Report
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.reports.lens.index') }}" class="waves-effect waves-light">
+                                    <i class="ion-ios7-pulse-strong"></i> Lens Report
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('admin.reports.speed') }}" class="waves-effect waves-light">
+                                    Faster | Slow Items
+                                </a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
             @else
                 <ul>
-                    <li class="">
-                        <a href="index" class="waves-effect waves-light "><i
+                    <li
+                        class="has_sub {{ request()->routeIs('home') || request()->routeIs('dashboard') ? 'active' : '' }}">
+                        <a href="{{ route('home') }}" class="waves-effect waves-light "><i
                                 class="ion-ios7-gear"></i><span>Dashboard</span></a>
                     </li>
-                    <!-- <li class="">
-                                <a href="list" class="waves-effect waves-light "><i class="ion-bag"></i><span>Items</span></a>
-                            </li> -->
-                    <li class="">
-                        <a href="sell" class="waves-effect waves-light "><i
-                                class="ion-bag"></i><span>Sell</span></a>
+                    <li
+                        class="has_sub {{ request()->routeIs('seller.sales.index') || request()->routeIs('seller.checkout') || request()->routeIs('seller.checkout.update') ? 'active' : '' }}">
+                        <a href="{{ route('seller.sales.index') }}" class="waves-effect waves-light"><i
+                                class="ion-bag"></i><span>Make Sales</span>
+                            <span class="pull-right"><i class="md md-add"></i></span></a>
+                        <ul class="list-unstyle">
+                            <li>
+                                <a href="{{ route('seller.sales.index') }}" class="waves-effect waves-light">
+                                    <i class="ion-ios7-pulse-strong"></i> Sale Glass
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('seller.sales.index') }}" class="waves-effect waves-light">
+                                    <i class="ion-ios7-pulse-strong"></i> Sale Lens
+                                </a>
+                            </li>
+                        </ul>
                     </li>
-                    <li class="">
-                        <a href="stok" class="waves-effect waves-light "><i
-                                class="ion-ios7-gear"></i><span>Stock</span></a>
+
+
+
+
+
+                    <li class="has_sub {{ request()->routeIs('seller.stock.index') ? 'active' : '' }}">
+                        <a href="{{ route('seller.stock.index') }}" class="waves-effect waves-light "><i
+                                class="ion-ios7-gear"></i><span>Manage Stock</span></a>
                     </li>
-                    <li>
-                        <a href="sellinvoices" class="waves-effect waves-light"><i
+                    <li
+                        class="has_sub {{ request()->routeIs('seller.invoice.index') || request()->routeIs('seller.invoice-by-sell-code.index') ? 'active' : '' }}">
+                        <a href="{{ route('seller.invoice.index') }}" class="waves-effect waves-light"><i
                                 class="ion-document"></i><span>Invoices</span></a>
                     </li>
-                    <li>
-                        <a href="sellpinv" class="waves-effect waves-light"><i
-                                class="ion-clipboard"></i><span>Proforma
-                                Invoice</span></a>
+                    <li
+                        class="has_sub {{ request()->routeIs('seller.customers.index') || request()->routeIs('seller.customer.edit') ? 'active' : '' }}">
+                        <a href="{{ route('seller.customers.index') }}" class="waves-effect waves-light"><i
+                                class="ion-android-social-user"></i>Customers</a>
                     </li>
-                    <li><a href="requestInvoices" class="waves-effect waves-light"><i
-                                class="ion-document-text"></i>Requested Invoices</a></li>
-                    <li class="has_sub">
-                        <a href="#" class="waves-effect waves-light"><i
+
+                    <li
+                        class="has_sub {{ request()->routeIs('seller.reports.index') || request()->routeIs('seller.reports.lens.index') ? 'active' : '' }}">
+                        <a href="{{ route('seller.reports.index') }}" class="waves-effect waves-light"><i
                                 class="ion-ios7-pulse-strong"></i><span>Reports</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
-                        <ul class="list-unstyled">
-                            <li><a href="sellreport">My Report</a></li>
-                            <li><a href="rqreport">Requested Item</a></li>
+                        <ul class="list-unstyle">
+                            <li>
+                                <a href="{{ route('seller.reports.index') }}" class="waves-effect waves-light">
+                                    <i class="ion-ios7-pulse-strong"></i> Glass Report
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('seller.reports.lens.index') }}" class="waves-effect waves-light">
+                                    <i class="ion-ios7-pulse-strong"></i> Lens Report
+                                </a>
+                            </li>
                         </ul>
                     </li>
+
+
                 </ul>
             @endif
             <div class="clearfix"></div>

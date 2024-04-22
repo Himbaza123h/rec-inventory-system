@@ -17,8 +17,6 @@ class ItemsLensController extends Controller
 
     public function store(Request $request)
     {
-
-
         $validator = Validator::make($request->all(), [
             'mark_lens' => 'required|string',
             'lens_attribute' => 'required|string',
@@ -46,27 +44,33 @@ class ItemsLensController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $item = Lens::findOrFail($id);
+
+        return view('items.lens.edit', compact('item'));
+    }
     public function update(Request $request, $id)
     {
         // Validate the form data
         $request->validate([
             'mark_lens' => 'required|string',
             'lens_attribute' => 'required|string',
-            'lens_power' => 'required|string',
+            'lens_power' => 'required|numeric',
             'price' => 'required|numeric',
         ]);
 
-        $category = Lens::findOrFail($id);
+        $item = Lens::findOrFail($id);
 
         if (Auth::user()->role == 'admin') {
-            $category->update([
+            $item->update([
                 'mark_lens' => $request->mark_lens,
                 'lens_attribute' => $request->lens_attribute,
                 'lens_power' => $request->lens_power,
                 'price' => $request->price,
             ]);
 
-            return redirect()->route('admin.items.lens.index')->with('success', 'item lens successfully updated!');
+            return redirect()->route('admin.items.lens.index')->with('success', 'Lens item successfully updated!');
         } else {
             return redirect()->back()->with('error', 'Unauthorized action!');
         }

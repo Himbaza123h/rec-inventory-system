@@ -44,7 +44,8 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="mark_lens">Category of Lens</label><br>
-                                                    <select name="mark_lens" id="target_client" class=" select2 form-control">
+                                                    <select name="mark_lens" id="target_client"
+                                                        class=" select2 form-control">
                                                         <option value="">Category of Lens
                                                         </option>
                                                         @foreach ($category as $item)
@@ -58,11 +59,14 @@
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="lens_attribute">Lens Attribute</label><br>
-                                                    <select name="lens_attribute" id="target_client" class="select2 form-control">
+                                                    <select name="lens_attribute" id="target_client"
+                                                        class="select2 form-control">
                                                         <option value="">Select Attribute
                                                         </option>
-                                                        <option value="attr1">Attribute 1</option>
-                                                        <option value="attr2">Attribute 2</option>
+                                                        <option value="White">White</option>
+                                                        <option value="PhotoChromic">PhotoChromic</option>
+                                                        <option value="White Blue Cat">White Blue Cat</option>
+                                                        <option value="PhotoChromic Blue Cat">PhotoChromic Blue Cat</option>
                                                     </select>
                                                 </div>
                                             </div><br>
@@ -76,7 +80,10 @@
                                                         <option value="">Select Lens Power
                                                         </option>
                                                         <option value="0">Plano</option>
-                                                        <option value="1">Value 1</option>
+                                                        <option value="-0.25">-0.25</option>
+                                                        <option value="0.25">0.25</option>
+                                                        <option value="-0.22">0.22</option>
+                                                        <option value="0.15">0.15</option>
                                                     </select>
                                                 </div>
                                             </div><br>
@@ -130,7 +137,8 @@
                                                     <td>{{ $item->price }}</td>
                                                     <td>
                                                         <span class="btn btn-primary rounded p-2">
-                                                            <a href="" style="text-decoration: none"
+                                                            <a href="{{ route('admin.item.lens.edit', [$item->id]) }}"
+                                                                style="text-decoration: none"
                                                                 class="t-decoration-none text-white">{{ __('edit') }}</a>
                                                         </span>
 

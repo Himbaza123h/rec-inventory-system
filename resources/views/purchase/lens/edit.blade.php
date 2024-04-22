@@ -28,7 +28,7 @@
                 <div class="row">
                     <!-- USER LIST -->
                     <div class="col-lg-4 hidden-print">
-                        <div class="panel panel-inverse" style="height: 250px">
+                        <div class="panel panel-inverse" style="height: 280px">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -81,8 +81,12 @@
                                                     <option value="Bank Slip">Bank Slip</option>
                                                 </select>
                                             </div>
-                                        </div><br>
+                                        </div>
                                         <br>
+
+                                        <button type="submit" class="btn btn-success waves-effect waves-light"
+                                            id="purchase_item">PURCHASE <i class="ion-ios7-cart-outline"></i></button>
+                                    </form>
 
                                 </div>
                             </div>
@@ -176,9 +180,6 @@
                                 <div class="pull-right">
                                     <a href="javascript:window.print()" class="btn btn-inverse waves-effect waves-light"><i
                                             class="fa fa-print"></i></a>
-                                    <button type="submit" class="btn btn-success waves-effect waves-light"
-                                        id="purchase_item">PURCHASE <i class="ion-ios7-cart-outline"></i></button>
-                                    </form>
                                 </div>
                             </div>
                         </div>
