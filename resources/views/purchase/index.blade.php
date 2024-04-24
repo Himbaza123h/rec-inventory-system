@@ -85,7 +85,7 @@
                                                         </th>
                                                     </tr>
                                                 </thead>
-                                                <tbody>
+                                                <!-- <tbody> -->
                                                     @foreach ($items as $index => $item)
                                                         <tr>
                                                             <td class="col-md-1">{{ $index + 1 }}</td>
@@ -103,7 +103,7 @@
                                                                     value="{{ $item->id }}" class="checkbox"></td>
                                                         </tr>
                                                     @endforeach
-                                                </tbody>
+                                                <!-- </tbody> -->
                                             </table>
                                             <button type="submit" class="btn btn-primary waves-effect waves-light">ADD
                                                 <i class="fa fa-plus"></i></button>

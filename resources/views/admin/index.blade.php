@@ -13,7 +13,7 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">WELCOME !</h4>
+                        <h4 class="pull-left page-title">WELCOME Eric!</h4>
 
                     </div>
                 </div>
@@ -164,7 +164,7 @@
 
         // Create charts
         const salesChart = new Chart(salesChartCanvas, {
-            type: 'bar',
+            type: 'line',
             data: salesData,
             options: {
                 scales: {
@@ -178,17 +178,44 @@
         });
 
         const purchaseChart = new Chart(purchaseChartCanvas, {
-            type: 'bar',
-            data: purchaseData,
-            options: {
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            beginAtZero: true
-                        }
-                    }]
+           type: 'line', // Changed to line chart
+        data: salesData,
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    },
+                    gridLines: {
+                        color: 'rgba(0, 0, 0, 0.1)' // Customize grid line color
+                    }
+                }],
+                xAxes: [{
+                    gridLines: {
+                        display: false // Disable x-axis grid lines
+                    }
+                }]
+            },
+            elements: {
+                line: {
+                    tension: 0.3, // Adjust line tension for smoother curves
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Set background color for line
+                    borderColor: 'rgba(54, 162, 235, 1)', // Set border color for line
+                    borderWidth: 2 // Set border width for line
+                },
+                point: {
+                    backgroundColor: 'rgba(54, 162, 235, 1)', // Set background color for points
+                    borderColor: 'rgba(54, 162, 235, 1)', // Set border color for points
+                    borderWidth: 2, // Set border width for points
+                    radius: 4 // Set radius for points
+                }
+            },
+            plugins: {
+                filler: {
+                    propagate: true // Propagate fill to the start of the data
                 }
             }
-        });
+        }
+    });
     </script>
 @endsection

@@ -78,6 +78,18 @@
                 transform: rotate(360deg);
             }
         }
+        th {
+            color: #000;
+        }
+        .panel-heading {
+            background-color: #3e4550 !important;
+        }
+        tr{
+            background-color: #f9f9f9;
+        }
+        /*td {
+            color: #ffffff;
+        }*/
     </style>
 
     <script src="{{ asset('js/jquery.js') }}"></script>

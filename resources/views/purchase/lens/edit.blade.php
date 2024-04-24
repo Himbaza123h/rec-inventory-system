@@ -110,7 +110,7 @@
                                                         {{ $data[0]->purchase_code }}</strong><br>
                                                 </div>
                                                 <div class="pull-right">
-                                                    <img src="{{ asset('assets/images/electric.jpg') }}" height="100"
+                                                    <img src="" alt="LOGO" height="100"
                                                         width="200" alt="LOGO">
                                                 </div>
                                             </div>
