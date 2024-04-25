@@ -45,7 +45,7 @@
                                             @foreach ($items as $index => $item)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $item->category->category_name }} {{ $item->code }}</td>
+                                                    <td> {{ $item->code?->code_name }}</td>
                                                     <td>
                                                         {{ $item->sale_count }}
                                                     </td>

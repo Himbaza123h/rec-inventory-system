@@ -17,10 +17,10 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <h3 class="pull-left page-title"><b> SALE</b><i class="ion-ios7-cart-outline"></i></h3>
+                        <h3 class="pull-left page-title"><b> MAKE SALE</b><i class="ion-ios7-cart-outline"></i></h3>
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="{{ route('seller.sales.index') }}">Sales</a></li>
+                            <li><a href="{{ route('admin.purchase.index') }}">Purchase</a></li>
                             <li class="active">Details</li>
                         </ol>
                     </div>
@@ -38,7 +38,8 @@
                             </div>
                             <div class="panel-body">
                                 <div id="userResurts" class="inbox-widget nicescroll mx-box">
-                                    <form action="{{ route('seller.checkout.update', ['id' => $data[0]->sale_code]) }}"
+                                    <form
+                                        action="{{ route('seller.checkout.lens.update', ['id' => $data[0]->sale_lens_code]) }}"
                                         method="POST">
                                         @csrf
                                         <input type="hidden" name="_method" value="PUT">
@@ -48,7 +49,7 @@
                                             @endphp
                                             <div class="col-md-9">
                                                 <label for="payment_method">CUSTOMER</label><br>
-                                                <select name="buyer_id" id="target_client" class="select2 form-control">
+                                                <select name="buyer_id" id="buyer_id" class="select2 form-control">
                                                     <option value="">Select Customer</option>
                                                     @foreach ($customer as $person)
                                                         <option value="{{ $person->id }}">{{ $person->customer_name }}
@@ -67,7 +68,7 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="payment_method">PAYMENT METHOD </label><br>
-                                                <select name="payment_method" id="target_client"
+                                                <select name="payment_method" id="payment_method"
                                                     class="select2 form-control">
                                                     <option>Choose Payment</option>
                                                     <option value="Cash">Cash</option>
@@ -100,7 +101,7 @@
                                                     <strong>Address: Kigali Rwanda</strong><br>
                                                     <strong>Mobile: {{ auth()->user()->phone }}</strong><br>
                                                     <strong>Email: {{ auth()->user()->email }}</strong><br>
-                                                    <strong>Sale Number:
+                                                    <strong>Purchase Number:
                                                         {{ $data[0]->sale_code }}</strong><br>
                                                 </div>
                                                 <div class="pull-right">
@@ -116,9 +117,8 @@
                                     <tr>
                                         <th>#</th>
                                         <th>ITEM BRAND</th>
-                                        <th>CODE</th>
-                                        <th>SIZE</th>
-                                        <th>COLOR</th>
+                                        <th>ATTRIBUTE</th>
+                                        <th>POWER</th>
                                         <th>QUANTITY</th>
                                         <th>PRICE</th>
                                     </tr>
@@ -129,11 +129,10 @@
                                         @foreach ($data as $index => $item)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->code?->code_name }}</td>
-                                                <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
+                                                <td>{{ $item->lens?->category?->category_name }}</td>
+                                                <td>{{ $item->lens?->lens_attribute }}</td>
+                                                <td>{{ $item->lens?->lens_power }}
                                                 </td>
-                                                <td>{{ $item->item?->color?->color_name }}</td>
                                                 <td>{{ $item->qty }}</td>
                                                 <td>{{ $item->price }}</td>
                                             </tr>

@@ -50,7 +50,7 @@
                                             </div><br>
 
                                             @php
-                                                $category = \App\Models\Category::where('product', 'sunglasses')->get();
+                                                $category = \App\Models\Category::where('product', 1)->get();
                                             @endphp
 
                                             <div class="row">

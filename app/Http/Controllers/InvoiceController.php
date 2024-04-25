@@ -42,20 +42,7 @@ class InvoiceController extends Controller
 
         return view('invoices.general.index', compact('data', 'invoices'));
     }
-    public function proforma()
-    {
-        $user = Auth::user();
-        if ($user->role === 'admin') {
-            $invoices = CartItem::where('status', 1)->get();
-        } else {
-            $invoices = CartItem::where('status', 1)
-                ->where('user_id', $user->id)
-                ->get();
-        }
 
-        $data = null;
-        return view('invoices.proforma.index', compact('invoices'));
-    }
     public function request()
     {
         return view('invoices.requested.index');

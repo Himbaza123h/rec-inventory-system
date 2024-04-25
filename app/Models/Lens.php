@@ -15,4 +15,8 @@ class Lens extends Model
     {
         return $this->belongsTo(Category::class, 'mark_lens');
     }
+    public function attribute()
+    {
+        return $this->belongsTo(Attribute::class, 'lens_attribute');
+    }
 }

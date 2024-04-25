@@ -44,7 +44,7 @@
                                             @method('PUT')
 
                                             @php
-                                                $categories = \App\Models\Category::where('product', 'lens')->get();
+                                                $categories = \App\Models\Category::where('product', 2)->get();
                                             @endphp
                                             <div class="row">
                                                 <div class="col-md-6">
@@ -65,18 +65,18 @@
                                                     <select name="lens_attribute" id="lens_attribute"
                                                         class="select2 form-control">
                                                         <option value="">Select Attribute</option>
-                                                        <option value="White"
-                                                            {{ $item->lens_attribute == 'White' ? 'selected' : '' }}>
+                                                        <option value="1"
+                                                            {{ $item->lens_attribute == 1 ? 'selected' : '' }}>
                                                             White </option>
 
-                                                        <option value="PhotoChromic"
-                                                            {{ $item->lens_attribute == 'PhotoChromic' ? 'selected' : '' }}>
+                                                        <option value="2"
+                                                            {{ $item->lens_attribute == 2 ? 'selected' : '' }}>
                                                             PhotoChromic </option>
-                                                        <option value="White Blue Cat"
-                                                            {{ $item->lens_attribute == 'White Blue Cat' ? 'selected' : '' }}>
+                                                        <option value="3"
+                                                            {{ $item->lens_attribute == 3 ? 'selected' : '' }}>
                                                             White BlueCat </option>
-                                                        <option value="PhotoChromic Blue Cat"
-                                                            {{ $item->lens_attribute == 'PhotoChromic Blue Cat' ? 'selected' : '' }}>
+                                                        <option value="4"
+                                                            {{ $item->lens_attribute == 4 ? 'selected' : '' }}>
                                                             PhotoChromic BlueCat </option>
 
 

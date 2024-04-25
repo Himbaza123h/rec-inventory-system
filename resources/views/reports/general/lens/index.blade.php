@@ -59,7 +59,7 @@
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item['lens']['category']['category_name'] }}</td>
-                                                    <td>{{ $item['lens']['lens_attribute'] }}</td>
+                                                    <td>{{ $item['lens']['attribute']['attribute_name'] }}</td>
                                                     <td>{{ $item['lens']['lens_power'] }}</td>
                                                     <td>{{ $item['item_quantity'] }}</td>
                                                     @if (Auth::user()->role == 'admin')

@@ -43,7 +43,7 @@
                                             @csrf
                                             @method('PUT')
                                             @php
-                                                $category = \App\Models\Category::where('product', 'sunglasses')->get();
+                                                $category = \App\Models\Category::where('product', 1)->get();
                                                 $color = \App\Models\Color::all();
                                                 $code = \App\Models\Code::all();
 

@@ -13,7 +13,7 @@
                 <!-- Page-Title -->
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title">WELCOME Eric!</h4>
+                        <h4 class="pull-left page-title">WELCOME {{ Auth::user()->name }}</h4>
 
                     </div>
                 </div>
@@ -26,6 +26,7 @@
                     $activeSupplierIds = \App\Models\Purchase::pluck('supplier')->unique()->toArray();
                     $activeSuppliers = \App\Models\Supplier::whereIn('id', $activeSupplierIds)->get();
                     $activeSuppliersCount = $activeSuppliers->count();
+                    $customers = \App\Models\Customer::count();
                 @endphp
                 <div class="row">
                     <a href="{{ route('admin.items.index') }}">
@@ -93,14 +94,20 @@
                         <div class="mini-stat clearfix bg-primary bx-shadow">
                             <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>
                             <div class="mini-stat-info text-right">
-                                <span class="counter">50</span>
-                                Customers
+                                <span class="counter">{{ $customers }}</span>
+
+
+                                @if ($customers > 1)
+                                    Customers
+                                @else
+                                    Customer
+                                @endif
                             </div>
                             <div class="tiles-progress">
                                 <div class="m-t-20">
                                     <h5 class="text-uppercase text-white m-0">From
-                                        50
-                                        <span class="pull-right">5 Stores</span>
+
+                                        <span class="pull-right">1 Store</span>
                                     </h5>
                                 </div>
                             </div>
@@ -178,44 +185,44 @@
         });
 
         const purchaseChart = new Chart(purchaseChartCanvas, {
-           type: 'line', // Changed to line chart
-        data: salesData,
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    },
-                    gridLines: {
-                        color: 'rgba(0, 0, 0, 0.1)' // Customize grid line color
-                    }
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false // Disable x-axis grid lines
-                    }
-                }]
-            },
-            elements: {
-                line: {
-                    tension: 0.3, // Adjust line tension for smoother curves
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Set background color for line
-                    borderColor: 'rgba(54, 162, 235, 1)', // Set border color for line
-                    borderWidth: 2 // Set border width for line
+            type: 'line', // Changed to line chart
+            data: salesData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            color: 'rgba(0, 0, 0, 0.1)' // Customize grid line color
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: false // Disable x-axis grid lines
+                        }
+                    }]
                 },
-                point: {
-                    backgroundColor: 'rgba(54, 162, 235, 1)', // Set background color for points
-                    borderColor: 'rgba(54, 162, 235, 1)', // Set border color for points
-                    borderWidth: 2, // Set border width for points
-                    radius: 4 // Set radius for points
-                }
-            },
-            plugins: {
-                filler: {
-                    propagate: true // Propagate fill to the start of the data
+                elements: {
+                    line: {
+                        tension: 0.3, // Adjust line tension for smoother curves
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)', // Set background color for line
+                        borderColor: 'rgba(54, 162, 235, 1)', // Set border color for line
+                        borderWidth: 2 // Set border width for line
+                    },
+                    point: {
+                        backgroundColor: 'rgba(54, 162, 235, 1)', // Set background color for points
+                        borderColor: 'rgba(54, 162, 235, 1)', // Set border color for points
+                        borderWidth: 2, // Set border width for points
+                        radius: 4 // Set radius for points
+                    }
+                },
+                plugins: {
+                    filler: {
+                        propagate: true // Propagate fill to the start of the data
+                    }
                 }
             }
-        }
-    });
+        });
     </script>
 @endsection

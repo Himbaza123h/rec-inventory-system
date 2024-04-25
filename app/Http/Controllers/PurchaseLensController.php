@@ -12,7 +12,9 @@ class PurchaseLensController extends Controller
 
     public function edit($id)
     {
-        $data = PurchaseLens::where('purchase_code', $id)->get();
+        $data = PurchaseLens::where('purchase_code', $id)
+        ->where('status', 1)
+        ->get();
 
         return view('purchase.lens.edit', compact('data'));
     }

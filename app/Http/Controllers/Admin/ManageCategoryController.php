@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
-class CategoryController extends Controller
+use Illuminate\Http\Request;
+
+class ManageCategoryController extends Controller
 {
     public function index()
     {
@@ -15,11 +17,17 @@ class CategoryController extends Controller
         return view('category.index', compact('data'));
     }
 
+    public function edit($id)
+    {
+        $data = Category::findOrFail($id);
+        return view('category.edit', compact('data'));
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'product' => 'required|string',
-            'category_name' => 'required|string',
+            'category_name' => 'required|string|unique:categories',
         ]);
         if ($validator->fails()) {
             $messages = $validator->getMessageBag();
@@ -45,7 +53,7 @@ class CategoryController extends Controller
         // Validate the form data
         $request->validate([
             'product' => 'required|string',
-            'category_name' => 'required|string',
+            'category_name' => 'required|string|unique:categories',
         ]);
 
         $category = Category::findOrFail($id);

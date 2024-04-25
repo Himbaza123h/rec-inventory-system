@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('page-title')
-    {{ __('General Invoices') }}
+    {{ __('Glass Performa') }}
 @endsection
 
 @section('content')
@@ -57,8 +57,9 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>
                                                         <a
-                                                            href="{{ route(auth()->user()->role . '.invoice-by-sell-code.index', ['id' => $invoice->sale_code]) }}
-                                                            ">
+                                                            href=
+                                                            {{-- "{{ route(auth()->user()->role . '.invoice-by-sell-code.index', ['id' => $invoice->sale_code]) }}" --}}
+                                                            >
                                                             {{ $invoice->sale_code }}
                                                         </a>
                                                     </td>

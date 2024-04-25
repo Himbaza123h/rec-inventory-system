@@ -37,11 +37,15 @@
                                     <form action="{{ route('admin.category.store') }}" method="POST">
                                         @csrf
                                         Product<br />
+                                        @php
+                                            $products = \App\Models\Product::get();
+                                        @endphp
                                         <select name="product" id="product" class="select2 form-control"
                                             placeholder="Select Product">
                                             <option value="">Select Product</option>
-                                            <option value="sunglasses">SunGlasses</option>
-                                            <option value="lens">Lens</option>
+                                            @foreach ($products as $product)
+                                                <option value="{{ $product->id }}">{{ $product->product_name }}</option>
+                                            @endforeach
                                         </select><br /><br />
                                         Category Name<br />
                                         <input type="text" name="category_name" id="" class="form-control"
@@ -53,8 +57,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div> <!-- end col -->
-
+                    </div>
 
                     <!-- RESULT TABLE -->
                     <div class="col-lg-8">
@@ -82,7 +85,8 @@
 
                                             @foreach ($groupedData as $product => $items)
                                                 <tr>
-                                                    <td rowspan="{{ $items->count() + 1 }}">{{ $product }}</td>
+                                                    <td rowspan="{{ $items->count() + 1 }}">
+                                                        {{ $product == 1 ? 'Glass' : ($product == 2 ? 'Lens' : '') }}</td>
                                                 </tr>
                                                 @foreach ($items as $item)
                                                     <tr>
@@ -90,7 +94,8 @@
                                                         <td>{{ $item->created_at->format('Y-m-d') }}</td>
                                                         <td>
                                                             <span class="btn btn-primary rounded p-2">
-                                                                <a href="" style="text-decoration: none"
+                                                                <a href="{{ route('admin.category.edit', [$item->id]) }}"
+                                                                    style="text-decoration: none"
                                                                     class="t-decoration-none text-white">{{ __('edit') }}</a>
                                                             </span>
 
@@ -127,5 +132,4 @@
         </div> <!-- content -->
 
     </div>
-
 @endsection

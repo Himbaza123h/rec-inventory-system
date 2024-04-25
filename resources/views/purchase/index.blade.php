@@ -86,23 +86,23 @@
                                                     </tr>
                                                 </thead>
                                                 <!-- <tbody> -->
-                                                    @foreach ($items as $index => $item)
-                                                        <tr>
-                                                            <td class="col-md-1">{{ $index + 1 }}</td>
-                                                            <td>{{ $item->category?->category_name }} |
-                                                                {{ $item->code?->code_name }} |
-                                                                {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
-                                                                | {{ $item->color?->color_name }}
-                                                            </td>
-                                                            <td><input type="text" name="Qty_{{ $item->id }}"
-                                                                    class="form-control qty-input" placeholder="Qty"
-                                                                    data-item-id="{{ $item->id }}"></td>
-                                                            <td><input type="text" name="price_{{ $item->id }}"
-                                                                    class="form-control" placeholder="Price"></td>
-                                                            <td><input type="checkbox" name="selected[]"
-                                                                    value="{{ $item->id }}" class="checkbox"></td>
-                                                        </tr>
-                                                    @endforeach
+                                                @foreach ($items as $index => $item)
+                                                    <tr>
+                                                        <td class="col-md-1">{{ $index + 1 }}</td>
+                                                        <td>{{ $item->category?->category_name }} |
+                                                            {{ $item->code?->code_name }} |
+                                                            {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
+                                                            | {{ $item->color?->color_name }}
+                                                        </td>
+                                                        <td><input type="text" name="Qty_{{ $item->id }}"
+                                                                class="form-control qty-input" placeholder="Qty"
+                                                                data-item-id="{{ $item->id }}"></td>
+                                                        <td><input type="text" name="price_{{ $item->id }}"
+                                                                class="form-control" placeholder="Price"></td>
+                                                        <td><input type="hidden" name="selected[]"
+                                                                value="{{ $item->id }}" class="checkbox"></td>
+                                                    </tr>
+                                                @endforeach
                                                 <!-- </tbody> -->
                                             </table>
                                             <button type="submit" class="btn btn-primary waves-effect waves-light">ADD
@@ -147,14 +147,14 @@
                                                         <tr>
                                                             <td class="col-md-1">{{ $index + 1 }}</td>
                                                             <td>{{ $item->category?->category_name }} |
-                                                                | {{ $item->lens_attribute }}
+                                                                | {{ $item->attribute?->attribute_name }}
                                                             </td>
                                                             <td><input type="text" name="Qty2_{{ $item->id }}"
                                                                     class="form-control qty-input" placeholder="Qty"
                                                                     data-item-id="{{ $item->id }}"></td>
                                                             <td><input type="text" name="price2_{{ $item->id }}"
                                                                     class="form-control" placeholder="Price"></td>
-                                                            <td><input type="checkbox" name="selected2[]"
+                                                            <td><input type="hidden" name="selected2[]"
                                                                     value="{{ $item->id }}" class="checkbox"></td>
                                                         </tr>
                                                     @endforeach

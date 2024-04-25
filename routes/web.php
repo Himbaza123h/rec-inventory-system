@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Admin\ManageUsersController;
-use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Admin\ManageCategoryController;
 use App\Http\Controllers\itemsController;
 use App\Http\Controllers\ItemsLensController;
 use App\Http\Controllers\PurchaseController;
@@ -19,6 +19,9 @@ use App\Http\Controllers\CartLensController;
 use App\Http\Controllers\seller\SellController;
 use App\Http\Controllers\seller\CartController;
 use App\Http\Controllers\SalesController;
+use App\Http\Controllers\LensSalesController;
+use App\Http\Controllers\ColorController;
+use App\Http\Controllers\PerformaInvoices;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,10 +47,11 @@ Route::get('dashboard', [HomeController::class, 'index'])
 // Admin Controlllers
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'approvedUser'], 'as' => 'admin.'], function () {
-    Route::get('/categories', [CategoryController::class, 'index'])->name('category.index');
-    Route::post('/category/store', [CategoryController::class, 'store'])->name('category.store');
-    Route::put('/category/update/{id}', [CategoryController::class, 'update'])->name('category.update');
-    Route::delete('/category/delete/{id}', [CategoryController::class, 'delete'])->name('category.delete');
+    Route::get('/categories', [ManageCategoryController::class, 'index'])->name('category.index');
+    Route::post('/category/store', [ManageCategoryController::class, 'store'])->name('category.store');
+    Route::get('/category/edit/{id}', [ManageCategoryController::class, 'edit'])->name('category.edit');
+    Route::put('/category/update/{id}', [ManageCategoryController::class, 'update'])->name('category.update');
+    Route::delete('/category/delete/{id}', [ManageCategoryController::class, 'delete'])->name('category.delete');
 
     Route::get('/items/glasses', [itemsController::class, 'index'])->name('items.index');
     Route::post('/item/glasses/store', [itemsController::class, 'store'])->name('item.store');
@@ -105,6 +109,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::get('/req-invoices', [InvoiceController::class, 'request'])->name('invoice.req.index');
 
     // Customer routes to manage controllers
+    Route::get('/colors', [ColorController::class, 'index'])->name('colors.index');
+    Route::post('/color/store', [ColorController::class, 'store'])->name('color.store');
+    Route::get('/color/edit/{id}', [ColorController::class, 'edit'])->name('color.edit');
+    Route::put('/color/update/{id}', [ColorController::class, 'update'])->name('color.update');
+    Route::delete('/color/delete/{id}', [ColorController::class, 'delete'])->name('color.delete');
 
     Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
 
@@ -146,11 +155,8 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
 
     //sell lens
 
-    Route::post('/sale/Lens/store', [CartLensController::class, 'store'])->name('cart-lens.store');
-    Route::get('/sale/lens/edit/{id}', [CartLensController::class, 'edit'])->name('sale.lens.edit');
-    Route::post('/sale/lens/update/{id}', [CartLensController::class, 'update'])->name('sale.lens.update');
-    Route::delete('/sale/lens/delete/{id}', [CartLensController::class, 'delete'])->name('lens.delete');
-    Route::delete('/sale/cart-lens/delete/{id}', [CartLensController::class, 'deleteCart'])->name('cart.lens.delete');
+    Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoice.index');
+    Route::get('/invoice-by-sell-code/{id}', [InvoiceController::class, 'InvoivebySellCode'])->name('invoice-by-sell-code.index');
 
     // Customer routes to manage controllers
     Route::get('/customers', [CustomerController::class, 'index'])->name('customers.index');
@@ -161,7 +167,7 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
 
     // Additional to sales controller
 
-    Route::get('/sales', [SalesController::class, 'index'])->name('sales.index');
+    Route::get('/glass-sales', [SalesController::class, 'index'])->name('sales.index');
     Route::get('/fetch-codes', [SalesController::class, 'fetchCodes'])->name('fetch.codes');
     Route::get('/fetch-colors', [SalesController::class, 'fetchColors'])->name('fetch.colors');
     Route::post('/add-to-cart', [SalesController::class, 'addToCart'])->name('add.to.cart');
@@ -169,6 +175,23 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
     Route::delete('/remove-from-cart/{id}', [SalesController::class, 'removeFromCart'])->name('remove.from.cart');
     Route::delete('/remove-cart/{id}', [SalesController::class, 'remove'])->name('item-cart.remove');
 
+    // Additional to lens sales controller
+
+    Route::get('/lens-sales', [LensSalesController::class, 'index'])->name('lens.sales.index');
+    Route::post('/lens-sales-store', [LensSalesController::class, 'store'])->name('cart.lens.store');
+    Route::get('/lens-0781Ca/checkout/{id}', [LensSalesController::class, 'checkout'])->name('lens.checkout');
+    Route::put('/update-lens/checkout/{id}', [LensSalesController::class, 'update'])->name('checkout.lens.update');
+    Route::delete('/remove-lens-cart/{id}', [LensSalesController::class, 'remove'])->name('lens-cart.remove');
+
     Route::get('/invoice-0781Ca/checkout/{id}', [SalesController::class, 'checkout'])->name('checkout');
     Route::put('/update/checkout/{id}', [SalesController::class, 'update'])->name('checkout.update');
+
+    Route::put('/update/performa/{id}', [SalesController::class, 'performa'])->name('performa.update');
+    Route::put('/update/lens/performa/{id}', [LensSalesController::class, 'performa'])->name('performa.lens.update');
+
+    Route::get('/glass/performa/invoices', [PerformaInvoices::class, 'glass'])->name('glass.performa.invoice');
+    Route::get('/glass/performa/by-sell-code/{id}', [PerformaInvoices::class, 'GlassbySellCode'])->name('glass-by-sell-code.index');
+
+    Route::get('/lens/performa/invoices', [PerformaInvoices::class, 'lens'])->name('lens.performa.invoice');
+    Route::get('/lens/performa/by-sell-code/{id}', [PerformaInvoices::class, 'LensbySellCode'])->name('lens-by-sell-code.index');
 });

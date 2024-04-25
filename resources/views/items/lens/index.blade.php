@@ -39,7 +39,7 @@
 
 
                                             @php
-                                                $category = \App\Models\Category::where('product', 'lens')->get();
+                                                $category = \App\Models\Category::where('product', 2)->get();
                                             @endphp
                                             <div class="row">
                                                 <div class="col-md-12">
@@ -55,35 +55,39 @@
                                                     </select>
                                                 </div>
                                             </div><br>
-
+                                            @php
+                                                $attributes = \App\Models\Attribute::get();
+                                            @endphp
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="lens_attribute">Lens Attribute</label><br>
                                                     <select name="lens_attribute" id="target_client"
                                                         class="select2 form-control">
+
                                                         <option value="">Select Attribute
                                                         </option>
-                                                        <option value="White">White</option>
-                                                        <option value="PhotoChromic">PhotoChromic</option>
-                                                        <option value="White Blue Cat">White Blue Cat</option>
-                                                        <option value="PhotoChromic Blue Cat">PhotoChromic Blue Cat</option>
+                                                        @foreach ($attributes as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->attribute_name }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div><br>
 
 
-
+                                            @php
+                                                $powers = \App\Models\Power::get();
+                                            @endphp
                                             <div class="row">
                                                 <div class="col-md-12">
                                                     <label for="lens_power">Lens Power</label><br>
                                                     <select name="lens_power" id="lens_power" class="select2 form-control">
                                                         <option value="">Select Lens Power
                                                         </option>
-                                                        <option value="0">Plano</option>
-                                                        <option value="-0.25">-0.25</option>
-                                                        <option value="0.25">0.25</option>
-                                                        <option value="-0.22">0.22</option>
-                                                        <option value="0.15">0.15</option>
+                                                        @foreach ($powers as $item)
+                                                            <option value="{{ $item->power_value }}">{{ $item->power_name }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div><br>
@@ -132,7 +136,7 @@
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->category?->category_name }}</td>
-                                                    <td>{{ $item->lens_attribute }}</td>
+                                                    <td>{{ $item->attribute?->attribute_name }}</td>
                                                     <td>{{ $item->lens_power }}</td>
                                                     <td>{{ $item->price }}</td>
                                                     <td>

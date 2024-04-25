@@ -9,7 +9,7 @@ use App\Models\Lens;
 class CartLens extends Model
 {
     use HasFactory;
-    protected $fillable = ['item_id', 'salelens_code', 'qty', 'price', 'amaunt', 'status'];
+    protected $fillable = ['item_id', 'user_id', 'sale_lens_code', 'qty', 'price', 'amount', 'status'];
 
     public function lens()
     {
