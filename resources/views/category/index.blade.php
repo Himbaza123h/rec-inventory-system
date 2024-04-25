@@ -47,12 +47,11 @@
                                                 <option value="{{ $product->id }}">{{ $product->product_name }}</option>
                                             @endforeach
                                         </select><br /><br />
-                                        Category Name<br />
+                                        Category / Brand Name<br />
                                         <input type="text" name="category_name" id="" class="form-control"
-                                            placeholder="Category Name"><br />
-                                        <br />
-                                        <button type="submit" class="btn btn-success">Add
-                                            Category</button>
+                                            placeholder="Category / Brand Name"><br />
+                                        <br />  
+                                        <button type="submit" class="btn btn-success"><i class="md md-add"></i> Add</button>
                                     </form>
                                 </div>
                             </div>
@@ -74,7 +73,7 @@
                                     <table width="100%" class="table table-striped table-bordered">
                                         <thead>
                                             <th>Product Name</th>
-                                            <th>Category Name</th>
+                                            <th>Category / Brand Name</th>
                                             <th>Created At</th>
                                             <th>Actions</th>
                                         </thead>

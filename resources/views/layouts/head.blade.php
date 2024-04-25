@@ -8,7 +8,7 @@
     <meta name="author" content="Coderthemes">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="shortcut icon" href="{{ asset('assets/images/electric.jpg') }}">
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png') }}">
 
     <title>
         {{ empty(trim($__env->yieldContent('page-title'))) ? env('APP_NAME') : $__env->yieldContent('page-title') }}
@@ -86,6 +86,9 @@
         }
         tr{
             background-color: #f9f9f9;
+        }
+        .panel-title {
+            color: #ffffff;
         }
         /*td {
             color: #ffffff;

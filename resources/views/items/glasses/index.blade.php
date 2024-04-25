@@ -55,11 +55,10 @@
 
                                             <div class="row">
                                                 <div class="col-md-6">
-                                                    <label for="mark_glasses">Mark of Glasses</label><br>
+                                                    <label for="mark_glasses">Brand</label><br>
                                                     <select name="mark_glasses" id="mark_glasses"
                                                         class="select2 form-control">
-                                                        <option value="">Select mark of
-                                                            glasses</option>
+                                                        <option value="">Select Brand</option>
                                                         @foreach ($category as $item)
                                                             <option value="{{ $item->id }}">{{ $item->category_name }}
                                                             </option>

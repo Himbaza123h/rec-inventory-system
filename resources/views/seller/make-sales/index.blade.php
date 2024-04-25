@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title"><b>Sale Glass</b></h4>
+                        <h4 class="pull-left page-title"><b>Sale Glasses</b></h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{ route('home') }}">Home</a></li>
                             <li class="active">Items</li>
@@ -22,13 +22,13 @@
                     @csrf
                     <div class="row">
                         <div class="col-md-12">
-                            <h4>Choose Item</h4>
+                            <!-- <h4>Choose Item</h4> -->
                             <div class="col-md-3">
                                 <div class="form-group">
-                                    <label for="mark_glasses">Mark of Glass:</label>
+                                    <label for="mark_glasses">Grasses Brand:</label>
                                     <select class="form-control select2 code_show_input" name="mark_glass_id"
                                         id="mark_glasses">
-                                        <option value="">Choose Mark of Glass</option>
+                                        <option value="">Choose Brand</option>
                                         @foreach ($items as $item)
                                             <option value="{{ $item->mark_glasses }}">{{ $item->category?->category_name }}
                                             </option>
@@ -67,7 +67,7 @@
 
                     <div class="row">
                         <div class="col-sm-12">
-                            <button class="btn btn-primary" type="submit" id="add-to-cart">Add to Cart</button>
+                            <br><br><center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to Cart</button></center>
                         </div>
                     </div>
                 </form>
