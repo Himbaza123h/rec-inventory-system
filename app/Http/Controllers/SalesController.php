@@ -240,7 +240,7 @@ class SalesController extends Controller
                 }
             }
 
-            return redirect()->route('seller.sales.index')->with('success', 'Items sold successfully!');
+            return redirect()->route('seller.invoice.index')->with('success', 'Items sold successfully!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }

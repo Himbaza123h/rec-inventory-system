@@ -78,7 +78,11 @@ class PurchaseController extends Controller
                 $new->save();
             }
         }
-        return redirect()->back()->with('success', 'Purchase cart successfully added!');
+
+        // Redirect to the edit route with the created purchase code
+        return redirect()
+            ->route('admin.purchase.edit', [$Pcode])
+            ->with('success', 'Purchase cart successfully added!');
     }
 
     public function update(Request $request, $id)
@@ -122,7 +126,7 @@ class PurchaseController extends Controller
                     }
                 }
 
-                return redirect()->route('admin.purchase.index')->with('success', 'Purchases and Stock successfully updated!');
+                return redirect()->route('admin.stock.index')->with('success', 'Purchases and Stock successfully updated!');
             } catch (\Throwable $th) {
                 return redirect()->back()->with('error', $th->getMessage());
             }

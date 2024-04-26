@@ -9,12 +9,9 @@ use Illuminate\Support\Facades\Validator;
 
 class PurchaseLensController extends Controller
 {
-
     public function edit($id)
     {
-        $data = PurchaseLens::where('purchase_code', $id)
-        ->where('status', 1)
-        ->get();
+        $data = PurchaseLens::where('purchase_code', $id)->where('status', 1)->get();
 
         return view('purchase.lens.edit', compact('data'));
     }
@@ -49,7 +46,11 @@ class PurchaseLensController extends Controller
                 $new->save();
             }
         }
-        return redirect()->back()->with('success', 'Purchase cart successfully added!');
+
+        // Redirect to the edit route with the created purchase code
+        return redirect()
+            ->route('admin.purchase.lens.edit', [$Pcode])
+            ->with('success', 'Purchase cart successfully added!');
     }
 
     public function update(Request $request, $id)
@@ -93,7 +94,7 @@ class PurchaseLensController extends Controller
                     }
                 }
 
-                return redirect()->route('admin.purchase.index')->with('success', 'Purchases and Stock successfully updated!');
+                return redirect()->route('admin.stock.index')->with('success', 'Purchases and Stock successfully updated!');
             } catch (\Throwable $th) {
                 return redirect()->back()->with('error', $th->getMessage());
             }
@@ -113,8 +114,6 @@ class PurchaseLensController extends Controller
         }
     }
 
-
-
     public function deleteLens($id)
     {
         try {
@@ -127,8 +126,4 @@ class PurchaseLensController extends Controller
             ]);
         }
     }
-
-
-
-
 }
