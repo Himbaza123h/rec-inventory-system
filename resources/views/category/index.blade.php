@@ -85,7 +85,8 @@
                                             @foreach ($groupedData as $product => $items)
                                                 <tr>
                                                     <td rowspan="{{ $items->count() + 1 }}">
-                                                        {{ $product == 1 ? 'Glass' : ($product == 2 ? 'Lens' : '') }}</td>
+                                                        {{ $product == 1 ? 'Frame' : ($product == 2 ? 'Lens' : ($product == 3 ? 'Sun Glasses' : ($product == 4 ? 'Reading Glasses' : ''))) }}
+                                                    </td>
                                                 </tr>
                                                 @foreach ($items as $item)
                                                     <tr>

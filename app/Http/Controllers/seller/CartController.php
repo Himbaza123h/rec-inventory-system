@@ -56,6 +56,16 @@ class CartController extends Controller
     {
         $user = Auth::user();
         $Salecode = $request->input('salecode');
+        $validator = Validator::make($request->all(), [
+            'covered' => 'required|string',
+            'insurance' => 'required|integer',
+            'insurance_number' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            $messages = $validator->getMessageBag();
+            return redirect()->back()->with('error', $messages->first());
+        }
 
         foreach ($request->selected as $itemId) {
             $qty = $request->input("qty_$itemId");
@@ -83,6 +93,9 @@ class CartController extends Controller
                 $new->sale_code = $Salecode;
                 $new->qty = $qty;
                 $new->user_id = $user->id;
+                $new->insurance = $request->insurance;
+                $new->insurance_number = $request->insurance_number;
+                $new->covered = $request->covered;
                 $new->price = $price;
                 $new->amount = $total;
                 $new->created_at = $date;

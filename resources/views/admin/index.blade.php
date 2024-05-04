@@ -19,8 +19,16 @@
                 </div>
                 <!-- Start Widget -->
                 @php
-                    $item = \App\Models\Item::count();
-                    $lens = \App\Models\Lens::count();
+                    $itemSold = \App\Models\Sale::where('product_id', 1)->count();
+                    $totalAmount = \App\Models\CartItem::where('product_id', 1)->where('status', 2)->sum('amount');
+                    $itemSold1 = \App\Models\Sale::where('product_id', 2)->count();
+                    $totalAmount1 = \App\Models\CartItem::where('product_id', 2)->where('status', 2)->sum('amount');
+
+                    $itemSold2 = \App\Models\Sale::count();
+                    $totalAmount2 = \App\Models\CartItem::where('status', 2)->sum('amount');
+
+                    $buyerCount = \App\Models\Sale::distinct('buyer_id')->count('buyer_id');
+
                     $purchase = \App\Models\Purchase::where('status', 2);
                     $purchaseCount = $purchase->count();
                     $activeSupplierIds = \App\Models\Purchase::pluck('supplier')->unique()->toArray();
@@ -36,15 +44,17 @@
 
                                 <div class="mini-stat-info text-right">
                                     <span class="counter">
-                                        {{ $item }}
+                                        {{ $itemSold }}
                                     </span>
-                                    Active Items
+                                    SOLD
                                 </div>
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">ADD NEW GLASS<span
-                                                class="pull-right"></span></h5>
+                                        <h5 class="text-uppercase text-white m-0">NEW FRAME<span
+                                                class="pull-right">{{ number_format($totalAmount, 0, '.', ',') }} RWF</span>
+                                        </h5>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -57,14 +67,16 @@
 
                                 <div class="mini-stat-info text-right">
                                     <span class="counter">
-                                        {{ $lens }}
+                                        {{ $itemSold1 }}
                                     </span>
-                                    Active Items
+                                    SOLD
                                 </div>
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">ADD NEW LENS<span
-                                                class="pull-right"></span></h5>
+                                        <h5 class="text-uppercase text-white m-0">NEW LENS<span
+                                                class="pull-right">{{ number_format($totalAmount1, 0, '.', ',') }}
+                                                RWF</span>
+                                        </h5>
                                     </div>
                                 </div>
                             </div>
@@ -75,15 +87,15 @@
                             <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>
                             <div class="mini-stat-info text-right">
                                 <span class="counter">
-                                    {{ $purchaseCount }}
+                                    {{ $itemSold2 }}
                                 </span>
                                 Transactions
                             </div>
                             <div class="tiles-progress">
                                 <div class="m-t-20">
-                                    <h5 class="text-uppercase text-white m-0">From
+                                    <h5 class="text-uppercase text-white m-0">
                                         <span class="pull-right">
-                                            {{ $activeSuppliersCount }} Suppliers
+                                            {{ number_format($totalAmount2, 0, '.', ',') }} RWF
                                         </span>
                                     </h5>
                                 </div>
@@ -105,9 +117,9 @@
                             </div>
                             <div class="tiles-progress">
                                 <div class="m-t-20">
-                                    <h5 class="text-uppercase text-white m-0">From
+                                    <h5 class="text-uppercase text-white m-0">
 
-                                        <span class="pull-right">1 Store</span>
+                                        <span class="pull-right">Consumed: {{ $buyerCount }}</span>
                                     </h5>
                                 </div>
                             </div>
@@ -123,13 +135,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="col-sm-12">
-                            <h4 class="pull-left page-title">Sales Chart</h4>
+                            <h4 class="pull-left page-title">Frames</h4>
                             <canvas id="salesChart" width="400" height="200"></canvas>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="col-sm-12">
-                            <h4 class="pull-left page-title">Purchase Chart</h4>
+                            <h4 class="pull-left page-title">Lens</h4>
                             <canvas id="purchaseChart" width="400" height="200"></canvas>
                         </div>
                     </div>

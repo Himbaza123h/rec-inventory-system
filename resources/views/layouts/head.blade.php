@@ -90,6 +90,10 @@
         .panel-title {
             color: #ffffff;
         }
+        .search-input {
+            padding: 20px;
+            border-radius: 10px;
+        }
         /*td {
             color: #ffffff;
         }*/

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\PurchaseLens;
 use App\Models\StockLens;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseLensController extends Controller
@@ -17,8 +18,10 @@ class PurchaseLensController extends Controller
     }
     public function store(Request $request)
     {
-        $Pcode = $request->input('purchase2Code');
-        foreach ($request->selected2 as $dataId) {
+        $Pcode = $request->input('purchaseCode');
+        $productId = $request->input('product_id');
+        Session::put('product_id', $productId);
+        foreach ($request->selected as $dataId) {
             $quantity = $request->input("Qty2_$dataId");
             $price = $request->input("price2_$dataId");
             $total = $quantity * $price;
@@ -40,6 +43,7 @@ class PurchaseLensController extends Controller
                 $new->item_id = $dataId;
                 $new->purchase_code = $Pcode;
                 $new->qty = $quantity;
+                $new->product_id = $productId;
                 $new->price = $price;
                 $new->amount = $total;
                 $new->created_at = $date;
@@ -55,6 +59,7 @@ class PurchaseLensController extends Controller
 
     public function update(Request $request, $id)
     {
+        $productId = Session::get('product_id');
         // Validate the form data
         $validator = Validator::make($request->all(), [
             'supplier_id' => 'required|integer',
@@ -88,6 +93,7 @@ class PurchaseLensController extends Controller
                             'item_id' => $purchase->item_id,
                             'purchase_id' => $purchase->id,
                             'item_quantity' => $purchase->qty,
+                            'product_id' => $productId,
                             'gone' => 0,
                             'remaining' => $purchase->qty,
                         ]);

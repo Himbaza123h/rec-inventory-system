@@ -16,11 +16,13 @@ class ReportController extends Controller
     public function index()
     {
         $user = Auth::user();
+
         if ($user->role == 'admin') {
+            // Get all sales for the admin
             $sales = Sale::where('product_id', 1)->get();
         } else {
-            $sales = Sale::where('product_id', 1)
-                ->where('seller_id', $user->id)
+            // Get daily sales for other users
+            $sales = Sale::whereDate('created_at', now()->toDateString()) 
                 ->get();
         }
 

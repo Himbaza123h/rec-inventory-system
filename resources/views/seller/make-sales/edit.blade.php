@@ -20,7 +20,7 @@
                         <h3 class="pull-left page-title"><b> SALE</b><i class="ion-ios7-cart-outline"></i></h3>
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="{{ route('seller.sales.index') }}">Sales</a></li>
+                            <li><a href="{{ route('seller.make.sales.index') }}">Sales</a></li>
                             <li class="active">Details</li>
                         </ol>
                     </div>
@@ -28,7 +28,7 @@
                 <div class="row">
                     <!-- USER LIST -->
                     <div class="col-lg-4 hidden-print">
-                        <div class="panel panel-inverse" style="height: 300px">
+                        <div class="panel panel-inverse" style="height: 380px">
                             <div class="panel-heading">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -42,6 +42,22 @@
                                         method="POST">
                                         @csrf
                                         <input type="hidden" name="_method" value="PUT">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                @php
+                                                    $operators = \App\Models\Seller::where('status', true)->get();
+                                                @endphp
+                                                <label for="payment_method">OPERATOR </label><br>
+                                                <select name="operator_id" id="seller" class="select2 form-control">
+                                                    <option>Choose Operator</option>
+                                                    @foreach ($operators as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->seller_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div><br>
                                         <div class="row">
                                             @php
                                                 $customer = \App\Models\Customer::all();
@@ -66,18 +82,25 @@
                                         </div><br>
                                         <div class="row">
                                             <div class="col-md-12">
+                                                @php
+                                                    $payments = \App\Models\Payment::where('status', true)->get();
+                                                @endphp
                                                 <label for="payment_method">PAYMENT METHOD </label><br>
-                                                <select name="payment_method" id="target_client"
-                                                    class="select2 form-control">
+                                                <select name="payment_method" class="select2 form-control" id="trackMode">
                                                     <option>Choose Payment</option>
-                                                    <option value="Cash">Cash</option>
-                                                    <option value="Check">Check</option>
-                                                    <option value="Transfer">Transfer</option>
-                                                    <option value="Bank Slip">Bank Slip</option>
+                                                    @foreach ($payments as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->payment_method }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
+                                                <div class="row"><br>
+                                                    <div id="paymentInputs"></div>
+                                                </div>
+                                                <input type="hidden" name="paypos" id="paypos_input">
+                                                <input type="hidden" name="paymomo" id="paymomo_input">
+                                                <input type="hidden" name="paycash" id="paycash_input">
                                             </div>
                                         </div><br>
-                                        <br>
                                         <button type="submit" class="btn btn-success waves-effect waves-light"
                                             id="purchase_item">CONFIRM <i class="ion-ios7-cart-outline"></i></button>
                                     </form>
@@ -115,10 +138,7 @@
                                     </tr>
                                     <tr>
                                         <th>#</th>
-                                        <th>ITEM BRAND</th>
-                                        <th>CODE</th>
-                                        <th>SIZE</th>
-                                        <th>COLOR</th>
+                                        <th colspan="3" class="text-center">ITEM INFO</th>
                                         <th>QUANTITY</th>
                                         <th>PRICE</th>
                                     </tr>
@@ -129,11 +149,16 @@
                                         @foreach ($data as $index => $item)
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->code?->code_name }}</td>
-                                                <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
-                                                </td>
-                                                <td>{{ $item->item?->color?->color_name }}</td>
+                                                @if ($item->product_id == 1)
+                                                    <td>{{ $item->item?->category?->category_name }}</td>
+                                                    <td>{{ $item->item?->code?->code_name }}</td>
+                                                    <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
+                                                    </td>
+                                                @elseif($item->product_id == 2)
+                                                    <td>{{ $item->lens->category->category_name }}</td>
+                                                    <td>{{ $item->lens->attribute?->attribute_name }}</td>
+                                                    <td>{{ $item->lens->lens_power }}</td>
+                                                @endif
                                                 <td>{{ $item->qty }}</td>
                                                 <td>{{ $item->price }}</td>
                                             </tr>
@@ -167,4 +192,43 @@
             </div>
         </div> <!-- container -->
     </div>
+    <!-- Inside the JavaScript -->
+    <script>
+        $(document).ready(function() {
+            $("#trackMode").change(function() {
+                var mode = $(this).val();
+
+                if (mode === "1") {
+                    $("#paymentInputs").append(
+                        '<div class="col-lg-4"><input type="text" class="form-control cash-input" name="paycash" placeholder="Momo"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                    );
+                } else if (mode === "2") {
+                    $("#paymentInputs").append(
+                        '<div class="col-lg-4"><input type="text" class="form-control momo-input" name="paymomo" placeholder="Cash"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                    );
+                } else if (mode === "3") {
+                    $("#paymentInputs").append(
+                        '<div class="col-lg-4"><input type="text" class="form-control three-input" name="paypos" placeholder="POS"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                    );
+                }
+            });
+
+            $(document).on("click", ".remove-input", function() {
+                $(this).closest(".col-lg-4").remove();
+            });
+
+            // Update hidden input fields when values change
+            $(document).on("input", ".cash-input", function() {
+                $("#paycash_input").val($(this).val());
+            });
+
+            $(document).on("input", ".momo-input", function() {
+                $("#paymomo_input").val($(this).val());
+            });
+
+            $(document).on("input", ".three-input", function() {
+                $("#paypos_input").val($(this).val());
+            });
+        });
+    </script>
 @endsection

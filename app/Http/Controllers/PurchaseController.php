@@ -9,6 +9,7 @@ use App\Models\Purchase;
 use Vtiful\Kernel\Format;
 use App\Models\Stock;
 use App\Models\PurchaseLens;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
@@ -50,6 +51,9 @@ class PurchaseController extends Controller
     public function store(Request $request)
     {
         $Pcode = $request->input('purchaseCode');
+        $productId = $request->input('product_id');
+        
+        Session::put('product_id', $productId);
         foreach ($request->selected as $itemId) {
             $quantity = $request->input("Qty_$itemId");
             $price = $request->input("price_$itemId");
@@ -57,7 +61,9 @@ class PurchaseController extends Controller
             $date = date('Y-m-d');
 
             // Check if a record exists with the given item ID and status 1
-            $existingPurchase = Purchase::where('item_id', $itemId)->where('status', 1)->first();
+            $existingPurchase = Purchase::where('item_id', $itemId)
+            ->where('product_id', $productId)
+            ->where('status', 1)->first();
 
             if ($existingPurchase) {
                 // If an existing record is found, update its quantity
@@ -73,6 +79,7 @@ class PurchaseController extends Controller
                 $new->purchase_code = $Pcode;
                 $new->qty = $quantity;
                 $new->price = $price;
+                $new->product_id = $productId;
                 $new->amount = $total;
                 $new->created_at = $date;
                 $new->save();
@@ -87,6 +94,9 @@ class PurchaseController extends Controller
 
     public function update(Request $request, $id)
     {
+        
+
+        $productId = Session::get('product_id');
         // Validate the form data
         $validator = Validator::make($request->all(), [
             'supplier_id' => 'required|integer',
@@ -104,7 +114,6 @@ class PurchaseController extends Controller
                     'payment_method' => $request->payment_method,
                     'status' => 2,
                 ]);
-
                 // Update or create Stock based on updated purchases
                 $purchases = Purchase::where('purchase_code', $id)->get();
                 foreach ($purchases as $purchase) {
@@ -120,6 +129,7 @@ class PurchaseController extends Controller
                             'item_id' => $purchase->item_id,
                             'purchase_id' => $purchase->id,
                             'item_quantity' => $purchase->qty,
+                            'product_id' => $productId,
                             'gone' => 0,
                             'remaining' => $purchase->qty,
                         ]);

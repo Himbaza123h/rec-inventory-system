@@ -10,7 +10,7 @@ use App\Models\PurchaseLens;
 class StockLens extends Model
 {
     use HasFactory;
-    protected $fillable = ['item_id', 'purchase_id', 'item_quantity', 'gone', 'remaining', 'status'];
+    protected $fillable = ['item_id', 'purchase_id', 'item_quantity', 'gone', 'product_id', 'remaining', 'status'];
 
     public function item()
     {

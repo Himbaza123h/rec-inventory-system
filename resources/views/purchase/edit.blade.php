@@ -66,14 +66,17 @@
                                         </div><br>
                                         <div class="row">
                                             <div class="col-md-12">
+                                                @php
+                                                    $payments = \App\Models\Payment::where('status', true)->get();
+                                                @endphp
                                                 <label for="payment_method">PAYMENT METHOD </label><br>
                                                 <select name="payment_method" id="target_client"
                                                     class="select2 form-control">
                                                     <option>Choose Payment</option>
-                                                    <option value="Cash">Cash</option>
-                                                    <option value="Check">Check</option>
-                                                    <option value="Transfer">Transfer</option>
-                                                    <option value="Bank Slip">Bank Slip</option>
+                                                    @foreach ($payments as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->payment_method }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div><br>
@@ -104,8 +107,8 @@
                                                         {{ $data[0]->purchase_code }}</strong><br>
                                                 </div>
                                                 <div class="pull-right">
-                                                    <img src="" alt= 'logo' height="100"
-                                                        width="200" alt="LOGO">
+                                                    <img src="" alt= 'logo' height="100" width="200"
+                                                        alt="LOGO">
                                                 </div>
                                             </div>
                                         </th>

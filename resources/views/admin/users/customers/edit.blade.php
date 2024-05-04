@@ -60,19 +60,36 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     Phone Number<br />
                                                     <input type="text" name="customer_phone" id="Phone"
                                                         class="form-control input-sm" placeholder="07********"
                                                         value="{{ $user->customer_phone }}">
                                                 </div>
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     Address<br />
                                                     <input type="text" name="customer_address" id="customer_address"
                                                         class="form-control input-sm" placeholder="kigali | Rwanda"
                                                         value="{{ $user->customer_address }}">
                                                 </div>
-                                            </div> <br>
+
+                                            <div class="col-md-4">
+                                                Insurance <br />
+                                                @php
+                                                    $insurances = \App\Models\Insurance::where('status', true)->get();
+                                                @endphp
+                                                <select name="insurance_id" id="" class="form-control select2">
+                                                    <option value="">Select Insurance</option>
+                                                    @foreach ($insurances as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->insurance_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                            </div>
+
+
+                                            <br>
                                             <button type="submit" class="btn btn-success waves-effect waves-light">UPDATE
                                                 <i class="fa fa-save"></i></button>
                                         </form>

@@ -11,7 +11,7 @@ use App\Models\Color;
 class Item extends Model
 {
 use HasFactory;
-protected $fillable = ['target_client', 'mark_glasses', 'code_id', 'lens_width', 'bridge_width', 'temple_length', 'color', 'price'];
+protected $fillable = ['target_client', 'mark_glasses', 'code_id', 'lens_width', 'bridge_width', 'temple_length', 'color_id', 'price'];
 
 public function category()
 {
@@ -25,5 +25,10 @@ public function code()
 public function color()
 {
     return $this->belongsTo(Color::class, 'color_id');
+}
+
+public function stocks()
+{
+    return $this->hasMany(Stock::class);
 }
 }

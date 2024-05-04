@@ -10,7 +10,7 @@ class CustomerController extends Controller
 {
     public function index()
     {
-        $data = Customer::all();
+        $data = Customer::where('status', true)->get();
         return view('admin.users.customers.index', compact('data'));
     }
 
@@ -19,6 +19,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'customer_name' => 'required|string',
             'customer_tin_number' => 'required|string',
+            'insurance_id' => 'required|integer',
             'customer_phone' => 'nullable|string|min:10|max:10|regex:/^07\d{8}$/',
             'customer_address' => 'required|string',
         ]);
@@ -29,6 +30,7 @@ class CustomerController extends Controller
             try {
                 $new = new Customer();
                 $new->customer_name = $request->customer_name;
+                $new->insurance_id = $request->insurance_id;
                 $new->customer_tin_number = $request->customer_tin_number;
                 $new->customer_phone = $request->customer_phone;
                 $new->customer_address = $request->customer_address;
@@ -56,6 +58,7 @@ class CustomerController extends Controller
         $validator = Validator::make($request->all(), [
             'customer_name' => 'required|string',
             'customer_tin_number' => 'required|string',
+            'insurance_id' => 'required|integer',
             'customer_phone' => 'nullable|string|min:10|max:10|regex:/^07\d{8}$/',
             'customer_address' => 'required|string',
         ]);
@@ -70,6 +73,7 @@ class CustomerController extends Controller
 
         // Update customer data with new values
         $customer->customer_name = $request->input('customer_name');
+        $customer->insurance_id = $request->input('insurance_id');
         $customer->customer_tin_number = $request->input('customer_tin_number');
         $customer->customer_phone = $request->input('customer_phone');
         $customer->customer_address = $request->input('customer_address');
@@ -85,8 +89,9 @@ class CustomerController extends Controller
     {
         try {
             $data = Customer::findOrFail($id);
-            $data->delete();
-            return redirect()->back()->with('success', 'customer successfully deleted!');
+            $data->status = false;
+            $data->update();
+            return redirect()->back()->with('success', 'customer successfully removed!');
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'error',

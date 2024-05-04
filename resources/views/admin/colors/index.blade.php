@@ -36,7 +36,7 @@
                                 <div class="panel-body">
                                     <form action="{{ route('admin.color.store') }}" method="POST">
                                         @csrf
-                                        Color Cpde<br />
+                                        Color Code<br />
                                         <input type="text" name="color_name" id="" class="form-control"
                                             placeholder="Color Name"><br />
                                         <button type="submit" class="btn btn-success">Add

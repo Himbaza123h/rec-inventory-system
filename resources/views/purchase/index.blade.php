@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page-title')
-    {{ __('Purchase') }}
+    {{ __('Request Orders') }}
 @endsection
 @php
     function generatePurchaseCode()
@@ -10,7 +10,6 @@
         return mt_rand(100000, 999999);
     }
     $randomCode = 'PUC' . generatePurchaseCode();
-    $randomCode1 = 'PUCLENS' . generatePurchaseCode();
 @endphp
 @section('content')
     <div class="content-page">
@@ -21,7 +20,7 @@
                     <div class="col-sm-12">
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li class="active">Purchase</li>
+                            <li class="active">Orders</li>
                         </ol>
                     </div>
                 </div>
@@ -31,21 +30,35 @@
                         <div class="panel-heading" style="background-color: #3e4550;">
                             <div class="row" style="color: #ffffff;">
                                 <div class="col-md-12">
+                                    @php
+                                        $products = \App\Models\Product::where('status', true)->get();
+                                    @endphp
                                     SELECT PRODUCT
                                     <select class="select2 form-control" name="product" id="product">
                                         <option>Choose Product</option>
-                                        <option value="sunglasses">SUN GLASSES</option>
-                                        <option value="lens">LENS</option>
+                                        @foreach ($products as $item)
+                                            <option value="{{ $item->id }}">{{ $item->product_name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-4">
-
+                    <br>
+                    <div class="col-sm-3">
+                        <div class="panel-heading" style="background-color: #3e4550;">
+                            <div class="row" style="color: #ffffff;">
+                                <a href="{{ route('admin.pending.order.details') }}"
+                                    style="text-decoration: none; color: #fff">
+                                    <div class="col-md-12 text-center">
+                                        ORDER LIST
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-4">
-                        <h3 class="pull-right page-title"><b> PURCHASE</b><i class="ion-ios7-cart-outline"></i></h3>
+                    <div class="col-sm-5">
+                        <h3 class="pull-right page-title"><b>REQUEST ORDERS</b><i class="ion-ios7-cart-outline"></i></h3>
                     </div>
 
 
@@ -57,12 +70,80 @@
                         <div class="panel panel-color panel-primary">
 
                             <div class="panel-heading">
-                                <div class="row product-section" id="sunglasses-field" style="color: #ffffff;">
+                                <div class="row product-section" id="1-field" style="color: #ffffff;">
                                     @php
-                                        $items = \App\Models\Item::all();
+                                        $items = \App\Models\Item::where('status', true)
+                                            ->where('product_category', 1)
+                                            ->get();
                                     @endphp
                                     @if (count($items) > 0)
-                                        <form method="POST" action="{{ route('admin.purchase.store') }}">
+                                        <form method="POST" action="{{ route('admin.order.store') }}">
+                                            <input type="hidden" name="product_id" value="1">
+                                            <input type="hidden" class="text-dark" name="purchaseCode"
+                                                value="{{ $randomCode }}" readonly>
+                                            @csrf
+                                            <table id="datatable-buttons" class="table table-striped"
+                                                style="color: #ffffff; margin-top:20px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-md-1">
+                                                            N/O
+                                                        </th>
+                                                        <th class="col-md-5">
+                                                            ITEM DETAILS
+                                                        </th>
+                                                        <th class="col-md-3">
+                                                            QUANTITY
+                                                        </th>
+
+                                                        <th class="col-md-3">
+                                                            UNIT PRICE
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- <tbody> -->
+                                                @foreach ($items as $index => $item)
+                                                    <tr>
+                                                        <td class="col-md-1">{{ $index + 1 }}</td>
+                                                        <td>{{ $item->category?->category_name }} |
+                                                            {{ $item->code?->code_name }} |
+                                                            {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
+                                                            | {{ $item->color?->color_name }}
+                                                        </td>
+                                                        <td><input type="text" name="Qty_{{ $item->id }}"
+                                                                class="form-control qty-input" placeholder="Enter Qty"
+                                                                data-item-id="{{ $item->id }}"></td>
+                                                        <td><input type="text" name="price_{{ $item->id }}"
+                                                                class="form-control" placeholder="Enter purchase price">
+                                                        </td>
+                                                        <td><input type="checkbox" name="selected[]"
+                                                                value="{{ $item->id }}" class="checkbox"></td>
+                                                    </tr>
+                                                @endforeach
+                                                <!-- </tbody> -->
+                                            </table>
+                                            <center>
+                                                <br><button type="submit"
+                                                    class="btn btn-primary waves-effect waves-light">ADD
+                                                    <i class="fa fa-plus"></i></button>
+                                            </center>
+                                        </form>
+                                    @else
+                                        <div class="alert alert-info">No items available to order.</div>
+                                    @endif
+                                </div>
+
+
+
+                                <div class="row product-section" id="3-field" style="color: #ffffff;">
+                                    @php
+                                        $items = \App\Models\Item::where('status', true)
+                                            ->where('product_category', 3)
+                                            ->get();
+                                    @endphp
+                                    @if (count($items) > 0)
+                                        <form method="POST" action="{{ route('admin.order.store') }}">
+                                            <input type="hidden" name="product_id" value="3">
                                             <input type="hidden" class="text-dark" name="purchaseCode"
                                                 value="{{ $randomCode }}" readonly>
                                             @csrf
@@ -114,19 +195,87 @@
 
                                         </form>
                                     @else
-                                        <div class="alert alert-info">No items available to purchase.</div>
+                                        <div class="alert alert-info">No items available to order.</div>
                                     @endif
                                 </div>
 
 
-                                <div class="row product-section" id="lens-field" style="color: #ffffff;">
+                                <div class="row product-section" id="4-field" style="color: #ffffff;">
                                     @php
-                                        $lens = \App\Models\Lens::all();
+                                        $items = \App\Models\Item::where('status', true)
+                                            ->where('product_category', 4)
+                                            ->get();
+                                    @endphp
+                                    @if (count($items) > 0)
+                                        <form method="POST" action="{{ route('admin.order.store') }}">
+
+                                            <input type="hidden" name="product_id" value="4">
+                                            <input type="hidden" class="text-dark" name="purchaseCode"
+                                                value="{{ $randomCode }}" readonly>
+                                            @csrf
+                                            <table id="datatable-buttons" class="table table-striped"
+                                                style="color: #ffffff; margin-top:20px;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="col-md-1">
+                                                            N/O
+                                                        </th>
+                                                        <th class="col-md-5">
+                                                            ITEM DETAILS
+                                                        </th>
+                                                        <th class="col-md-3">
+                                                            QUANTITY
+                                                        </th>
+
+                                                        <th class="col-md-3">
+                                                            UNIT PRICE
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <!-- <tbody> -->
+                                                @foreach ($items as $index => $item)
+                                                    <tr>
+                                                        <td class="col-md-1">{{ $index + 1 }}</td>
+                                                        <td>{{ $item->category?->category_name }} |
+                                                            {{ $item->code?->code_name }} |
+                                                            {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
+                                                            | {{ $item->color?->color_name }}
+                                                        </td>
+                                                        <td><input type="text" name="Qty_{{ $item->id }}"
+                                                                class="form-control qty-input" placeholder="Enter Qty"
+                                                                data-item-id="{{ $item->id }}"></td>
+                                                        <td><input type="text" name="price_{{ $item->id }}"
+                                                                class="form-control" placeholder="Enter purchase price">
+                                                        </td>
+                                                        <td><input type="checkbox" name="selected[]"
+                                                                value="{{ $item->id }}" class="checkbox"></td>
+                                                    </tr>
+                                                @endforeach
+                                                <!-- </tbody> -->
+                                            </table>
+                                            <center>
+                                                <br><button type="submit"
+                                                    class="btn btn-primary waves-effect waves-light">ADD
+                                                    <i class="fa fa-plus"></i></button>
+                                            </center>
+
+                                        </form>
+                                    @else
+                                        <div class="alert alert-info">No items available to order.</div>
+                                    @endif
+                                </div>
+
+
+
+                                <div class="row product-section" id="2-field" style="color: #ffffff;">
+                                    @php
+                                        $lens = \App\Models\Lens::where('status', true)->where('product_id', 2)->get();
                                     @endphp
                                     @if (count($lens) > 0)
-                                        <form method="POST" action="{{ route('admin.purchase.lens.store') }}">
-                                            <input type="hidden" class="text-dark" name="purchase2Code"
-                                                value="{{ $randomCode1 }}" readonly><br>
+                                        <form method="POST" action="{{ route('admin.order.store') }}">
+                                            <input type="hidden" name="product_id" value="2">
+                                            <input type="hidden" class="text-dark" name="purchaseCode"
+                                                value="{{ $randomCode }}" readonly><br>
                                             @csrf
                                             <table id="datatable-buttons" class="table table-striped"
                                                 style="color: #ffffff;">
@@ -154,20 +303,25 @@
                                                             <td>{{ $item->category?->category_name }} |
                                                                 | {{ $item->attribute?->attribute_name }}
                                                             </td>
-                                                            <td><input type="text" name="Qty2_{{ $item->id }}"
+                                                            <td><input type="text" name="Qty_{{ $item->id }}"
                                                                     class="form-control qty-input" placeholder="Enter Qty"
                                                                     data-item-id="{{ $item->id }}"></td>
-                                                            <td><input type="text" name="price2_{{ $item->id }}"
-                                                                    class="form-control" placeholder="Enter purchase price">
+                                                            <td><input type="text" name="price_{{ $item->id }}"
+                                                                    class="form-control"
+                                                                    placeholder="Enter purchase price">
                                                             </td>
-                                                            <td><input type="checkbox" name="selected2[]"
+                                                            <td><input type="checkbox" name="selected[]"
                                                                     value="{{ $item->id }}" class="checkbox"></td>
                                                         </tr>
                                                     @endforeach
                                                 </tbody>
                                             </table>
-                                            <button type="submit" class="btn btn-primary waves-effect waves-light">ADD
-                                                <i class="fa fa-plus"></i></button>
+                                            <center>
+
+                                                <button type="submit"
+                                                    class="btn btn-primary waves-effect waves-light">ADD
+                                                    <i class="fa fa-plus"></i></button>
+                                            </center>
                                         </form>
                                     @else
                                         <div class="alert alert-info">No items available to add.</div>
@@ -196,7 +350,7 @@
                 <div class="col-md-12">
                     <div class="panel panel-success">
                         <div class="panel-heading" style="background-color:#3e4550;">
-                            <h3 class="panel-title" style="color: #ffffff;">GLASSES TO PURCHASE</h3>
+                            <h3 class="panel-title" style="color: #ffffff;">PURCHASE</h3>
                         </div>
                         <div class="panel-body">
                             <table id="datatable-buttons" class="table table-striped table-bordered">
@@ -250,8 +404,8 @@
 
             <div class="alert" id="message-show" style="margin-left: 20px; margin-right: 20px; margin-top: -65px;">
                 <p>
-                <h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT TO
-                    PURCHASE</h4>
+                <h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT
+                    ORDER TO CONFIRM</h4>
                 </p>
                 <img src="{{ asset('assets/images/purchase.png') }}" alt="" style="width: 30%; margin-left:35%">
             </div>

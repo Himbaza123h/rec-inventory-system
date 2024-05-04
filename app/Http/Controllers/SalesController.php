@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Item;
+use Illuminate\Support\Facades\Session;
 use App\Models\CartItem;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Sale;
@@ -16,16 +17,6 @@ use Illuminate\Support\Facades\Validator;
 
 class SalesController extends Controller
 {
-    public function index()
-    {
-        $user = Auth::user();
-        $carts = CartItem::where('status', 1)
-            ->where('user_id', $user->id)
-            ->get();
-        $items = Item::all();
-        return view('seller.make-sales.index', compact('items', 'carts'));
-    }
-
     public function fetchCodes(Request $request)
     {
         $markGlassId = $request->input('mark_glass_id');
@@ -33,16 +24,27 @@ class SalesController extends Controller
         return response()->json($codes);
     }
 
+    // public function fetchColors(Request $request)
+    // {
+    //     $markGlassId = $request->mark_glass_id;
+    //     $codeId = $request->code_id;
+
+    //     // Fetch colors based on mark_glass_id and code_id
+    //     $colors = Item::where('mark_glasses', $markGlassId)->where('code_id', $codeId)->join('colors', 'items.color_id', '=', 'colors.id')->pluck('colors.color_name', 'items.color_id')->toArray();
+
+    //     return response()->json($colors);
+    // }
     public function fetchColors(Request $request)
     {
         $markGlassId = $request->mark_glass_id;
         $codeId = $request->code_id;
 
-        // Fetch colors based on mark_glass_id and code_id
-        $colors = Item::where('mark_glasses', $markGlassId)->where('code_id', $codeId)->join('colors', 'items.color_id', '=', 'colors.id')->pluck('colors.color_name', 'items.color_id')->toArray();
+        // Fetch colors and prices based on mark_glass_id and code_id
+        $items = Item::where('mark_glasses', $markGlassId)->where('code_id', $codeId)->join('colors', 'items.color_id', '=', 'colors.id')->select('items.color_id', 'colors.color_name', 'items.price')->get();
 
-        return response()->json($colors);
+        return response()->json($items);
     }
+
     public function addToCart(Request $request)
     {
         $user = Auth::user();
@@ -193,18 +195,20 @@ class SalesController extends Controller
         }
     }
 
+    // Controller
     public function update(Request $request, $id)
     {
+        $insuranceId = Session::get('insurance_id');
         $user = Auth::user();
+
         // Validate the form data
         $validator = Validator::make($request->all(), [
             'buyer_id' => 'required|integer',
-            'payment_method' => 'required|string',
+            'operator_id' => 'required|integer',
         ]);
 
         if ($validator->fails()) {
-            $messages = $validator->getMessageBag();
-            return redirect()->back()->with('error', $messages->first());
+            return redirect()->back()->with('error', $validator->errors()->first());
         }
 
         try {
@@ -218,11 +222,15 @@ class SalesController extends Controller
                     'item_id' => $cartItem->item_id,
                     'buyer_id' => $request->buyer_id,
                     'cart_id' => $cartItem->id,
-                    'seller_id' => $user->id,
-                    'product_id' => 1,
+                    'seller_id' => $request->operator_id,
+                    'product_id' => $cartItem->product_id,
                     'item_quantity' => $cartItem->qty,
-                    'payment_method' => $request->payment_method,
+                    'paypos' => $request->paypos, 
+                    'insurance_id' =>$insuranceId,
+                    'paymomo' => $request->paymomo,
+                    'paycash' => $request->paycash, 
                 ]);
+
                 // Update all purchases with the specified purchase_code
                 CartItem::where('user_id', $user->id)
                     ->where('status', 1)
@@ -231,12 +239,11 @@ class SalesController extends Controller
                         'status' => 2,
                     ]);
 
-                $stock = Stock::where('item_id', $cartItem->item_id)->first();
-                if ($stock) {
-                    $stock->item_quantity -= $cartItem->qty;
-                    $stock->remaining -= $cartItem->qty;
-                    $stock->gone = $cartItem->qty;
-                    $stock->save();
+                // Update stock
+                if ($cartItem->product_id == 1) {
+                    Stock::where('item_id', $cartItem->item_id)->decrement('item_quantity', $cartItem->qty);
+                } else {
+                    StockLens::where('item_id', $cartItem->item_id)->decrement('item_quantity', $cartItem->qty);
                 }
             }
 

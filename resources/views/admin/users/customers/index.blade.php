@@ -47,10 +47,34 @@
                                                 class="form-control input-sm" placeholder="Tin Number"><br />
                                             Phone<br />
                                             <input type="numbers" name="customer_phone" id="Phone"
-                                                class="form-control input-sm" placeholder="Phone Number"><br />
-                                            Address<br />
-                                            <input type="text" name="customer_address" id="WorkPlace"
-                                                class="form-control input-sm" placeholder="Kigali-Remera"><br />
+                                                class="form-control input-sm" placeholder="Phone Number"><br /> <br>
+                                            <div class="row">
+                                                <div class="col-md-6">
+
+                                                    Address<br />
+                                                    <input type="text" name="customer_address" id="WorkPlace"
+                                                        class="form-control input-sm" placeholder="Kigali-Remera"><br />
+                                                </div>
+                                                <div class="col-md-6">
+
+                                                    @php
+                                                        $insurances = \App\Models\Insurance::where(
+                                                            'status',
+                                                            true,
+                                                        )->get();
+                                                    @endphp
+                                                    Insurance<br />
+                                                    <select name="insurance_id" id="" class="form-control select2">
+                                                        <option value="">Select Insurance</option>
+                                                        @foreach ($insurances as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->insurance_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    <br>
+                                                </div>
+                                            </div>
+                                            <br>
                                             <button type="submit" class="btn btn-success waves-effect waves-light">Add
                                                 Customer</button>
 
@@ -81,6 +105,7 @@
                                             <th>Tin Number</th>
                                             <th>Phone</th>
                                             <th>Address</th>
+                                            <th>Insurance</th>
                                             <th>Actions</th>
                                         </thead>
                                         <tbody>
@@ -91,6 +116,7 @@
                                                     <td>{{ $item->customer_tin_number }}</td>
                                                     <td>{{ $item->customer_phone }}</td>
                                                     <td>{{ $item->customer_address }}</td>
+                                                    <td>{{ $item->insurance?->insurance_name }}</td>
                                                     <td>
                                                         <span class="btn btn-primary rounded p-2">
                                                             <a href="{{ route(auth()->user()->role . '.customer.edit', [$item->id]) }}"

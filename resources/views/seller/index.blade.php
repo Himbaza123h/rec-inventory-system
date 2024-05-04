@@ -19,65 +19,54 @@
                     </div>
                 </div>
                 <!-- Start Widget -->
+                @php
+
+                    $itemSold = \App\Models\Sale::where('product_id', 1)->count();
+                    $itemSold1 = \App\Models\Sale::where('product_id', 2)->count();
+                    $item = \App\Models\Item::count();
+                    $lens = \App\Models\Lens::count();
+                @endphp
 
 
                 <div class="row">
-                    <a href="{{ route('seller.sales.index') }}">
+                    <a href="{{ route('seller.make.sales.index') }}">
                         <div class="col-md-6 col-sm-6 col-lg-4">
                             <div class="mini-stat clearfix bg-purple bx-shadow">
                                 <span class="mini-stat-icon"><i class="ion-ios7-cart"></i></span>
                                 <div class="mini-stat-info text-right">
                                     <span class="counter">
-                                        200 Rwf
+                                        {{ $itemSold }}
                                     </span>
-                                    WORTH
+                                    SOLD
                                 </div>
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">MAKE SELL<span class="pull-right">
-                                                50</span></h5>
+                                        <h5 class="text-uppercase text-white m-0">Frames<span class="pull-right">
+                                                Total: {{ $item }} </span></h5>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </a>
-                    <div class="col-md-6 col-sm-6 col-lg-4">
-                        <div class="mini-stat clearfix bg-success bx-shadow">
-                            <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>
-                            <div class="mini-stat-info text-right">
-                                <span class="counter">
-                                    60
-                                </span>
-                                Transactions
-                            </div>
-                            <div class="tiles-progress">
-                                <div class="m-t-20">
-                                    <h5 class="text-uppercase text-white m-0">From
-                                        <span class="pull-right">
-                                            3 Suppliers
-                                        </span>
-                                    </h5>
+                    <a href="{{ route('seller.make.sales.index') }}">
+                        <div class="col-md-6 col-sm-6 col-lg-4">
+                            <div class="mini-stat clearfix bg-primary bx-shadow">
+                                <span class="mini-stat-icon"><i class="ion-ios7-cart"></i></span>
+                                <div class="mini-stat-info text-right">
+                                    <span class="counter">
+                                        {{ $itemSold1 }}
+                                    </span>
+                                    SOLD
+                                </div>
+                                <div class="tiles-progress">
+                                    <div class="m-t-20">
+                                        <h5 class="text-uppercase text-white m-0">Lens<span class="pull-right">
+                                                Total: {{ $lens }} </span></h5>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-lg-4">
-                        <div class="mini-stat clearfix bg-primary bx-shadow">
-                            <span class="mini-stat-icon"><i class="ion-android-contacts"></i></span>
-                            <div class="mini-stat-info text-right">
-                                <span class="counter"> 3</span>
-                                Customers
-                            </div>
-                            <div class="tiles-progress">
-                                <div class="m-t-20">
-                                    <h5 class="text-uppercase text-white m-0">From
-                                        50
-                                        <span class="pull-right"> 4 </span>
-                                    </h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    </a>
                 </div>
 
             </div> <!-- container -->
@@ -85,13 +74,13 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="col-sm-12">
-                            <h4 class="pull-left page-title">Sales Chart</h4>
+                            <h4 class="pull-left page-title">Frames</h4>
                             <canvas id="salesChart" width="400" height="200"></canvas>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="col-sm-12">
-                            <h4 class="pull-left page-title">Purchase Chart</h4>
+                            <h4 class="pull-left page-title">Lens</h4>
                             <canvas id="purchaseChart" width="400" height="200"></canvas>
                         </div>
                     </div>
@@ -146,44 +135,44 @@
         });
 
         const purchaseChart = new Chart(purchaseChartCanvas, {
-           type: 'line', // Changed to line chart
-        data: salesData,
-        options: {
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: true
-                    },
-                    gridLines: {
-                        color: 'rgba(0, 0, 0, 0.1)' // Customize grid line color
-                    }
-                }],
-                xAxes: [{
-                    gridLines: {
-                        display: false // Disable x-axis grid lines
-                    }
-                }]
-            },
-            elements: {
-                line: {
-                    tension: 0.3, // Adjust line tension for smoother curves
-                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Set background color for line
-                    borderColor: 'rgba(54, 162, 235, 1)', // Set border color for line
-                    borderWidth: 2 // Set border width for line
+            type: 'line', // Changed to line chart
+            data: salesData,
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            color: 'rgba(0, 0, 0, 0.1)' // Customize grid line color
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: false // Disable x-axis grid lines
+                        }
+                    }]
                 },
-                point: {
-                    backgroundColor: 'rgba(54, 162, 235, 1)', // Set background color for points
-                    borderColor: 'rgba(54, 162, 235, 1)', // Set border color for points
-                    borderWidth: 2, // Set border width for points
-                    radius: 4 // Set radius for points
-                }
-            },
-            plugins: {
-                filler: {
-                    propagate: true // Propagate fill to the start of the data
+                elements: {
+                    line: {
+                        tension: 0.3, // Adjust line tension for smoother curves
+                        backgroundColor: 'rgba(54, 162, 235, 0.2)', // Set background color for line
+                        borderColor: 'rgba(54, 162, 235, 1)', // Set border color for line
+                        borderWidth: 2 // Set border width for line
+                    },
+                    point: {
+                        backgroundColor: 'rgba(54, 162, 235, 1)', // Set background color for points
+                        borderColor: 'rgba(54, 162, 235, 1)', // Set border color for points
+                        borderWidth: 2, // Set border width for points
+                        radius: 4 // Set radius for points
+                    }
+                },
+                plugins: {
+                    filler: {
+                        propagate: true // Propagate fill to the start of the data
+                    }
                 }
             }
-        }
-    });
+        });
     </script>
 @endsection

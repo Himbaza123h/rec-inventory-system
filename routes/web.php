@@ -22,6 +22,9 @@ use App\Http\Controllers\SalesController;
 use App\Http\Controllers\LensSalesController;
 use App\Http\Controllers\ColorController;
 use App\Http\Controllers\PerformaInvoices;
+use App\Http\Controllers\Admin\SellerController;
+use App\Http\Controllers\MakeSalesController;
+use App\Http\Controllers\ConfirmOrdersController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,6 +68,9 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::put('/item/lens/update/{id}', [ItemsLensController::class, 'update'])->name('item.lens.update');
     Route::delete('/item/lens/delete/{id}', [ItemsLensController::class, 'delete'])->name('item.lens.delete');
 
+    Route::get('/items/sun-glasses', [itemsController::class, 'index2'])->name('items.sunglasses.index');
+    Route::get('/items/reading-glasses', [itemsController::class, 'index3'])->name('items.readingglasses.index');
+
     Route::get('/users', [ManageUsersController::class, 'index'])->name('users.index');
     Route::post('/user/store', [ManageUsersController::class, 'store'])->name('user.store');
     Route::get('/user/edit/{id}', [ManageUsersController::class, 'edit'])->name('user.edit');
@@ -86,11 +92,30 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::delete('/customer/delete/{id}', [CustomerController::class, 'delete'])->name('customer.delete');
 
     // Purchase glasses routes to manage controllers
-    Route::get('/purchase', [PurchaseController::class, 'index'])->name('purchase.index');
+    Route::get('/request-orders', [PurchaseController::class, 'index'])->name('purchase.index');
     Route::post('/purchase/glasses/store', [PurchaseController::class, 'store'])->name('purchase.store');
     Route::get('/purchase/glasses/edit/{id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     Route::post('/purchase/glasses/update/{id}', [PurchaseController::class, 'update'])->name('purchase.update');
     Route::delete('/purchase/glasses/delete/{id}', [PurchaseController::class, 'delete'])->name('purchase.delete');
+
+    // Pending order details
+    Route::get('/pending-order-details', [ConfirmOrdersController::class, 'details'])->name('pending.order.details');
+    Route::delete('/remove-order-detail/{id}', [ConfirmOrdersController::class, 'delete'])->name('delete.order.detail');
+
+    Route::get('/sellers', [SellerController::class, 'index'])->name('sellers.index');
+    Route::post('/seller/store', [SellerController::class, 'store'])->name('seller.store');
+    Route::get('/seller/edit/{id}', [SellerController::class, 'edit'])->name('seller.edit');
+    Route::put('/seller/update/{id}', [SellerController::class, 'update'])->name('seller.update');
+    Route::delete('/seller/delete/{id}', [SellerController::class, 'delete'])->name('seller.delete');
+
+    // Manage orders
+    Route::get('/confirm-orders', [ConfirmOrdersController::class, 'accepted'])->name('confirm.orders');
+    Route::post('/request/order/store', [ConfirmOrdersController::class, 'store'])->name('order.store');
+    Route::post('/order/list/sent', [ConfirmOrdersController::class, 'send'])->name('order.list.send');
+    Route::get('/single-order/list/{id}', [ConfirmOrdersController::class, 'singleOrder'])->name('single.order.list');
+    Route::put('/single-order/confirm/{id}', [ConfirmOrdersController::class, 'confirm'])->name('single.order.confirm');
+
+    Route::get('/stats-financial', [ConfirmOrdersController::class, 'financial'])->name('stats.financial');
 
     // Purchase lens routes to manage controllers
     Route::post('/purchase/lens/store', [PurchaseLensController::class, 'store'])->name('purchase.lens.store');
@@ -139,6 +164,9 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
     //stock
     Route::get('/stock', [StockController::class, 'index'])->name('stock.index');
 
+    // Financial Stats
+    Route::get('/stats-financial', [ConfirmOrdersController::class, 'financial'])->name('stats.financial');
+
     // Invoice by SellCode
 
     Route::get('/invoice-by-sell-code/{id}', [InvoiceController::class, 'InvoivebySellCode'])->name('invoice-by-sell-code.index');
@@ -169,6 +197,7 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
 
     Route::get('/glass-sales', [SalesController::class, 'index'])->name('sales.index');
     Route::get('/fetch-codes', [SalesController::class, 'fetchCodes'])->name('fetch.codes');
+    // Route::get('/seller/fetch/codes', 'SellerController@fetchCodes')->name('seller.fetch.codes');
     Route::get('/fetch-colors', [SalesController::class, 'fetchColors'])->name('fetch.colors');
     Route::post('/add-to-cart', [SalesController::class, 'addToCart'])->name('add.to.cart');
     Route::delete('/clear-cart', [SalesController::class, 'clearCart'])->name('clear.cart');
@@ -176,6 +205,11 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
     Route::delete('/remove-cart/{id}', [SalesController::class, 'remove'])->name('item-cart.remove');
 
     // Additional to lens sales controller
+
+    // New Sales Updated controller
+
+    Route::get('/make-sales', [MakeSalesController::class, 'index'])->name('make.sales.index');
+    Route::post('/make-sales/store', [MakeSalesController::class, 'store'])->name('make.sale.store');
 
     Route::get('/lens-sales', [LensSalesController::class, 'index'])->name('lens.sales.index');
     Route::post('/lens-sales-store', [LensSalesController::class, 'store'])->name('cart.lens.store');

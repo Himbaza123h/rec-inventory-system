@@ -11,8 +11,20 @@ class itemsController extends Controller
 {
     public function index()
     {
-        $data = Item::all();
-        return view('items.glasses..index', compact('data'));
+        $data = Item::where('status', true)->where('product_category', 1)->get();
+        return view('items.glasses.index', compact('data'));
+    }
+
+    public function index2()
+    {
+        $data = Item::where('status', true)->where('product_category', 3)->get();
+        return view('items.glasses.sun.index', compact('data'));
+    }
+
+    public function index3()
+    {
+        $data = Item::where('status', true)->where('product_category', 4)->get();
+        return view('items.glasses.reading.index', compact('data'));
     }
 
     public function edit($id)
@@ -28,6 +40,7 @@ class itemsController extends Controller
             'target_client' => 'required|string',
             'mark_glasses' => 'required|string',
             'code_id' => 'required|string',
+            'product_type'=> 'required|integer',
             'lens_width' => 'required|numeric',
             'bridge_width' => 'required|numeric',
             'temple_length' => 'required|numeric',
@@ -43,6 +56,7 @@ class itemsController extends Controller
                 $newItem->target_client = $request->target_client;
                 $newItem->mark_glasses = $request->mark_glasses;
                 $newItem->code_id = $request->code_id;
+                $newItem->product_category = $request->product_type;
                 $newItem->lens_width = $request->lens_width;
                 $newItem->bridge_width = $request->bridge_width;
                 $newItem->temple_length = $request->temple_length;

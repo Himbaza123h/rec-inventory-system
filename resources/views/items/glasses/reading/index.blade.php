@@ -38,7 +38,7 @@
                                             @csrf
                                             <div class="row">
                                                 <div class="col-md-12">
-                                                    <input type="hidden" name="product_type" value="1">
+                                                    <input type="hidden" name="product_type" value="4">
                                                     <label for="target_client">Target Client</label><br>
                                                     <select name="target_client" id="target_client"
                                                         class="select2 form-control">

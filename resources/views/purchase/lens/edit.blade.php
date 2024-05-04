@@ -71,14 +71,17 @@
 
                                         <div class="row">
                                             <div class="col-md-12">
+                                                @php
+                                                    $payments = \App\Models\Payment::where('status', true)->get();
+                                                @endphp
                                                 <label for="payment_method">PAYMENT METHOD </label><br>
                                                 <select name="payment_method" id="target_client"
                                                     class="select2 form-control">
                                                     <option>Choose Payment</option>
-                                                    <option value="Cash">Cash</option>
-                                                    <option value="Check">Check</option>
-                                                    <option value="Transfer">Transfer</option>
-                                                    <option value="Bank Slip">Bank Slip</option>
+                                                    @foreach ($payments as $item)
+                                                        <option value="{{ $item->id }}">{{ $item->payment_method }}
+                                                        </option>
+                                                    @endforeach
                                                 </select>
                                             </div>
                                         </div>
@@ -110,8 +113,8 @@
                                                         {{ $data[0]->purchase_code }}</strong><br>
                                                 </div>
                                                 <div class="pull-right">
-                                                    <img src="" alt="LOGO" height="100"
-                                                        width="200" alt="LOGO">
+                                                    <img src="" alt="LOGO" height="100" width="200"
+                                                        alt="LOGO">
                                                 </div>
                                             </div>
                                         </th>
@@ -136,7 +139,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->lens_attribute }}</td>
+                                                <td>{{ $item->item?->attribute?->attribute_name }}</td>
                                                 <td>{{ $item->item?->lens_power }}</td>
                                                 <td>{{ $item->qty }}</td>
                                                 <td>{{ $item->price }}</td>

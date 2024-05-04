@@ -16,6 +16,14 @@ class CartItem extends Model
         'price',
         'user_id',
         'amount',
+        'insurance',
+        'insurance_number',
+        'paycash',
+        'paypos',
+        'paymomo',
+        'product_id',
+        'seller_id',
+        'covered',
         'status',
     ];
 
@@ -25,5 +33,9 @@ class CartItem extends Model
         return $this->belongsTo(Item::class, 'item_id');
     }
 
+    public function lens()
+    {
+        return $this->belongsTo(Lens::class, 'item_id');
+    }
     
 }
