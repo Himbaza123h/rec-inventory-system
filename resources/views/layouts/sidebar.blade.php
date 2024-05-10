@@ -143,16 +143,16 @@
 
 
                     <li
-                        class="has_sub {{ request()->routeIs('admin.purchase.index') || request()->routeIs('admin.single.order.list') || request()->routeIs('admin.pending.order.details') || request()->routeIs('admin.confirm.orders') ? 'active' : '' }}">
-                        <a href="{{ route('admin.purchase.index') }}" class="waves-effect waves-light "><i
+                        class="has_sub {{ request()->routeIs('admin.purchase.order.index') || request()->routeIs('admin.all-draft.list')|| request()->routeIs('admin.single.order.list') || request()->routeIs('admin.pending.order.details') || request()->routeIs('admin.confirm.orders') ? 'active' : '' }}">
+                        <a href="{{ route('admin.purchase.order.index') }}" class="waves-effect waves-light "><i
                                 class="ion-ios7-pulse-strong"></i><span>Manage Orders</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
                         <ul class="list-unstyle">
-                            <li><a href="{{ route('admin.purchase.index') }}" class="waves-effect waves-light"><i
+                            <li><a href="{{ route('admin.purchase.order.index') }}" class="waves-effect waves-light"><i
                                         class="ion-ios7-pulse-strong"></i>Request Orders</a></li>
                             <li><a href="{{ route('admin.confirm.orders') }}" class="waves-effect waves-light"><i
-                                        class="ion-ios7-pulse-strong"></i>Modify Orders</a></li>
+                                        class="ion-ios7-pulse-strong"></i>Confirm Orders</a></li>
                         </ul>
                     </li>
 
@@ -187,12 +187,12 @@
                     <li
                         class="has_sub {{ request()->routeIs('admin.suppliers.index') || request()->routeIs('admin.sellers.index') || request()->routeIs('admin.customers.index') || request()->routeIs('admin.users.index') || request()->routeIs('admin.user.edit') || request()->routeIs('admin.supplier.edit') || request()->routeIs('admin.customer.edit') ? 'active' : '' }}">
                         <a href="#" class="waves-effect waves-light"><i
-                                class="ion-android-contacts"></i><span>People</span>
+                                class="ion-android-contacts"></i><span>Users</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
                         <ul class="list-unstyle">
-                            <li><a href="{{ route('admin.users.index') }}" class="waves-effect waves-light"><i
-                                        class="ion-android-contact"></i>Users</a></li>
+                            <!-- <li><a href="{{ route('admin.users.index') }}" class="waves-effect waves-light"><i
+                                        class="ion-android-contact"></i>Users</a></li> -->
                             <li><a href="{{ route('admin.sellers.index') }}" class="waves-effect waves-light"><i
                                         class="ion-android-social"></i>Sellers</a></li>
                             <li {{ request()->routeIs('admin.suppliers.index') ? 'active' : '' }}><a

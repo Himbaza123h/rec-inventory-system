@@ -1,16 +1,9 @@
 @extends('layouts.app')
 
 @section('page-title')
-    {{ __('Request Orders') }}
+    {{ __('Request Order') }}
 @endsection
-@php
-    function generatePurchaseCode()
-    {
-        // Generate a random 6-digit number
-        return mt_rand(100000, 999999);
-    }
-    $randomCode = 'PUC' . generatePurchaseCode();
-@endphp
+
 @section('content')
     <div class="content-page">
         <!-- Start content -->
@@ -18,26 +11,26 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
+                        <h4 class="pull-left page-title"><b>Request Order</b></h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{ route('home') }}">Home</a></li>
                             <li class="active">Orders</li>
                         </ol>
                     </div>
                 </div>
-                <!-- Page-Title -->
                 <div class="row">
-                    <div class="col-sm-4" style="margin-bottom: 10px">
+                    <div class="col-sm-3" style="margin-bottom: 10px">
                         <div class="panel-heading" style="background-color: #3e4550;">
                             <div class="row" style="color: #ffffff;">
                                 <div class="col-md-12">
                                     @php
-                                        $products = \App\Models\Product::where('status', true)->get();
+                                        $products = \App\Models\Product::all();
                                     @endphp
-                                    SELECT PRODUCT
-                                    <select class="select2 form-control" name="product" id="product">
-                                        <option>Choose Product</option>
+                                    <select class="form-control select2" name="product" id="product">
+                                        <option value="">Choose Product</option>
                                         @foreach ($products as $item)
-                                            <option value="{{ $item->id }}">{{ $item->product_name }}</option>
+                                            <option value="{{ $item->id }}">{{ $item->product_name }}
+                                            </option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -51,465 +44,615 @@
                                 <a href="{{ route('admin.pending.order.details') }}"
                                     style="text-decoration: none; color: #fff">
                                     <div class="col-md-12 text-center">
-                                        ORDER LIST
+                                        <button type="button" class="btn btn-success">VIEW PENDING ORDERS</button>
+                                        <!-- CHECK ORDER LIST -->
                                     </div>
                                 </a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-5">
+
+                    <div class="col-sm-3">
+                        <div class="panel-heading" style="background-color: #3e4550;">
+                            <div class="row" style="color: #ffffff;">
+                                <a href="{{ route('admin.all-draft.list') }}"
+                                    style="text-decoration: none; color: #fff">
+                                    <div class="col-md-12 text-center">
+                                        <button type="button" class="btn btn-warning">VIEW DRAFT ORDERS</button>
+                                        <!-- CHECK ORDER LIST -->
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
                         <h3 class="pull-right page-title"><b>REQUEST ORDERS</b><i class="ion-ios7-cart-outline"></i></h3>
                     </div>
 
 
                 </div>
 
-                <!-- ADD PURCHASE ITEMS IN STOCK -->
                 <div class="row">
-                    <div class="col-sm-12">
-                        <div class="panel panel-color panel-primary">
+                    <div class="col-md-12">
+                        <div class="panel panel-success product-selection" id="1-field">
+                            <form action="{{ route('admin.order.add-cart') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <input type="hidden" value="1" name="product_id">
+                                    <br>
+                                    <div class="col-md-12">
+                                        @php
 
-                            <div class="panel-heading">
-                                <div class="row product-section" id="1-field" style="color: #ffffff;">
-                                    @php
-                                        $items = \App\Models\Item::where('status', true)
-                                            ->where('product_category', 1)
-                                            ->get();
-                                    @endphp
-                                    @if (count($items) > 0)
-                                        <form method="POST" action="{{ route('admin.order.store') }}">
-                                            <input type="hidden" name="product_id" value="1">
-                                            <input type="hidden" class="text-dark" name="purchaseCode"
-                                                value="{{ $randomCode }}" readonly>
-                                            @csrf
-                                            <table id="datatable-buttons" class="table table-striped"
-                                                style="color: #ffffff; margin-top:20px;">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col-md-1">
-                                                            N/O
-                                                        </th>
-                                                        <th class="col-md-5">
-                                                            ITEM DETAILS
-                                                        </th>
-                                                        <th class="col-md-3">
-                                                            QUANTITY
-                                                        </th>
+                                            $suppliers = \App\Models\Supplier::where('status', true)->get();
+                                        @endphp
 
-                                                        <th class="col-md-3">
-                                                            UNIT PRICE
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <!-- <tbody> -->
-                                                @foreach ($items as $index => $item)
-                                                    <tr>
-                                                        <td class="col-md-1">{{ $index + 1 }}</td>
-                                                        <td>{{ $item->category?->category_name }} |
-                                                            {{ $item->code?->code_name }} |
-                                                            {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
-                                                            | {{ $item->color?->color_name }}
-                                                        </td>
-                                                        <td><input type="text" name="Qty_{{ $item->id }}"
-                                                                class="form-control qty-input" placeholder="Enter Qty"
-                                                                data-item-id="{{ $item->id }}"></td>
-                                                        <td><input type="text" name="price_{{ $item->id }}"
-                                                                class="form-control" placeholder="Enter purchase price">
-                                                        </td>
-                                                        <td><input type="checkbox" name="selected[]"
-                                                                value="{{ $item->id }}" class="checkbox"></td>
-                                                    </tr>
-                                                @endforeach
-                                                <!-- </tbody> -->
-                                            </table>
-                                            <center>
-                                                <br><button type="submit"
-                                                    class="btn btn-primary waves-effect waves-light">ADD
-                                                    <i class="fa fa-plus"></i></button>
-                                            </center>
-                                        </form>
-                                    @else
-                                        <div class="alert alert-info">No items available to order.</div>
-                                    @endif
-                                </div>
-
-
-
-                                <div class="row product-section" id="3-field" style="color: #ffffff;">
-                                    @php
-                                        $items = \App\Models\Item::where('status', true)
-                                            ->where('product_category', 3)
-                                            ->get();
-                                    @endphp
-                                    @if (count($items) > 0)
-                                        <form method="POST" action="{{ route('admin.order.store') }}">
-                                            <input type="hidden" name="product_id" value="3">
-                                            <input type="hidden" class="text-dark" name="purchaseCode"
-                                                value="{{ $randomCode }}" readonly>
-                                            @csrf
-                                            <table id="datatable-buttons" class="table table-striped"
-                                                style="color: #ffffff; margin-top:20px;">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col-md-1">
-                                                            N/O
-                                                        </th>
-                                                        <th class="col-md-5">
-                                                            ITEM DETAILS
-                                                        </th>
-                                                        <th class="col-md-3">
-                                                            QUANTITY
-                                                        </th>
-
-                                                        <th class="col-md-3">
-                                                            UNIT PRICE
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <!-- <tbody> -->
-                                                @foreach ($items as $index => $item)
-                                                    <tr>
-                                                        <td class="col-md-1">{{ $index + 1 }}</td>
-                                                        <td>{{ $item->category?->category_name }} |
-                                                            {{ $item->code?->code_name }} |
-                                                            {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
-                                                            | {{ $item->color?->color_name }}
-                                                        </td>
-                                                        <td><input type="text" name="Qty_{{ $item->id }}"
-                                                                class="form-control qty-input" placeholder="Enter Qty"
-                                                                data-item-id="{{ $item->id }}"></td>
-                                                        <td><input type="text" name="price_{{ $item->id }}"
-                                                                class="form-control" placeholder="Enter purchase price">
-                                                        </td>
-                                                        <td><input type="checkbox" name="selected[]"
-                                                                value="{{ $item->id }}" class="checkbox"></td>
-                                                    </tr>
-                                                @endforeach
-                                                <!-- </tbody> -->
-                                            </table>
-                                            <center>
-                                                <br><button type="submit"
-                                                    class="btn btn-primary waves-effect waves-light">ADD
-                                                    <i class="fa fa-plus"></i></button>
-                                            </center>
-
-                                        </form>
-                                    @else
-                                        <div class="alert alert-info">No items available to order.</div>
-                                    @endif
-                                </div>
-
-
-                                <div class="row product-section" id="4-field" style="color: #ffffff;">
-                                    @php
-                                        $items = \App\Models\Item::where('status', true)
-                                            ->where('product_category', 4)
-                                            ->get();
-                                    @endphp
-                                    @if (count($items) > 0)
-                                        <form method="POST" action="{{ route('admin.order.store') }}">
-
-                                            <input type="hidden" name="product_id" value="4">
-                                            <input type="hidden" class="text-dark" name="purchaseCode"
-                                                value="{{ $randomCode }}" readonly>
-                                            @csrf
-                                            <table id="datatable-buttons" class="table table-striped"
-                                                style="color: #ffffff; margin-top:20px;">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col-md-1">
-                                                            N/O
-                                                        </th>
-                                                        <th class="col-md-5">
-                                                            ITEM DETAILS
-                                                        </th>
-                                                        <th class="col-md-3">
-                                                            QUANTITY
-                                                        </th>
-
-                                                        <th class="col-md-3">
-                                                            UNIT PRICE
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <!-- <tbody> -->
-                                                @foreach ($items as $index => $item)
-                                                    <tr>
-                                                        <td class="col-md-1">{{ $index + 1 }}</td>
-                                                        <td>{{ $item->category?->category_name }} |
-                                                            {{ $item->code?->code_name }} |
-                                                            {{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
-                                                            | {{ $item->color?->color_name }}
-                                                        </td>
-                                                        <td><input type="text" name="Qty_{{ $item->id }}"
-                                                                class="form-control qty-input" placeholder="Enter Qty"
-                                                                data-item-id="{{ $item->id }}"></td>
-                                                        <td><input type="text" name="price_{{ $item->id }}"
-                                                                class="form-control" placeholder="Enter purchase price">
-                                                        </td>
-                                                        <td><input type="checkbox" name="selected[]"
-                                                                value="{{ $item->id }}" class="checkbox"></td>
-                                                    </tr>
-                                                @endforeach
-                                                <!-- </tbody> -->
-                                            </table>
-                                            <center>
-                                                <br><button type="submit"
-                                                    class="btn btn-primary waves-effect waves-light">ADD
-                                                    <i class="fa fa-plus"></i></button>
-                                            </center>
-
-                                        </form>
-                                    @else
-                                        <div class="alert alert-info">No items available to order.</div>
-                                    @endif
-                                </div>
-
-
-
-                                <div class="row product-section" id="2-field" style="color: #ffffff;">
-                                    @php
-                                        $lens = \App\Models\Lens::where('status', true)->where('product_id', 2)->get();
-                                    @endphp
-                                    @if (count($lens) > 0)
-                                        <form method="POST" action="{{ route('admin.order.store') }}">
-                                            <input type="hidden" name="product_id" value="2">
-                                            <input type="hidden" class="text-dark" name="purchaseCode"
-                                                value="{{ $randomCode }}" readonly><br>
-                                            @csrf
-                                            <table id="datatable-buttons" class="table table-striped"
-                                                style="color: #ffffff;">
-                                                <thead>
-                                                    <tr>
-                                                        <th class="col-md-1">
-                                                            N/O
-                                                        </th>
-                                                        <th class="col-md-5">
-                                                            ITEM DETAILS
-                                                        </th>
-                                                        <th class="col-md-3">
-                                                            QUANTITY
-                                                        </th>
-
-                                                        <th class="col-md-3">
-                                                            UNIT PRICE
-                                                        </th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    @foreach ($lens as $index => $item)
-                                                        <tr>
-                                                            <td class="col-md-1">{{ $index + 1 }}</td>
-                                                            <td>{{ $item->category?->category_name }} |
-                                                                | {{ $item->attribute?->attribute_name }}
-                                                            </td>
-                                                            <td><input type="text" name="Qty_{{ $item->id }}"
-                                                                    class="form-control qty-input" placeholder="Enter Qty"
-                                                                    data-item-id="{{ $item->id }}"></td>
-                                                            <td><input type="text" name="price_{{ $item->id }}"
-                                                                    class="form-control"
-                                                                    placeholder="Enter purchase price">
-                                                            </td>
-                                                            <td><input type="checkbox" name="selected[]"
-                                                                    value="{{ $item->id }}" class="checkbox"></td>
-                                                        </tr>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="">Supplier</label>
+                                                <select class="form-control select2" name="supplier_id">
+                                                    <option value="">Choose Supplier</option>
+                                                    @foreach ($suppliers as $data)
+                                                        <option value="{{ $data->id }}">{{ $data->supplier_name }}
+                                                        </option>
                                                     @endforeach
-                                                </tbody>
-                                            </table>
-                                            <center>
+                                                </select>
+                                            </div>
+                                        </div>
 
-                                                <button type="submit"
-                                                    class="btn btn-primary waves-effect waves-light">ADD
-                                                    <i class="fa fa-plus"></i></button>
-                                            </center>
-                                        </form>
-                                    @else
-                                        <div class="alert alert-info">No items available to add.</div>
-                                    @endif
+                                        <div class="col-md-2">
+                                            @php
+                                                $items = \App\Models\Item::where('product_category', 1)->get();
+                                            @endphp
+                                            <div class="form-group">
+                                                <label for="mark_glasses">Brand:</label>
+                                                <select class="form-control select2 code_show_input" name="mark_glass_id">
+                                                    <option value="">Choose Brand</option>
+                                                    @foreach ($items as $item)
+                                                        <option value="{{ $item->mark_glasses }}">
+                                                            {{ $item?->category?->category_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for=""> Code</label>
+                                            <select class="form-group select2" name="code_id">
+                                                @foreach ($items as $item)
+                                                    <option value="">Choose Code</option>
+                                                    <option value="{{ $item->code_id }}">
+                                                        {{ $item?->code?->code_name }}
+                                                    </option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="color_id">Color:</label>
+                                                <select class="form-control select2" name="color_id">
+                                                    @foreach ($items as $item)
+                                                        <option value="">Choose Color</option>
+                                                        <option value="{{ $item->color_id }}">
+                                                            {{ $item?->color?->color_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="quantity">Quantity:</label>
+                                                <input type="number" class="form-control" id="quantity" name="quantity"
+                                                    min="1">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="price_input">Purchase</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="purchase_price"
+                                                        placeholder="Purchase Price">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <br>
+                                        <center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to
+                                                Cart</button>
+                                        </center>
+                                        <br>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                        <div class="panel panel-success product-selection" id="3-field">
+                            <form action="{{ route('admin.order.add-cart') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <input type="hidden" value="3" name="product_id">
+                                    <br>
+                                    <div class="col-md-12">
+                                        @php
+
+                                            $suppliers = \App\Models\Supplier::where('status', true)->get();
+                                        @endphp
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="">Supplier</label>
+                                                <select class="form-control select2" name="supplier_id">
+                                                    <option value="">Choose Supplier</option>
+                                                    @foreach ($suppliers as $data)
+                                                        <option value="{{ $data->id }}">{{ $data->supplier_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            @php
+                                                $items = \App\Models\Item::where('product_category', 3)->get();
+                                            @endphp
+                                            <div class="form-group">
+                                                <label for="mark_glasses">Brand:</label>
+                                                <select class="form-control select2 code_show_input" name="mark_glass_id">
+                                                    <option value="">Choose Brand</option>
+                                                    @foreach ($items as $item)
+                                                        <option value="{{ $item->mark_glasses }}">
+                                                            {{ $item?->category?->category_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for=""> Code</label>
+                                            <select class="form-group select2" name="code_id">
+                                                <option value="">Choose Code</option>
+                                                @foreach ($items as $item)
+                                                    <option value="{{ $item->code_id }}">
+                                                        {{ $item?->code?->code_name }}
+                                                    </option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="color_id">Color:</label>
+                                                <select class="form-control select2" name="color_id">
+
+                                                    <option value="">Choose Color</option>
+                                                    @foreach ($items as $item)
+                                                        <option value="{{ $item->color_id }}">
+                                                            {{ $item?->color?->color_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="quantity">Quantity:</label>
+                                                <input type="number" class="form-control" id="quantity"
+                                                    name="quantity" min="1">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="price_input">Purchase</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="purchase_price"
+                                                        placeholder="Purchase Price">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <br>
+                                        <center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to
+                                                Cart</button>
+                                        </center>
+                                        <br>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="panel panel-success product-selection" id="4-field">
+                            <form action="{{ route('admin.order.add-cart') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <input type="hidden" value="4" name="product_id">
+                                    <br>
+                                    <div class="col-md-12">
+                                        @php
+
+                                            $suppliers = \App\Models\Supplier::where('status', true)->get();
+                                        @endphp
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="">Supplier</label>
+                                                <select class="form-control select2" name="supplier_id">
+                                                    <option value="">Choose Supplier</option>
+                                                    @foreach ($suppliers as $data)
+                                                        <option value="{{ $data->id }}">{{ $data->supplier_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            @php
+                                                $items = \App\Models\Item::where('product_category', 4)->get();
+                                            @endphp
+                                            <div class="form-group">
+                                                <label for="mark_glasses">Brand:</label>
+                                                <select class="form-control select2 code_show_input" name="mark_glass_id">
+                                                    <option value="">Choose Brand</option>
+                                                    @foreach ($items as $item)
+                                                        <option value="{{ $item->mark_glasses }}">
+                                                            {{ $item?->category?->category_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <label for=""> Code</label>
+                                            <select class="form-group select2" name="code_id">
+                                                <label for="code_id">Code:</label>
+                                                @foreach ($items as $item)
+                                                    <option value="{{ $item->code_id }}">
+                                                        {{ $item?->code?->code_name }}
+                                                    </option>
+                                                @endforeach
+
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="color_id">Color:</label>
+                                                <select class="form-control select2" name="color_id">
+                                                    @foreach ($items as $item)
+                                                        <option value="">Choose Color</option>
+                                                        <option value="{{ $item->color_id }}">
+                                                            {{ $item?->color?->color_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="quantity">Quantity:</label>
+                                                <input type="number" class="form-control" id="quantity"
+                                                    name="quantity" min="1">
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="price_input">Purchase</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" name="purchase_price"
+                                                        placeholder="Purchase Price">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <br>
+                                        <center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to
+                                                Cart</button>
+                                        </center>
+                                        <br>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+
+                        <div class="panel panel-success product-selection" id="2-field">
+                            <form action="{{ route('admin.order.lens.add-cart') }}" method="POST">
+                                @csrf
+                                <div class="row">
+                                    <input type="hidden" value="2" name="product_id">
+                                    <br>
+                                    <div class="col-md-12">
+                                        @php
+                                            $suppliers = \App\Models\Supplier::where('status', true)->get();
+                                        @endphp
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="">Supplier</label>
+                                                <select class="form-control select2 supplier" name="supplier_id">
+                                                    <option value="">Choose Supplier</option>
+                                                    @foreach ($suppliers as $data)
+                                                        <option value="{{ $data->id }}">{{ $data->supplier_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+
+                                                @php
+                                                    $lens = \App\Models\Lens::get();
+                                                @endphp
+                                                <label for="mark_glasses">Category:</label>
+                                                <select class="form-control select2 code_show_input" name="category_id">
+                                                    <option value="">Choose Cetegory</option>
+                                                    @foreach ($lens as $item)
+                                                        <option value="{{ $item?->mark_lens }}">
+                                                            {{ $item->category?->category_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="code_id">Attribute:</label>
+                                                <select class="form-control select2" name="attribute_id"
+                                                    id="attribute_id">
+                                                    <option value="">Choose Attribute</option>
+                                                    @foreach ($lens as $data)
+                                                        <option value="{{ $data?->lens_attribute }}">
+                                                            {{ $data->attribute?->attribute_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="color_id">Power:</label>
+                                                <select class="form-control select2" id="power_id" name="power_id">
+                                                    <option value="">Choose Power</option>
+                                                    @foreach ($lens as $data)
+                                                        <option value="{{ $data->lens_power }}">
+                                                            {{ $data?->power?->sph }} - {{ $data?->power?->syl }} - {{ $data?->power?->axis }} - {{ $data?->power?->add_ }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+
+                                                <label for="quantity">Quantity:</label>
+                                                <input type="number" class="form-control" name="quantity"
+                                                    min="1" max="">
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+
+                                                <label for="quantity">Purchase Price:</label>
+                                                <input type="text" class="form-control" name="purchase_price"
+                                                    min="1" max="">
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <br>
+                                        <center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to
+                                                Cart</button></center>
+
+                                        <br>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <div class="row" style="margin-top:10vh;">
+                    @if (count($carts) > 0)
+                        <div class="col-md-8">
+                        @else
+                            <div class="col-md-12">
+                    @endif
+                    <div class="row product-section"style="color: #ffffff;">
+                        <div class="col-md-12">
+                            <div class="panel panel-success">
+                                <div class="panel-heading" style="background-color:#3e4550;">
+                                    <h3 class="panel-title" style="color: #ffffff;">CART LIST</h3>
+                                </div>
+                                <div class="panel-body">
+                                    <table id="datatable-buttons" class="table table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>SUPPLIER</th>
+                                                <th>PRODUCT</th>
+                                                <th>ITEM</th>
+                                                <th>QUANTITY</th>
+                                                <th>Amount</th>
+                                                <th>Action</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @php
+                                                $totalAmount = 0;
+                                            @endphp
+                                            @foreach ($carts as $index => $item)
+                                                <tr>
+                                                    <td>
+                                                        {{ $index + 1 }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $item?->supplier?->supplier_name }}
+                                                    </td>
+                                                    <td>
+                                                        {{ $item->product?->product_name }}
+                                                    </td>
+                                                    @if ($item->product_id == 1 || $item->product_id == 3 || $item->product_id == 4)
+                                                        <td>{{ $item->item->category->category_name }}</td>
+                                                    @elseif($item->product_id == 2)
+                                                        <td>{{ $item?->lens?->category?->category_name }}</td>
+                                                    @endif
+
+                                                    <td>{{ $item->quantity }}</td>
+                                                    <td>{{ number_format($item->amount) }} RWF</td>
+                                                    <td>
+                                                        <button class="btn btn-danger waves-effect waves-light"
+                                                            style="margin: 4px;" id="removeItem"><a
+                                                                href="{{ route('admin.order-cart.remove', ['id' => $item->id]) }}"
+                                                                onclick="event.preventDefault();
+                                                                             if (confirm('Are you sure you want to remove this item on list?')) {
+                                                                                 document.getElementById('delete-form-{{ $item->id }}').submit();
+                                                                             }"
+                                                                style="text-decoration: none"
+                                                                class="t-decoration-none text-white">
+                                                                Remove <i class="fa fa-minus"></i></a></button>
+                                                        <form id="delete-form-{{ $item->id }}"
+                                                            action="{{ route('admin.order-cart.remove', ['id' => $item->id]) }}"
+                                                            method="POST" style="display: none;">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                        </form>
+                                                    </td>
+                                                </tr>
+                                                @php
+                                                    $order_number = $item->order_number;
+                                                    $totalAmount += $item->amount;
+                                                    $formattedAmount = number_format($totalAmount, 0, '.', ',');
+                                                @endphp
+                                            @endforeach
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>
 
-                <div class="panel-body">
+                @if (count($carts) > 0)
+                    <div class="col-md-4">
+                        <div class="row product-section"style="color: #ffffff;">
+                            <div class="col-md-12">
+                                <div class="panel panel-success">
+                                    <div class="panel-heading" style="background-color:#3e4550;">
+                                        <h3 class="panel-title" style="color: #ffffff;">PROCEED CART</h3>
+                                    </div>
+                                    <div class="panel-body" style="background-color:#c2c8d1;">
+                                        <div class="container">
+                                            <div class="row">
+                                                {{ count($carts) }} {{ count($carts) == 1 ? 'ITEM' : 'ITEMS' }}
+                                            </div>
+                                            <br />
+                                            <div class="row">
+                                                TOTAL AMOUNT: {{ $formattedAmount }} RWF
+                                            </div>
 
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-md-12 col-sm-12 col-xs-12">
-                                <div id="infoDiv"></div>
-                                <div id="listTable"></div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <form
+                                                        action="{{ route('admin.order.list.accept.all', ['id' => $order_number]) }}"
+                                                        method="POST" style="display:inline">
+                                                        @csrf
+                                                        <div class="col-md-4">
+                                                            <button type="submit" style="margin-top: 12px"
+                                                                class="btn btn-success waves-effect waves-light">CONFIRM
+                                                                CART</button>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <form method="POST"
+                                                        action="
+                                                        {{ route('admin.order.list.draft.all') }}
+                                                        ">
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-warning"
+                                                            style="margin-top: 12px">
+                                                            SAVE AS DRAFT
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
+                @endif
             </div>
+        </div>
 
-            <div class="row product-section" id="sunglasses-table" style="color: #ffffff;">
-                <div class="col-md-12">
-                    <div class="panel panel-success">
-                        <div class="panel-heading" style="background-color:#3e4550;">
-                            <h3 class="panel-title" style="color: #ffffff;">PURCHASE</h3>
-                        </div>
-                        <div class="panel-body">
-                            <table id="datatable-buttons" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>DATE</th>
-                                        <th>PURCHASE CODE</th>
-                                        <th>Amount</th>
-                                        <th>Action</th>
 
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($data as $index => $item)
-                                        <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $item->created_at->format('Y-m-d') }}</td>
-                                            <td>{{ $item->purchase_code }}</td>
-                                            <td>{{ $data_array_2[$item->purchase_code] }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-success rounded p-2">
-                                                    <a href="{{ route('admin.purchase.edit', [$item->purchase_code]) }}"
-                                                        style="text-decoration: none"
-                                                        class="t-decoration-none text-white">{{ __('view') }}</a>
-                                                </button>
-                                                <button class="btn btn-danger waves-effect waves-light" id="removeItem"><a
-                                                        href="{{ route('admin.purchase.delete', ['id' => $item->purchase_code]) }}"
-                                                        onclick="event.preventDefault();
-                                                                         if (confirm('Are you sure you want to remove this purchase?')) {
-                                                                             document.getElementById('delete-form-{{ $item->purchase_code }}').submit();
-                                                                         }"
-                                                        style="text-decoration: none"
-                                                        class="t-decoration-none text-white">
-                                                        Remove <i class="fa fa-minus"></i></a></button>
-                                                <form id="delete-form-{{ $item->purchase_code }}"
-                                                    action="{{ route('admin.purchase.delete', ['id' => $item->purchase_code]) }}"
-                                                    method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="alert" id="message-show" style="margin-left: 20px; margin-right: 20px; margin-top: -65px;">
-                <p>
-                <h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT
-                    ORDER TO CONFIRM</h4>
-                </p>
-                <img src="{{ asset('assets/images/purchase.png') }}" alt="" style="width: 30%; margin-left:35%">
-            </div>
-
-            <div class="row product-section" id="lens-table" style="color: #ffffff;">
-                <div class="col-md-12">
-                    <div class="panel panel-success">
-                        <div class="panel-heading" style="background-color:#3e4550;">
-                            <h3 class="panel-title" style="color: #ffffff;">LENS TO PURCHASE</h3>
-                        </div>
-                        <div class="panel-body">
-                            <table id="datatable-buttons" class="table table-striped table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>DATE</th>
-                                        <th>PURCHASE CODE</th>
-                                        <th>Amount</th>
-                                        <th>Action</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($lens2 as $index => $data)
-                                        <tr>
-                                            <td>{{ $index + 1 }}</td>
-                                            <td>{{ $data->created_at->format('Y-m-d') }}</td>
-                                            <td>{{ $data->purchase_code }}</td>
-                                            <td>{{ $data_array_1[$data->purchase_code] }}</td>
-                                            <td>
-                                                <button type="button" class="btn btn-success rounded p-2">
-                                                    <a href="{{ route('admin.purchase.lens.edit', [$data->purchase_code]) }}"
-                                                        style="text-decoration: none"
-                                                        class="t-decoration-none text-white">{{ __('view') }}</a>
-                                                </button>
-                                                <button class="btn btn-danger waves-effect waves-light" id="removeItem"><a
-                                                        href="{{ route('admin.purchase.lens.delete', ['id' => $data->purchase_code]) }}"
-                                                        onclick="event.preventDefault();
-                                                                         if (confirm('Are you sure you want to remove this purchase?')) {
-                                                                             document.getElementById('delete-form-{{ $item->purchase_code }}').submit();
-                                                                         }"
-                                                        style="text-decoration: none"
-                                                        class="t-decoration-none text-white">
-                                                        Remove <i class="fa fa-minus"></i></a></button>
-                                                <form id="delete-form-{{ $data->purchase_code }}"
-                                                    action="{{ route('admin.purchase.lens.delete', ['id' => $data->purchase_code]) }}"
-                                                    method="POST" style="display: none;">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                </form>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> <!-- container -->
-    </div> <!-- content -->
+    </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('.product-section').hide();
-            $('.product-table').hide();
+            // Function to enable/disable fields based on selection
+            function updateFieldStatus(selectedField, targetField) {
+                var selectedValue = selectedField.val();
+                if (selectedValue) {
+                    targetField.prop('disabled', false);
+                } else {
+                    targetField.prop('disabled', true);
+                    // Clear the options if the field is disabled
+                    targetField.empty().append('<option value="">Choose ' + targetField.attr('name') + '</option>');
+                }
+            }
+
+
+            // Hide all product sections
+            $('.product-selection').hide();
+
+            // Show the default product section
+            $('#1-field').show();
 
             $('#product').change(function() {
                 var selectedProduct = $(this).val();
-                // Hide all product sections and tables
-                $('.product-section').hide();
-                $('.product-table').hide();
+
+                // Hide all product sections
+                $('.product-selection').hide();
                 $('#message-show').hide();
-                // Show the selected product section and table
+                // Show the selected product section
                 $('#' + selectedProduct + '-field').show();
-                $('#' + selectedProduct + '-table').show();
             });
-        });
-    </script>
 
-
-    {{-- new script --}}
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get all quantity input fields
-            const qtyInputs = document.querySelectorAll('.qty-input');
-
-            // Add event listener to each input field
-            qtyInputs.forEach(function(input) {
-                input.addEventListener('input', function() {
-                    // Get the corresponding checkbox
-                    const itemId = input.getAttribute('data-item-id');
-                    const checkbox = document.querySelector('input[value="' + itemId +
-                        '"].checkbox');
-
-                    // Check the checkbox if input value is not empty, otherwise uncheck it
-                    if (input.value.trim() !== '') {
-                        checkbox.checked = true;
-                    } else {
-                        checkbox.checked = false;
-                    }
-                });
-            });
         });
     </script>
 @endsection

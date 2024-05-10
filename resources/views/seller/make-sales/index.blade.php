@@ -132,7 +132,7 @@
                                         <div class="col-md-3">
 
                                             <label for="insurances">Covered Amount:</label>
-                                            <input type="text" name="covered" id="" class="form-control"
+                                            <input type="text" name="covered_amount" id="" class="form-control"
                                                 placeholder="..rwf amount">
                                         </div>
                                     </div>
@@ -417,7 +417,7 @@
                                                     <option value="">Choose Power</option>
                                                     @foreach ($lens as $data)
                                                         <option value="{{ $data->item?->lens_power }}">
-                                                            {{ $data->item?->lens_power }}
+                                                            {{ $data->item?->power?->sph }} - {{ $data->item?->power?->syl }} - {{ $data->item?->power?->axis }} - {{ $data->item?->power?->add_ }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -531,7 +531,7 @@
                                                     @if ($item->product_id == 1 || $item->product_id == 3 || $item->product_id == 4)
                                                         <td>{{ $item->item->category->category_name }}</td>
                                                     @elseif($item->product_id == 2)
-                                                        <td>{{ $item->lens->category->category_name }}</td>
+                                                        <td>{{ $item->lens?->category?->category_name }}</td>
                                                     @endif
 
                                                     <td>{{ $item->qty }}</td>

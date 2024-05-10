@@ -30,7 +30,6 @@ class MakeSalesController extends Controller
     }
     public function store(Request $request)
     {
-        
         $user = Auth::user();
         try {
             // Validate the incoming request data
@@ -45,13 +44,14 @@ class MakeSalesController extends Controller
                 'seller_id' => 'nullable|integer',
                 'insurance' => 'nullable|integer',
                 'insurance_number' => 'nullable|string',
-                'covered' => 'nullable|string',
+                'covered_amount' => 'nullable|string',
                 'sale_price' => 'required|string',
             ]);
 
             $amount = 0;
             $data = $validatedData['insurance'];
             Session::put('insurance_id', $data);
+
 
             // Fetch the product type from the request
             $productType = $request->input('product_id');
@@ -105,7 +105,7 @@ class MakeSalesController extends Controller
                 // Update the quantity and amount of the existing cart item
                 $existingCartItem->qty += $validatedData['quantity'];
                 $existingCartItem->amount += $amount;
-                $existingCartItem->covered += $validatedData['covered'];
+                $existingCartItem->covered += $validatedData['covered_amount'];
                 $existingCartItem->insurance += $validatedData['insurance'];
                 $existingCartItem->insurance_number += $validatedData['insurance_number'];
                 $existingCartItem->save();
@@ -117,6 +117,13 @@ class MakeSalesController extends Controller
             $randomNumber = rand(100000, 999999);
             $random = 'CUST-SALE-INVOICE' . $randomNumber;
 
+
+
+            $amountToPay = $amount - $validatedData['covered_amount'];
+
+            Session::put('amount_to_pay', $amountToPay);
+
+
             // Create a new cart item with the validated data and generated sale code
             CartItem::create([
                 'item_id' => $productType == 1 ? $glassItem->id : $lensItem->id,
@@ -126,7 +133,7 @@ class MakeSalesController extends Controller
                 'price' => $validatedData['sale_price'],
                 'user_id' => $user->id,
                 'amount' => $amount,
-                'covered' => $validatedData['covered'],
+                'covered' => $validatedData['covered_amount'],
                 'insurance' => $validatedData['insurance'],
                 'insurance_number' => $validatedData['insurance_number'],
             ]);

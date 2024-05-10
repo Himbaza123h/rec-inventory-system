@@ -79,7 +79,7 @@
                                                             true,
                                                         )->get();
                                                     @endphp
-                                                    INSURED BY
+                                                    INSURENCE
                                                     <select class="select2 form-control" name="insurance" id="insurance">
                                                         <option>Choose Insurance</option>
                                                         @foreach ($insurances as $item)
@@ -103,7 +103,7 @@
                             <div class="row" style="margin-left: 10px">
                                 <div class="col-md-3">
                                     <a href="{{ route(auth()->user()->role == 'admin' ? 'admin.stats.financial' : 'seller.stats.financial') }}"
-                                        class="btn btn-primary">FINANCIAL STATS</a>
+                                        class="btn btn-primary"><i class="fa fa-file"></i> FINANCIAL REPORT</a>
                                 </div>
                             </div>
 

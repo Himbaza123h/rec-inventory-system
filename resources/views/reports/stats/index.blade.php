@@ -15,7 +15,13 @@
                     </div>
                     @if (Auth::user()->role == 'admin')
                         <div class="col-md-2">
-                            <label for="">DATE</label>
+                            <label for="">From</label>
+                            <div class="input-group">
+                                <input type="date" id="toDate" class="form-control input-sm">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="">To</label>
                             <div class="input-group">
                                 <input type="date" id="toDate" class="form-control input-sm">
                             </div>

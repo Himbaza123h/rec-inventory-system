@@ -15,6 +15,7 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\PurchaseLensController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\CartLensController;
+use App\Http\Controllers\WeeklyReportController;
 // Seller Importation
 use App\Http\Controllers\seller\SellController;
 use App\Http\Controllers\seller\CartController;
@@ -25,6 +26,7 @@ use App\Http\Controllers\PerformaInvoices;
 use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\MakeSalesController;
 use App\Http\Controllers\ConfirmOrdersController;
+use App\Http\Controllers\PurchaseCartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,6 +52,7 @@ Route::get('dashboard', [HomeController::class, 'index'])
 // Admin Controlllers
 
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'approvedUser'], 'as' => 'admin.'], function () {
+    Route::get('/weekly-report', [WeeklyReportController::class, 'show']);
     Route::get('/categories', [ManageCategoryController::class, 'index'])->name('category.index');
     Route::post('/category/store', [ManageCategoryController::class, 'store'])->name('category.store');
     Route::get('/category/edit/{id}', [ManageCategoryController::class, 'edit'])->name('category.edit');
@@ -91,8 +94,18 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::put('/customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customer/delete/{id}', [CustomerController::class, 'delete'])->name('customer.delete');
 
+    
+    Route::get('/request-orders', [PurchaseCartController::class, 'index'])->name('purchase.order.index');
+    Route::post('/order/add-cart', [PurchaseCartController::class, 'addCart'])->name('order.add-cart');
+    Route::post('/order/lens/add-cart', [PurchaseCartController::class, 'addLensCart'])->name('order.lens.add-cart');
+    Route::delete('/remove-cart/{id}', [PurchaseCartController::class, 'remove'])->name('order-cart.remove');
+    Route::post('/accept-cart/{id}', [PurchaseCartController::class, 'accept'])->name('order.list.accept.all');
+    Route::post('/draft-cart', [PurchaseCartController::class, 'draft'])->name('order.list.draft.all');
+    Route::get('/all-draft-cart', [ConfirmOrdersController::class, 'draft'])->name('all-draft.list');
+
+    
+
     // Purchase glasses routes to manage controllers
-    Route::get('/request-orders', [PurchaseController::class, 'index'])->name('purchase.index');
     Route::post('/purchase/glasses/store', [PurchaseController::class, 'store'])->name('purchase.store');
     Route::get('/purchase/glasses/edit/{id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     Route::post('/purchase/glasses/update/{id}', [PurchaseController::class, 'update'])->name('purchase.update');

@@ -46,16 +46,18 @@
                                                 @if ($item->product_id == 2)
                                                     <td>{{ $item->lens?->category?->category_name }}</td>
                                                     <td>{{ $item->lens?->attribute?->attribute_name }}</td>
-                                                    <td>{{ $item->lens?->lens_power }}</td>
+                                                    <td>{{ $item->lens?->power?->sph }} - {{ $item->lens?->power?->syl }} -
+                                                        {{ $item->lens?->power?->axis }} - {{ $item->lens?->power?->add_ }}
+                                                    </td>
                                                 @else
                                                     <td>{{ $item->item?->category?->category_name }}</td>
                                                     <td>{{ $item->item?->code?->code_name }}</td>
                                                     <td>{{ $item['item']['lens_width'] }}-{{ $item['item']['bridge_width'] }}-{{ $item['item']['temple_length'] }}
                                                     </td>
                                                 @endif
-                                                <td>{{ $item->qty }}</td>
-                                                <td>{{ $item->price }}</td>
-                                                <td>{{ $item->amount }}</td>
+                                                <td>{{ $item->quantity }}</td>
+                                                <td>{{ number_format($item->price, 0, '.', ',') }} RWF</td>
+                                                <td>{{ number_format($item->amount, 0, '.', ',') }} RWF</td>
                                                 <?php $totalAmount += $item->amount; ?>
                                             </tr>
                                         @endforeach
@@ -70,17 +72,15 @@
 
                                         <div class="col-md-4">
                                             @php
-                                                $payemnts = \App\Models\Payment::where('status', true)->get();
+                                                $status = \App\Models\Stat::get();
                                             @endphp
                                             <label for="payment_method">Payment</label>
                                             <select name="payment_method" id="" class="select2 form-control">
-                                                <option value="">Choose </option>
-                                                @foreach ($payemnts as $item)
-                                                    <option value="{{ $item->id }}">{{ $item->payment_method }}
+                                                <option value="">Payment Status </option>
+                                                @foreach ($status as $item)
+                                                    <option value="{{ $item->value }}">{{ $item->status_name }}
                                                     </option>
                                                 @endforeach
-                                                {{-- <option value="">PAY NOW</option>
-                                                <option value="">PAY LATER</option> --}}
                                             </select>
                                         </div>
                                         <div class="col-md-4" style="margin-top: 25px;">

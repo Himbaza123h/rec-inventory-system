@@ -8,39 +8,13 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Purchase;
 use Vtiful\Kernel\Format;
 use App\Models\Stock;
+use App\Models\CartItem;
 use App\Models\PurchaseLens;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 
 class PurchaseController extends Controller
 {
-    public function index()
-    {
-        $data = Purchase::select('purchase_code', 'created_at')->where('status', 1)->distinct()->get();
-        $data_array_2 = [];
-
-        foreach ($data as $purchase) {
-            $amount = Purchase::where('purchase_code', $purchase->purchase_code)
-                ->whereDate('created_at', $purchase->created_at->toDateString())
-                ->sum('amount');
-
-            $data_array_2[$purchase->purchase_code] = $amount;
-        }
-
-        // Fetch data for lenses
-        $lens2 = PurchaseLens::select('purchase_code', 'created_at')->where('status', 1)->distinct()->get();
-        $data_array_1 = [];
-
-        foreach ($lens2 as $purchase) {
-            $amount = PurchaseLens::where('purchase_code', $purchase->purchase_code)
-                ->whereDate('created_at', $purchase->created_at->toDateString())
-                ->sum('amount');
-
-            $data_array_1[$purchase->purchase_code] = $amount;
-        }
-
-        return view('purchase.index', compact('data', 'data_array_2', 'lens2', 'data_array_1'));
-    }
 
     public function edit($id)
     {
@@ -52,7 +26,7 @@ class PurchaseController extends Controller
     {
         $Pcode = $request->input('purchaseCode');
         $productId = $request->input('product_id');
-        
+
         Session::put('product_id', $productId);
         foreach ($request->selected as $itemId) {
             $quantity = $request->input("Qty_$itemId");
@@ -61,9 +35,7 @@ class PurchaseController extends Controller
             $date = date('Y-m-d');
 
             // Check if a record exists with the given item ID and status 1
-            $existingPurchase = Purchase::where('item_id', $itemId)
-            ->where('product_id', $productId)
-            ->where('status', 1)->first();
+            $existingPurchase = Purchase::where('item_id', $itemId)->where('product_id', $productId)->where('status', 1)->first();
 
             if ($existingPurchase) {
                 // If an existing record is found, update its quantity
@@ -94,8 +66,6 @@ class PurchaseController extends Controller
 
     public function update(Request $request, $id)
     {
-        
-
         $productId = Session::get('product_id');
         // Validate the form data
         $validator = Validator::make($request->all(), [

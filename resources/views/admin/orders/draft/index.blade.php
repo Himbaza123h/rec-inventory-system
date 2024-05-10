@@ -17,15 +17,10 @@
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{ route('home') }}">Home</a></li>
                             <li><a href="{{ route('admin.purchase.order.index') }}">Orders</a></li>
-                            <li class="active">Pending</li>
+                            <li class="active">Draft</li>
                         </ol>
                     </div>
                 </div>
-
-
-
-
-
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -54,7 +49,7 @@
                                                         ">
                                                         @csrf
                                                         <button type="submit" class="btn btn-primary">
-                                                            ACCEPT
+                                                            ACCEPT IT
                                                         </button>
                                                     </form>
                                                 </td>

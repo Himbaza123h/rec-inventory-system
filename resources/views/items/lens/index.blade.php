@@ -79,17 +79,61 @@
                                                 $powers = \App\Models\Power::get();
                                             @endphp
                                             <div class="row">
-                                                <div class="col-md-12">
-                                                    <label for="lens_power">Lens Power</label><br>
-                                                    <select name="lens_power" id="lens_power" class="select2 form-control">
-                                                        <option value="">Select Lens Power
+
+                                                <label for="lens_power">LENS POWER</label><br>
+                                                <div class="col-md-3">
+
+                                                    {{-- In case of showing placeholder --}}
+                                                    <select name="sph" class="select2 form-control">
+                                                        <option value="">SPH
                                                         </option>
                                                         @foreach ($powers as $item)
                                                             <option value="{{ $item->power_value }}">{{ $item->power_name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
+                                                    {{-- Endings --}}
                                                 </div>
+                                                <div class="col-md-3">
+                                                    {{-- In case of showing placeholder --}}
+                                                    <select name="syl" class="select2 form-control">
+                                                        <option value="">SYL
+                                                        </option>
+                                                        @foreach ($powers as $item)
+                                                            <option value="{{ $item->power_value }}">
+                                                                {{ $item->power_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{-- Endings --}}
+                                                </div>
+                                                <div class="col-md-3">
+                                                    {{-- In case of showing placeholder --}}
+                                                    <select name="axis" class="select2 form-control">
+                                                        <option value="">AXIS
+                                                        </option>
+                                                        @foreach ($powers as $item)
+                                                            <option value="{{ $item->power_value }}">
+                                                                {{ $item->power_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{-- Endings --}}
+                                                </div>
+                                                <div class="col-md-3">
+                                                    {{-- In case of showing placeholder --}}
+                                                    <select name="add_" class="select2 form-control">
+                                                        <option value="">ADD
+                                                        </option>
+                                                        @foreach ($powers as $item)
+                                                            <option value="{{ $item->power_value }}">
+                                                                {{ $item->power_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                    {{-- Endings --}}
+                                                </div>
+
                                             </div><br>
 
                                             <div class="row">
@@ -127,7 +171,7 @@
                                             <th>N/O</th>
                                             <th>Lens Category</th>
                                             <th>Lens Attribute</th>
-                                            <th>Lens Power</th>
+                                            <th colspan="4" class="text-center">Lens Power</th>
                                             <th>Price</th>
                                             <th>Action</th>
                                         </thead>
@@ -137,7 +181,12 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->category?->category_name }}</td>
                                                     <td>{{ $item->attribute?->attribute_name }}</td>
-                                                    <td>{{ $item->lens_power }}</td>
+                                                    {{-- Placeholders --}}
+                                                    <td>{{ $item->power?->sph }}</td>
+                                                    <td>{{ $item->power?->syl }}</td>
+                                                    <td>{{ $item->power?->add_ }}</td>
+                                                    <td>{{ $item->power?->axis }}</td>
+                                                    {{-- End of placeholders --}}
                                                     <td>{{ $item->price }}</td>
                                                     <td>
                                                         <span class="btn btn-primary rounded p-2">

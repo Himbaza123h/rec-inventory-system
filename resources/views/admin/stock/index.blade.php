@@ -227,7 +227,9 @@
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
                                                 <td>{{ $item->item?->attribute?->attribute_name }}</td>
-                                                <td>{{ $item->item?->lens_power }}</td>
+                                                <td>{{ $item->item?->power?->sph }} - {{ $item->item?->power?->syl }} -
+                                                    {{ $item->item?->power?->axis }} - {{ $item->item?->power?->add_ }}
+                                                </td>
                                                 <td>{{ $item->item_quantity }}</td>
                                             </tr>
                                         @endforeach
@@ -243,11 +245,11 @@
                         </div>
 
                         <!-- <div class="alert" id="message-show" style="margin-left: 20px; margin-right: 20px; margin-top: -65px;">
-                            <p>
-                            <br><br><br><h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT TO CHECK STOCK</h4>
-                            </p>
-                            <img src="{{ asset('assets/images/purchase.png') }}" alt="" style="width: 30%; margin-left:35%">
-                        </div> -->
+                                <p>
+                                <br><br><br><h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT TO CHECK STOCK</h4>
+                                </p>
+                                <img src="{{ asset('assets/images/purchase.png') }}" alt="" style="width: 30%; margin-left:35%">
+                            </div> -->
 
                     </div>
 

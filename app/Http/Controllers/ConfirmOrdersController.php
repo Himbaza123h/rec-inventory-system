@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PurchaseCart;
 use Illuminate\Http\Request;
 use App\Models\Purchase;
 use Vtiful\Kernel\Format;
@@ -69,30 +70,62 @@ class ConfirmOrdersController extends Controller
 
     public function details()
     {
-        $pendings = Order::where('status', 'pending')->get();
-        // Paginate the sales data manually
-        $page = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 7;
-        $pendingsCollection = collect($pendings);
-        $currentPageItems = $pendingsCollection->slice(($page - 1) * $perPage, $perPage)->all();
-        $pendings = new LengthAwarePaginator($currentPageItems, count($pendingsCollection), $perPage);
-        $routeName = 'admin.pending.order.details';
-        $pendings->setPath(route($routeName));
-        return view('admin.orders.pending.index', compact('pendings'));
+        // Retrieve pendings grouped by order_number where status is 1
+        $groupedPendings = PurchaseCart::where('status', 1)->get()->groupBy('order_number');
+
+        // Calculate total amount for each order number
+        $orders = [];
+        foreach ($groupedPendings as $orderNumber => $pendings) {
+            $totalAmount = $pendings->sum('amount');
+            $orders[] = [
+                'order_number' => $orderNumber,
+                'total_amount' => $totalAmount,
+                'items' => $pendings,
+            ];
+        }
+
+        return view('admin.orders.pending.index', compact('orders'));
     }
+
+
+
+    public function draft()
+    {
+        // Retrieve pendings grouped by order_number where status is 1
+        $groupedPendings = PurchaseCart::where('status', 4)->get()->groupBy('order_number');
+
+        // Calculate total amount for each order number
+        $orders = [];
+        foreach ($groupedPendings as $orderNumber => $pendings) {
+            $totalAmount = $pendings->sum('amount');
+            $orders[] = [
+                'order_number' => $orderNumber,
+                'total_amount' => $totalAmount,
+                'items' => $pendings,
+            ];
+        }
+
+        return view('admin.orders.draft.index', compact('orders'));
+    }
+
+
 
     public function accepted()
     {
-        $accepted = Order::where('status', 'accepted')->get();
-        // Paginate the sales data manually
-        $page = LengthAwarePaginator::resolveCurrentPage();
-        $perPage = 7;
-        $acceptedCollection = collect($accepted);
-        $currentPageItems = $acceptedCollection->slice(($page - 1) * $perPage, $perPage)->all();
-        $accepted = new LengthAwarePaginator($currentPageItems, count($acceptedCollection), $perPage);
-        $routeName = 'admin.confirm.orders';
-        $accepted->setPath(route($routeName));
-        return view('admin.orders.confirm.index', compact('accepted'));
+        // Retrieve pendings grouped by order_number where status is 1
+        $groupedPendings = PurchaseCart::where('status', 2)->get()->groupBy('order_number');
+
+        // Calculate total amount for each order number
+        $orders = [];
+        foreach ($groupedPendings as $orderNumber => $pendings) {
+            $totalAmount = $pendings->sum('amount');
+            $orders[] = [
+                'order_number' => $orderNumber,
+                'total_amount' => $totalAmount,
+                'items' => $pendings,
+            ];
+        }
+        return view('admin.orders.confirm.index', compact('orders'));
     }
 
     public function delete($id)
@@ -131,7 +164,7 @@ class ConfirmOrdersController extends Controller
 
     public function singleOrder($id)
     {
-        $orderList = Order::where('order_id', $id)->where('status', 'accepted')->get();
+        $orderList = PurchaseCart::where('order_number', $id)->where('status', 2)->get();
 
         return view('admin.orders.confirm.edit', compact('orderList', 'id'));
     }
@@ -143,11 +176,11 @@ class ConfirmOrdersController extends Controller
         ]);
 
         // Retrieve the orders by their ID
-        $orders = Order::where('order_id', $id)->get();
+        $orders = PurchaseCart::where('order_number', $id)->get();
 
         // Update the status of each order to "paid"
         foreach ($orders as $order) {
-            $order->status = 'paid';
+            $order->status = 5;
             $order->save();
         }
 
@@ -202,16 +235,14 @@ class ConfirmOrdersController extends Controller
     }
 
     public function financial()
-    {$today = Carbon::today();
+    {
+        $today = Carbon::today();
         $user = Auth::user();
 
         if ($user->role == 'admin') {
-            $orders = Sale::select(
-                DB::raw('DATE(created_at) as date'), DB::raw('SUM(paycash) as cash'), DB::raw('SUM(paymomo) as momo'), DB::raw('SUM(paypos) as pos'), DB::raw('SUM(insurance_id) as assurance'))->groupBy('date')->get();
+            $orders = Sale::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(paycash) as cash'), DB::raw('SUM(paymomo) as momo'), DB::raw('SUM(paypos) as pos'), DB::raw('SUM(insurance_id) as assurance'))->groupBy('date')->get();
         } else {
-            $orders = Sale::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(paycash) as cash'), DB::raw('SUM(paymomo) as momo'), DB::raw('SUM(paypos) as pos'), DB::raw('SUM(insurance_id) as assurance'))->groupBy('date')
-            ->whereDate('created_at', $today)
-            ->get();
+            $orders = Sale::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(paycash) as cash'), DB::raw('SUM(paymomo) as momo'), DB::raw('SUM(paypos) as pos'), DB::raw('SUM(insurance_id) as assurance'))->groupBy('date')->whereDate('created_at', $today)->get();
         }
 
         $totalAmount = $orders->sum(function ($order) {

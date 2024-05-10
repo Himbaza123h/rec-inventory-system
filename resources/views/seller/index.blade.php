@@ -42,7 +42,7 @@
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
                                         <h5 class="text-uppercase text-white m-0">Frames<span class="pull-right">
-                                                Total: {{ $item }} </span></h5>
+                                                 </span></h5>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +61,7 @@
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
                                         <h5 class="text-uppercase text-white m-0">Lens<span class="pull-right">
-                                                Total: {{ $lens }} </span></h5>
+                                                </span></h5>
                                     </div>
                                 </div>
                             </div>

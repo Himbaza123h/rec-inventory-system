@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Models\Customer;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use Illuminate\Support\Facades\Session;
@@ -211,6 +212,10 @@ class SalesController extends Controller
             return redirect()->back()->with('error', $validator->errors()->first());
         }
 
+        $buyer = Customer::where('id', $request->buyer_id)->first();
+        $names = $buyer->customer_name;
+        $phone = $buyer->customer_phone;
+        $amount = Session::get('amount_to_pay');
         try {
             // Update stock based on updated purchases
             $cartItems = CartItem::where('user_id', $user->id)

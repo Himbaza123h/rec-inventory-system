@@ -50,7 +50,7 @@
                                 </div>
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">NEW FRAME<span
+                                        <h5 class="text-uppercase text-white m-0">FRAMES<span
                                                 class="pull-right">{{ number_format($totalAmount, 0, '.', ',') }} RWF</span>
                                         </h5>
                                     </div>
@@ -73,7 +73,7 @@
                                 </div>
                                 <div class="tiles-progress">
                                     <div class="m-t-20">
-                                        <h5 class="text-uppercase text-white m-0">NEW LENS<span
+                                        <h5 class="text-uppercase text-white m-0">LENS<span
                                                 class="pull-right">{{ number_format($totalAmount1, 0, '.', ',') }}
                                                 RWF</span>
                                         </h5>
@@ -119,7 +119,7 @@
                                 <div class="m-t-20">
                                     <h5 class="text-uppercase text-white m-0">
 
-                                        <span class="pull-right">Consumed: {{ $buyerCount }}</span>
+                                        <span class="pull-right">Active: {{ $buyerCount }}</span>
                                     </h5>
                                 </div>
                             </div>
@@ -155,10 +155,10 @@
     <script>
         // Dummy data for sales chart
         const salesData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [{
                 label: 'Sales',
-                data: [65, 59, 80, 81, 56, 55, 40],
+                data: [0, 59, 80, 81, 56, 55, 40, 100],
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1
@@ -167,10 +167,10 @@
 
         // Dummy data for purchase chart
         const purchaseData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
             datasets: [{
                 label: 'Purchases',
-                data: [35, 49, 70, 71, 46, 45, 30],
+                data: [35, 43, 70, 71, 46, 45, 30],
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 borderColor: 'rgba(255, 99, 132, 1)',
                 borderWidth: 1
