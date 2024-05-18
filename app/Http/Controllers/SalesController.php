@@ -216,6 +216,21 @@ class SalesController extends Controller
         $names = $buyer->customer_name;
         $phone = $buyer->customer_phone;
         $amount = Session::get('amount_to_pay');
+
+        //send sms
+        $sender = 'REC';
+        $content = 'Dear ' . $names. ' You bill is ' .$amount. ' Rwf. Please proceed to pay, for any questions feel free to contact us on 0788531106 for assistance. Thank you';
+
+        $params = [
+            'sender'    => $sender,
+            'content'   => $content,
+            'msisdn'    => $phone,
+            'username'  => 'bulksms',
+            'password'  => 'bulksms345',
+        ];
+
+        $smsResponse = $this->sendSms($params);
+
         try {
             // Update stock based on updated purchases
             $cartItems = CartItem::where('user_id', $user->id)
@@ -230,10 +245,10 @@ class SalesController extends Controller
                     'seller_id' => $request->operator_id,
                     'product_id' => $cartItem->product_id,
                     'item_quantity' => $cartItem->qty,
-                    'paypos' => $request->paypos, 
-                    'insurance_id' =>$insuranceId,
+                    'paypos' => $request->paypos,
+                    'insurance_id' => $insuranceId,
                     'paymomo' => $request->paymomo,
-                    'paycash' => $request->paycash, 
+                    'paycash' => $request->paycash,
                 ]);
 
                 // Update all purchases with the specified purchase_code
@@ -272,5 +287,27 @@ class SalesController extends Controller
         }
 
         return redirect()->back()->with('success', 'Updated all cart items to performa successfully!');
+    }
+
+    private function sendSms($params)
+    {
+        $ch = curl_init();
+        $url = 'http://164.92.112.235:9090/sendSmsHandler/sendSimpleSms';
+
+        if (count($params) > 0) {
+            $query = http_build_query($params);
+            curl_setopt($ch, CURLOPT_URL, "$url?$query");
+        } else {
+            curl_setopt($ch, CURLOPT_URL, $url);
+        }
+
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        $output = curl_exec($ch);
+
+        $smsResponse = json_decode($output, true);
+
+        curl_close($ch);
+
+        return $smsResponse;
     }
 }

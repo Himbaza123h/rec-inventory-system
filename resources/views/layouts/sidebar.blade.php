@@ -150,9 +150,9 @@
                         </a>
                         <ul class="list-unstyle">
                             <li><a href="{{ route('admin.purchase.order.index') }}" class="waves-effect waves-light"><i
-                                        class="ion-ios7-pulse-strong"></i>Request Orders</a></li>
+                                        class="ion-ios7-pulse-strong"></i>New Order</a></li>
                             <li><a href="{{ route('admin.confirm.orders') }}" class="waves-effect waves-light"><i
-                                        class="ion-ios7-pulse-strong"></i>Confirm Orders</a></li>
+                                        class="ion-ios7-pulse-strong"></i>Order Status</a></li>
                         </ul>
                     </li>
 

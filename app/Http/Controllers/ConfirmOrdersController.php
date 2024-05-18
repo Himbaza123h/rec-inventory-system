@@ -191,12 +191,11 @@ class ConfirmOrdersController extends Controller
             if ($order->product_id == 2) {
                 $existingStockLens = StockLens::where('item_id', $order->item_id)
                     ->where('product_id', $order->product_id)
-                    ->where('status', true)
                     ->first();
 
                 if ($existingStockLens) {
-                    $existingStockLens->item_quantity += $order->qty;
-                    $existingStockLens->remaining += $order->qty;
+                    $existingStockLens->item_quantity += $order->quantity;
+                    $existingStockLens->remaining += $order->quantity;
                     $existingStockLens->save();
                 } else {
                     // If the item does not exist in stock, create a new stock entry
@@ -204,18 +203,17 @@ class ConfirmOrdersController extends Controller
                     $stockLens->item_id = $order->item_id;
                     $stockLens->purchase_id = $order->order_id;
                     $stockLens->product_id = $order->product_id;
-                    $stockLens->item_quantity = $order->qty;
+                    $stockLens->item_quantity = $order->quantity;
                     $stockLens->save();
                 }
             } else {
                 $existingStock = Stock::where('item_id', $order->item_id)
                     ->where('product_id', $order->product_id)
-                    ->where('status', true)
                     ->first();
 
                 if ($existingStock) {
-                    $existingStock->item_quantity += $order->qty;
-                    $existingStock->remaining += $order->qty;
+                    $existingStock->item_quantity += $order->quantity;
+                    $existingStock->remaining += $order->qauntity;
                     $existingStock->save();
                 } else {
                     // If the item does not exist in stock, create a new stock entry
@@ -223,8 +221,8 @@ class ConfirmOrdersController extends Controller
                     $stock->item_id = $order->item_id;
                     $stock->purchase_id = $order->order_id;
                     $stock->product_id = $order->product_id;
-                    $stock->item_quantity = $order->qty;
-                    $stock->remaining = $order->qty;
+                    $stock->item_quantity = $order->quantity;
+                    $stock->remaining = $order->quantity;
                     $stock->save();
                 }
             }

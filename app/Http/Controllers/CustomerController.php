@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+
 class CustomerController extends Controller
 {
     public function index()
@@ -18,9 +19,9 @@ class CustomerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'customer_name' => 'required|string',
-            'customer_tin_number' => 'required|string',
+            'customer_tin_number' => 'nullable|string',
             'insurance_id' => 'required|integer',
-            'customer_phone' => 'nullable|string|min:10|max:10|regex:/^07\d{8}$/',
+            'customer_phone' => 'nullable|string|min:10|max:12|regex:/^07\d{8}$/',
             'customer_address' => 'required|string',
         ]);
         if ($validator->fails()) {
@@ -32,7 +33,17 @@ class CustomerController extends Controller
                 $new->customer_name = $request->customer_name;
                 $new->insurance_id = $request->insurance_id;
                 $new->customer_tin_number = $request->customer_tin_number;
-                $new->customer_phone = $request->customer_phone;
+
+                // Cleaning customer_phone
+                $phoneDigits = preg_replace('/[^0-9]/', '', $request->customer_phone);
+                if (strlen($phoneDigits) == 10) {
+                    $new->customer_phone = '25' . $phoneDigits;
+                } elseif (strlen($phoneDigits) == 12) {
+                    $new->customer_phone = $phoneDigits;
+                } else {
+                    return redirect()->back()->with('error', 'Invalid phone number length.');
+                }
+
                 $new->customer_address = $request->customer_address;
                 $new->save();
                 return redirect()->back()->with('success', 'New Customer successfully added!');
