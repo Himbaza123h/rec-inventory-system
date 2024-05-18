@@ -88,7 +88,7 @@
                                         </div>
                                         <div class="col-md-3">
                                             <div class="form-group">
-                                                <label for="price_input">Purchase |</label>
+                                                <label for="price_input"></label>
                                                 &nbsp;
                                                 <label for="price_input">Sale (Price)</label>
                                                 <div class="input-group">

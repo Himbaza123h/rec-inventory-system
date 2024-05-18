@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-12">
-                        <h4 class="pull-left page-title"><b>Request Order</b></h4>
+                        <h4 class="pull-left page-title"><b>New Order</b></h4>
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{ route('home') }}">Home</a></li>
                             <li class="active">Orders</li>
@@ -38,35 +38,33 @@
                         </div>
                     </div>
                     <br>
-                    <div class="col-sm-3">
+                    <!-- <div class="col-sm-3">
                         <div class="panel-heading" style="background-color: #3e4550;">
                             <div class="row" style="color: #ffffff;">
                                 <a href="{{ route('admin.pending.order.details') }}"
                                     style="text-decoration: none; color: #fff">
                                     <div class="col-md-12 text-center">
                                         <button type="button" class="btn btn-success">VIEW PENDING ORDERS</button>
-                                        <!-- CHECK ORDER LIST -->
                                     </div>
                                 </a>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="col-sm-3">
+                    </div> -->
+                    <div class="col-sm-6"></div>
+                    <!-- <div class="col-sm-3">
                         <div class="panel-heading" style="background-color: #3e4550;">
                             <div class="row" style="color: #ffffff;">
                                 <a href="{{ route('admin.all-draft.list') }}"
                                     style="text-decoration: none; color: #fff">
                                     <div class="col-md-12 text-center">
                                         <button type="button" class="btn btn-warning">VIEW DRAFT ORDERS</button>
-                                        <!-- CHECK ORDER LIST -->
                                     </div>
                                 </a>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="col-sm-3">
-                        <h3 class="pull-right page-title"><b>REQUEST ORDERS</b><i class="ion-ios7-cart-outline"></i></h3>
+                        <h3 class="pull-right page-title"><b>NEW ORDER</b><i class="ion-ios7-cart-outline"></i></h3>
                     </div>
 
 
@@ -150,10 +148,10 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="price_input">Purchase</label>
+                                                <label for="price_input">Price</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="purchase_price"
-                                                        placeholder="Purchase Price">
+                                                        placeholder="Price">
                                                 </div>
                                             </div>
                                         </div>
@@ -166,7 +164,7 @@
                                     <div class="col-sm-12">
                                         <br>
                                         <center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to
-                                                Cart</button>
+                                                List</button>
                                         </center>
                                         <br>
                                     </div>
@@ -252,10 +250,10 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="price_input">Purchase</label>
+                                                <label for="price_input">Price</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="purchase_price"
-                                                        placeholder="Purchase Price">
+                                                        placeholder="Price">
                                                 </div>
                                             </div>
                                         </div>
@@ -268,7 +266,7 @@
                                     <div class="col-sm-12">
                                         <br>
                                         <center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to
-                                                Cart</button>
+                                                List</button>
                                         </center>
                                         <br>
                                     </div>
@@ -352,10 +350,10 @@
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="price_input">Purchase</label>
+                                                <label for="price_input">Price</label>
                                                 <div class="input-group">
                                                     <input type="text" class="form-control" name="purchase_price"
-                                                        placeholder="Purchase Price">
+                                                        placeholder="Price">
                                                 </div>
                                             </div>
                                         </div>
@@ -368,7 +366,7 @@
                                     <div class="col-sm-12">
                                         <br>
                                         <center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to
-                                                Cart</button>
+                                                List</button>
                                         </center>
                                         <br>
                                     </div>
@@ -456,7 +454,7 @@
                                         <div class="col-md-2">
                                             <div class="form-group">
 
-                                                <label for="quantity">Purchase Price:</label>
+                                                <label for="quantity">Price:</label>
                                                 <input type="text" class="form-control" name="purchase_price"
                                                     min="1" max="">
                                             </div>
@@ -469,7 +467,7 @@
                                     <div class="col-sm-12">
                                         <br>
                                         <center><button class="btn btn-primary" type="submit" id="add-to-cart">Add to
-                                                Cart</button></center>
+                                                List</button></center>
 
                                         <br>
                                     </div>
@@ -491,7 +489,7 @@
                         <div class="col-md-12">
                             <div class="panel panel-success">
                                 <div class="panel-heading" style="background-color:#3e4550;">
-                                    <h3 class="panel-title" style="color: #ffffff;">CART LIST</h3>
+                                    <h3 class="panel-title" style="color: #ffffff;">ORDER LIST</h3>
                                 </div>
                                 <div class="panel-body">
                                     <table id="datatable-buttons" class="table table-striped table-bordered">
@@ -569,7 +567,7 @@
                             <div class="col-md-12">
                                 <div class="panel panel-success">
                                     <div class="panel-heading" style="background-color:#3e4550;">
-                                        <h3 class="panel-title" style="color: #ffffff;">PROCEED CART</h3>
+                                        <h3 class="panel-title" style="color: #ffffff;">PROCEED ORDER</h3>
                                     </div>
                                     <div class="panel-body" style="background-color:#c2c8d1;">
                                         <div class="container">
@@ -589,8 +587,8 @@
                                                         @csrf
                                                         <div class="col-md-4">
                                                             <button type="submit" style="margin-top: 12px"
-                                                                class="btn btn-success waves-effect waves-light">CONFIRM
-                                                                CART</button>
+                                                                class="btn btn-success waves-effect waves-light">MAKE
+                                                                ORDER</button>
                                                         </div>
                                                     </form>
                                                 </div>

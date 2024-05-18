@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-4">
-                        <h3 class="page-title"><b>ORDER LIST</b></h3>
+                        <h3 class="page-title"><b>CONFIRM ORDER</b></h3>
                     </div>
                     <div class="col-sm-8">
                         <ol class="breadcrumb pull-right">
@@ -74,7 +74,7 @@
                                             @php
                                                 $status = \App\Models\Stat::get();
                                             @endphp
-                                            <label for="payment_method">Payment</label>
+                                            <label for="payment_method">Payment Status</label>
                                             <select name="payment_method" id="" class="select2 form-control">
                                                 <option value="">Payment Status </option>
                                                 @foreach ($status as $item)

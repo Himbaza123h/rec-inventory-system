@@ -42,9 +42,9 @@
                                             Customer Name<br />
                                             <input type="text" name="customer_name" id="name"
                                                 class="form-control input-sm" placeholder="Customer Name"><br />
-                                            Tin Number<br />
+                                            <!-- Tin Number<br />
                                             <input type="numbers" name="customer_tin_number" id="tinNumber"
-                                                class="form-control input-sm" placeholder="Tin Number"><br />
+                                                class="form-control input-sm" placeholder="Tin Number"><br /> -->
                                             Phone<br />
                                             <input type="numbers" name="customer_phone" id="Phone"
                                                 class="form-control input-sm" placeholder="Phone Number"><br /> <br>

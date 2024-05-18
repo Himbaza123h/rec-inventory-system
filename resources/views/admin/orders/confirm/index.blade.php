@@ -11,7 +11,7 @@
             <div class="container">
                 <div class="row">
                     <div class="col-sm-4">
-                        <h3 class="page-title"><b>ORDER LIST</b></h3>
+                        <h3 class="page-title"><b>ORDERS LIST</b></h3>
                     </div>
                     <div class="col-sm-8">
                         <ol class="breadcrumb pull-right">
@@ -51,9 +51,9 @@
                                                 <td>{{ number_format($order['total_amount'], 0, '.', ',') }} RWF</td>
                                                 <td>
                                                     <a href="{{ route('admin.single.order.list', ['id' => $order['order_number']]) }}"
-                                                        class="btn btn-success waves-effect waves-light">VIEW</a>&nbsp;
+                                                        class="btn btn-success waves-effect waves-light">VIEW & CONFIRM</a>&nbsp;
 
-                                                    <a href="" class="btn btn-warning">CONFIRM</a>
+                                                    <!-- <a href="" class="btn btn-warning">CONFIRM</a> -->
                                                 </td>
                                             </tr>
                                         @endforeach
