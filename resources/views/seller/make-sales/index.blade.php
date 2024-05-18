@@ -49,44 +49,57 @@
                                     <br>
                                     <div class="col-md-12">
                                         <div class="col-md-2">
+                                            @php
+                                                $itemData = \App\Models\Item::where('product_category', 1)
+                                                    ->join('stocks', 'items.id', '=', 'stocks.item_id')
+                                                    ->whereNotNull('items.mark_glasses')
+                                                    ->select('items.mark_glasses')
+                                                    ->distinct()
+                                                    ->get();
+                                            @endphp
                                             <div class="form-group">
-                                                <label for="mark_glasses">Brand:</label>
-                                                <select class="form-control select2 code_show_input" name="mark_glass_id"
-                                                    id="mark_glasses">
+                                                <label for="mark_glass_id">Brand:</label>
+                                                <select class="form-control select2" name="mark_glass_id"
+                                                    id="mark_glass_id">
                                                     <option value="">Choose Brand</option>
-                                                    @foreach ($items as $item)
+                                                    @foreach ($itemData as $item)
                                                         <option value="{{ $item->mark_glasses }}">
-                                                            {{ $item->category?->category_name }}
-                                                        </option>
+                                                            {{ $item->category?->category_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
+                                            <label for="code_id">Code</label>
+                                            <select class="form-group select2" name="code_id" id="code_id" disabled>
+                                                <option value="" disabled selected>Choose Code</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="code_id">Code:</label>
-                                                <select class="form-control select2" name="code_id" id="code_mi_id">
-                                                    <option value="">Choose Code</option>
+                                                <label for="color_id">Color:</label>
+                                                <select class="form-control select2" name="color_id" id="color_id"
+                                                    disabled>
+                                                    <option value="" disabled selected>Choose Color</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="color_id">Color:</label>
-                                                <select class="form-control select2" id="color_id" name="color_id">
-                                                    <option value="">Choose Color</option>
+                                                <label for="size">Size:</label>
+                                                <select class="form-control select2" name="size" id="size" disabled>
+                                                    <option value="" disabled selected>Choose Size</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="quantity">Quantity:</label>
-                                                <input type="number" class="form-control" id="quantity" name="quantity"
-                                                    min="1">
-
+                                                <input type="number" class="form-control" name="quantity" min="1"
+                                                    placeholder="Qty">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="price_input"></label>
                                                 &nbsp;
@@ -98,7 +111,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <center>
@@ -108,7 +120,7 @@
                                     <div class="col-md-12">
                                         <div class="col-md-3">
                                             @php
-                                                $insurances = \App\Models\Insurance::all();
+                                                  $insurances = \App\Models\Insurance::where('status', true)->get();
                                             @endphp
                                             <label for="mark_glasses">Insurance:</label>
                                             <select class="form-control select2" name="insurance" id="product">
@@ -160,56 +172,68 @@
                                     <br>
                                     <div class="col-md-12">
                                         <div class="col-md-2">
+                                            @php
+                                                $itemData3 = \App\Models\Item::where('product_category', 3)
+                                                    ->join('stocks', 'items.id', '=', 'stocks.item_id')
+                                                    ->whereNotNull('items.mark_glasses')
+                                                    ->select('items.mark_glasses')
+                                                    ->distinct()
+                                                    ->get();
+                                            @endphp
                                             <div class="form-group">
-                                                <label for="mark_glasses">Brand:</label>
-                                                <select class="form-control select2 code_show_input" name="mark_glass_id"
-                                                    id="mark_glasses1">
+                                                <label for="mark_glass_id">Brand:</label>
+                                                <select class="form-control select2" name="mark_glass_id"
+                                                    id="mark_glass_id3">
                                                     <option value="">Choose Brand</option>
-                                                    @foreach ($items1 as $item)
+                                                    @foreach ($itemData3 as $item)
                                                         <option value="{{ $item->mark_glasses }}">
-                                                            {{ $item->category?->category_name }}
-                                                        </option>
+                                                            {{ $item->category?->category_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
+                                            <label for="code_id">Code</label>
+                                            <select class="form-group select2" name="code_id" id="code_id3" disabled>
+                                                <option value="" disabled selected>Choose Code</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="code_id">Code:</label>
-                                                <select class="form-control select2" name="code_id" id="code_mi_id1">
-                                                    <option value="">Choose Code</option>
+                                                <label for="color_id">Color:</label>
+                                                <select class="form-control select2" name="color_id" id="color_id3"
+                                                    disabled>
+                                                    <option value="" disabled selected>Choose Color</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="color_id">Color:</label>
-                                                <select class="form-control select2" id="color_id1" name="color_id">
-                                                    <option value="">Choose Color</option>
+                                                <label for="size">Size:</label>
+                                                <select class="form-control select2" name="size" id="size3" disabled>
+                                                    <option value="" disabled selected>Choose Size</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="quantity">Quantity:</label>
-                                                <input type="number" class="form-control" id="quantity1"
-                                                    name="quantity" min="1">
-
+                                                <input type="number" class="form-control" name="quantity" min="1"
+                                                    placeholder="Qty">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="price_input">Purchase |</label>
+                                                <label for="price_input"></label>
                                                 &nbsp;
                                                 <label for="price_input">Sale (Price)</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon" id="price_span1"></span>
+                                                    <span class="input-group-addon" id="price_span"></span>
                                                     <input type="text" class="form-control" name="sale_price"
                                                         placeholder="Sale Price">
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
 
                                     <center>
@@ -219,7 +243,7 @@
                                     <div class="col-md-12">
                                         <div class="col-md-3">
                                             @php
-                                                $insurances = \App\Models\Insurance::all();
+                                                 $insurances = \App\Models\Insurance::where('status', true)->get();
                                             @endphp
                                             <label for="mark_glasses">Insurance:</label>
                                             <select class="form-control select2" name="insurance" id="product">
@@ -243,8 +267,8 @@
                                         <div class="col-md-3">
 
                                             <label for="insurances">Covered Amount:</label>
-                                            <input type="text" name="covered_amount" id=""
-                                                class="form-control" placeholder="..rwf amount">
+                                            <input type="text" name="covered_amount" id="" class="form-control"
+                                                placeholder="..rwf amount">
                                         </div>
                                     </div>
 
@@ -270,58 +294,69 @@
                                     <br>
                                     <div class="col-md-12">
                                         <div class="col-md-2">
+                                            @php
+                                                $itemData4 = \App\Models\Item::where('product_category', 4)
+                                                    ->join('stocks', 'items.id', '=', 'stocks.item_id')
+                                                    ->whereNotNull('items.mark_glasses')
+                                                    ->select('items.mark_glasses')
+                                                    ->distinct()
+                                                    ->get();
+                                            @endphp
                                             <div class="form-group">
-                                                <label for="mark_glasses">Brand:</label>
-                                                <select class="form-control select2 code_show_input" name="mark_glass_id"
-                                                    id="mark_glasses2">
+                                                <label for="mark_glass_id">Brand:</label>
+                                                <select class="form-control select2" name="mark_glass_id"
+                                                    id="mark_glass_id4">
                                                     <option value="">Choose Brand</option>
-                                                    @foreach ($items2 as $item)
+                                                    @foreach ($itemData4 as $item)
                                                         <option value="{{ $item->mark_glasses }}">
-                                                            {{ $item->category?->category_name }}
-                                                        </option>
+                                                            {{ $item->category?->category_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
+                                            <label for="code_id">Code</label>
+                                            <select class="form-group select2" name="code_id" id="code_id4" disabled>
+                                                <option value="" disabled selected>Choose Code</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="code_id">Code:</label>
-                                                <select class="form-control select2" name="code_id" id="code_mi_id2">
-                                                    <option value="">Choose Code</option>
+                                                <label for="color_id">Color:</label>
+                                                <select class="form-control select2" name="color_id" id="color_id4"
+                                                    disabled>
+                                                    <option value="" disabled selected>Choose Color</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="color_id">Color:</label>
-                                                <select class="form-control select2" id="color_id2" name="color_id">
-                                                    <option value="">Choose Color</option>
+                                                <label for="size">Size:</label>
+                                                <select class="form-control select2" name="size" id="size4" disabled>
+                                                    <option value="" disabled selected>Choose Size</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="quantity">Quantity:</label>
-                                                <input type="number" class="form-control" id="quantity2"
-                                                    name="quantity" min="1">
-
+                                                <input type="number" class="form-control" name="quantity" min="1"
+                                                    placeholder="Qty">
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
+                                        <div class="col-md-2">
                                             <div class="form-group">
-                                                <label for="price_input">Purchase |</label>
+                                                <label for="price_input"></label>
                                                 &nbsp;
                                                 <label for="price_input">Sale (Price)</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-addon" id="price_span2"></span>
+                                                    <span class="input-group-addon" id="price_span"></span>
                                                     <input type="text" class="form-control" name="sale_price"
                                                         placeholder="Sale Price">
                                                 </div>
                                             </div>
                                         </div>
-
                                     </div>
-
                                     <center>
                                         <p>Insurance Payment Option(Leave them blank if it's private)</p>
                                     </center>
@@ -329,7 +364,7 @@
                                     <div class="col-md-12">
                                         <div class="col-md-3">
                                             @php
-                                                $insurances = \App\Models\Insurance::all();
+                                                  $insurances = \App\Models\Insurance::where('status', true)->get();
                                             @endphp
                                             <label for="mark_glasses">Insurance:</label>
                                             <select class="form-control select2" name="insurance" id="product">
@@ -380,67 +415,104 @@
                                 <div class="row">
                                     <input type="hidden" value="2" name="product_id">
                                     <br>
-                                    <div class="col-md-12">
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="mark_glasses">Category:</label>
-                                                <select class="form-control select2 code_show_input" name="category_id">
-                                                    <option value="">Choose Cetegory</option>
-                                                    @php
-                                                        $lens = \App\Models\StockLens::get();
-                                                    @endphp
-                                                    @foreach ($lens as $item)
-                                                        <option value="{{ $item->item?->mark_lens }}">
-                                                            {{ $item->item?->category?->category_name }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="form-group">
-                                                <label for="code_id">Attribute:</label>
-                                                <select class="form-control select2" name="attribute_id"
-                                                    id="attribute_id">
-                                                    <option value="">Choose Attribute</option>
-                                                    @foreach ($lens as $data)
-                                                        <option value="{{ $data->item?->lens_attribute }}">
-                                                            {{ $data->item?->attribute?->attribute_name }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
-                                                <label for="color_id">Power:</label>
-                                                <select class="form-control select2" id="power_id" name="power_id">
-                                                    <option value="">Choose Power</option>
-                                                    @foreach ($lens as $data)
-                                                        <option value="{{ $data->item?->lens_power }}">
-                                                            {{ $data->item?->power?->sph }} - {{ $data->item?->power?->syl }} - {{ $data->item?->power?->axis }} - {{ $data->item?->power?->add_ }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <div class="form-group">
 
+                                    <div class="col-md-12">
+
+                                        @php
+                                            $itemData2 = \App\Models\Lens::get(['mark_lens'])->unique('mark_lens')
+                                            ->join('stocks', 'lenses.id', '=', 'stocks.item_id')
+                                                    ->whereNotNull('lenses.mark_lens')
+                                                    ->select('lenses.mark_lens')
+                                                    ->distinct()
+                                                    ->get();
+                                        @endphp
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="category_id">Category:</label>
+                                                <select class="form-control select2 code_show_input" name="category_id"
+                                                    id="category_id">
+                                                    <option value="" disabled selected>Choose Category</option>
+                                                    @foreach ($itemData2 as $item)
+                                                        <option value="{{ $item->mark_lens }}">
+                                                            {{ $item->category?->category_name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
+                                                <label for="attribute_id">Attribute:</label>
+                                                <select class="form-control select2" name="attribute_id"
+                                                    id="attribute_id" disabled>
+                                                    <option value="" disabled selected>Choose Attribute</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="color_id">SPH:</label>
+                                                        <select class="form-control select2" id="power_sph"
+                                                            name="power_sph">
+                                                            <option value="">SPH</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="color_id">CYL:</label>
+                                                        <select class="form-control select2" id="power_cyl"
+                                                            name="power_cyl">
+                                                            <option value="">CYL</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="color_id">AXIS:</label>
+                                                        <select class="form-control select2" id="power_axis"
+                                                            name="power_axis">
+                                                            <option value="">AXIS</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="color_id">ADD:</label>
+                                                        <select class="form-control select2" id="power_add"
+                                                            name="power_add">
+                                                            <option value="">ADD</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-2">
+                                            <div class="form-group">
                                                 <label for="quantity">Quantity:</label>
                                                 <input type="number" class="form-control" name="quantity"
-                                                    min="1" max="">
+                                                    min="1" max="" placeholder="Qty">
                                             </div>
                                         </div>
 
-                                        <div class="col-md-2">
-                                            <div class="form-group">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
 
-                                                <label for="quantity">Sale Price:</label>
-                                                <input type="text" class="form-control" name="sale_price"
-                                                    min="1" max="">
-                                            </div>
+                                            <label for="quantity">Sale Price:</label>
+                                            <input type="text" class="form-control" name="sale_price" min="1"
+                                                max="" placeholder="Price">
                                         </div>
-
+                                    </div>
                                     </div>
                                     <center>
                                         <p>Insurance Payment Option(Leave them blank if it's private)</p>
@@ -449,7 +521,7 @@
                                     <div class="col-md-12">
                                         <div class="col-md-3">
                                             @php
-                                                $insurances = \App\Models\Insurance::all();
+                                                  $insurances = \App\Models\Insurance::where('status', true)->get();
                                             @endphp
                                             <label for="insurances">Insurance:</label>
                                             <select class="form-control select2" name="insurance" id="product">
@@ -492,9 +564,6 @@
                         </div>
                     </div>
                 </div>
-
-
-
                 <div class="row" style="margin-top:10vh;">
                     @if (count($carts) > 0)
                         <div class="col-md-8">
@@ -646,248 +715,459 @@
                 // Show the selected product section
                 $('#' + selectedProduct + '-field').show();
             });
+        });
+    </script>
 
 
-            // Initially disable all fields except mark_glasses
-            $('#code_mi_id, #color_id, #quantity').prop('disabled', true);
 
-            // Function to fetch codes based on selected mark_glass
-            $('#mark_glasses').on('change', function() {
-                updateFieldStatus($(this), $('#code_mi_id'));
-                var markGlassId = $(this).val();
-                if (markGlassId) {
-                    $.ajax({
-                        url: '{{ route('seller.fetch.codes') }}',
-                        type: "GET",
-                        data: {
-                            mark_glass_id: markGlassId
-                        },
-                        dataType: "json",
-                        success: function(data) {
-                            $('#code_mi_id').empty().append(
-                                '<option value="">Choose Code</option>');
-                            $.each(data, function(key, value) {
-                                $('#code_mi_id').append('<option value="' + key + '">' +
-                                    value + '</option>');
-                            });
-                            // Enable code_mi_id after populating options
-                            $('#code_mi_id').prop('disabled', false);
-                        }
-                    });
+
+
+    {{-- handle frames drop down --}}
+
+
+    <script>
+        $(document).ready(function() {
+            $('#mark_glass_id').change(function() {
+                resetFields();
+                var brandId = $(this).val();
+                if (brandId) {
+                    enableCodeDropdown(brandId);
                 }
             });
 
-            // Function to fetch colors based on selected mark_glass and code
-            $('#code_mi_id').on('change', function() {
-                updateFieldStatus($(this), $('#color_id'));
-                var markGlassId = $('#mark_glasses').val();
+            $('#code_id').change(function() {
+                var brandId = $('#mark_glass_id').val();
                 var codeId = $(this).val();
-                if (markGlassId && codeId) {
-                    $.ajax({
-                        url: '{{ route('seller.fetch.colors') }}',
-                        type: "GET",
-                        data: {
-                            mark_glass_id: markGlassId,
-                            code_id: codeId
-                        },
-                        dataType: "json",
-                        success: function(data) {
-                            $('#color_id').empty().append(
-                                '<option value="">Choose Color</option>');
-                            // $.each(data, function(key, value) {
-                            //     $('#color_id').append('<option value="' + key + '">' +
-                            //         value + '</option>');
-                            // });
-                            $.each(data, function(index, item) {
-                                $('#color_id').append('<option value="' + item
-                                    .color_id + '" data-price="' + item.price +
-                                    '">' +
-                                    item.color_name + '</option>');
-                            });
-
-                            // Enable color_id after populating options
-                            $('#color_id').prop('disabled', false);
-                        }
-                    });
+                if (brandId && codeId) {
+                    enableColorDropdown(brandId, codeId);
                 }
             });
 
-            $('#color_id').on('change', function() {
-                updateFieldStatus($(this), $('#quantity'));
-                // Get the selected option and its data-price attribute
-                var selectedOption = $(this).find('option:selected');
-                var price = selectedOption.data('price');
-                // Display the price in the input field
-                $('#price_input').val(price);
-                $('#price_span').text(price);
-            });
-
-
-
-
-
-
-
-
-
-            // Section 2 selection fields
-
-
-            $('#code_mi_id1, #color_id1, #quantity1').prop('disabled', true);
-
-            // Function to fetch codes based on selected mark_glass
-            $('#mark_glasses1').on('change', function() {
-                updateFieldStatus($(this), $('#code_mi_id1'));
-                var markGlassId1 = $(this).val();
-                if (markGlassId1) {
-                    $.ajax({
-                        url: '{{ route('seller.fetch.codes') }}',
-                        type: "GET",
-                        data: {
-                            mark_glass_id: markGlassId1
-                        },
-                        dataType: "json",
-                        success: function(data) {
-                            $('#code_mi_id1').empty().append(
-                                '<option value="">Choose Code</option>');
-                            $.each(data, function(key, value) {
-                                $('#code_mi_id1').append('<option value="' + key +
-                                    '">' +
-                                    value + '</option>');
-                            });
-                            // Enable code_mi_id after populating options
-                            $('#code_mi_id1').prop('disabled', false);
-                        }
-                    });
+            $('#color_id').change(function() {
+                var brandId = $('#mark_glass_id').val();
+                var codeId = $('#code_id').val();
+                var colorId = $(this).val();
+                if (brandId && codeId && colorId) {
+                    enableSizeDropdown(brandId, codeId, colorId);
                 }
             });
 
-            // Function to fetch colors based on selected mark_glass and code
-            $('#code_mi_id1').on('change', function() {
-                updateFieldStatus($(this), $('#color_id1'));
-                var markGlassId1 = $('#mark_glasses1').val();
-                var codeId1 = $(this).val();
-                if (markGlassId1 && codeId1) {
-                    $.ajax({
-                        url: '{{ route('seller.fetch.colors') }}',
-                        type: "GET",
-                        data: {
-                            mark_glass_id: markGlassId1,
-                            code_id: codeId1
-                        },
-                        dataType: "json",
-                        success: function(data) {
-                            $('#color_id1').empty().append(
-                                '<option value="">Choose Color</option>');
-                            // $.each(data, function(key, value) {
-                            //     $('#color_id').append('<option value="' + key + '">' +
-                            //         value + '</option>');
-                            // });
-                            $.each(data, function(index, item) {
-                                $('#color_id1').append('<option value="' + item
-                                    .color_id + '" data-price="' + item.price +
-                                    '">' +
-                                    item.color_name + '</option>');
-                            });
+            function resetFields() {
+                $('#code_id').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Code</option>');
+                $('#color_id').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Color</option>');
+                $('#size').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Size</option>');
+            }
 
-                            // Enable color_id after populating options
-                            $('#color_id1').prop('disabled', false);
-                        }
-                    });
+            function enableCodeDropdown(brandId) {
+                $.ajax({
+                    url: "{{ route('get-codes') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $.each(data, function(index, value) {
+                            $('#code_id').append('<option value="' + value + '">' + value +
+                                '</option>');
+                        });
+                        $('#code_id').prop('disabled', false);
+                    }
+                });
+            }
+
+            function enableColorDropdown(brandId, codeId) {
+                $.ajax({
+                    url: "{{ route('get-colors') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        code_id: codeId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#color_id').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Color</option>');
+                        $.each(data, function(index, value) {
+                            $('#color_id').append('<option value="' + value.id + '">' + value
+                                .color_name + '</option>');
+                        });
+                    }
+                });
+            }
+
+            function enableSizeDropdown(brandId, codeId, colorId) {
+                $.ajax({
+                    url: "{{ route('get-sizes') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        code_id: codeId,
+                        color_id: colorId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#size').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Size</option>');
+                        $.each(data, function(index, value) {
+                            $('#size').append('<option value="' + value + '">' + value +
+                                '</option>');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+
+
+
+
+    {{-- Handle Sunglasses --}}
+
+    <script>
+        $(document).ready(function() {
+            $('#mark_glass_id3').change(function() {
+                resetFields();
+                var brandId = $(this).val();
+                if (brandId) {
+                    enableCodeDropdown(brandId);
                 }
             });
 
-            $('#color_id1').on('change', function() {
-                updateFieldStatus($(this), $('#quantity1'));
-                // Get the selected option and its data-price attribute
-                var selectedOption = $(this).find('option:selected');
-                var price = selectedOption.data('price');
-                // Display the price in the input field
-                $('#price_input1').val(price);
-                $('#price_span1').text(price);
-            });
-
-
-
-            // Section 3 selection fields
-
-
-            $('#code_mi_id2, #color_id2, #quantity2').prop('disabled', true);
-
-            // Function to fetch codes based on selected mark_glass
-            $('#mark_glasses2').on('change', function() {
-                updateFieldStatus($(this), $('#code_mi_id2'));
-                var markGlassId2 = $(this).val();
-                if (markGlassId2) {
-                    $.ajax({
-                        url: '{{ route('seller.fetch.codes') }}',
-                        type: "GET",
-                        data: {
-                            mark_glass_id: markGlassId2
-                        },
-                        dataType: "json",
-                        success: function(data) {
-                            $('#code_mi_id2').empty().append(
-                                '<option value="">Choose Code</option>');
-                            $.each(data, function(key, value) {
-                                $('#code_mi_id2').append('<option value="' + key +
-                                    '">' +
-                                    value + '</option>');
-                            });
-                            // Enable code_mi_id after populating options
-                            $('#code_mi_id2').prop('disabled', false);
-                        }
-                    });
+            $('#code_id3').change(function() {
+                var brandId = $('#mark_glass_id3').val();
+                var codeId = $(this).val();
+                if (brandId && codeId) {
+                    enableColorDropdown(brandId, codeId);
                 }
             });
 
-            // Function to fetch colors based on selected mark_glass and code
-            $('#code_mi_id2').on('change', function() {
-                updateFieldStatus($(this), $('#color_id2'));
-                var markGlassId2 = $('#mark_glasses2').val();
-                var codeId2 = $(this).val();
-                if (markGlassId2 && codeId2) {
-                    $.ajax({
-                        url: '{{ route('seller.fetch.colors') }}',
-                        type: "GET",
-                        data: {
-                            mark_glass_id: markGlassId2,
-                            code_id: codeId2
-                        },
-                        dataType: "json",
-                        success: function(data) {
-                            $('#color_id2').empty().append(
-                                '<option value="">Choose Color</option>');
-                            // $.each(data, function(key, value) {
-                            //     $('#color_id').append('<option value="' + key + '">' +
-                            //         value + '</option>');
-                            // });
-                            $.each(data, function(index, item) {
-                                $('#color_id2').append('<option value="' + item
-                                    .color_id + '" data-price="' + item.price +
-                                    '">' +
-                                    item.color_name + '</option>');
-                            });
-
-                            // Enable color_id after populating options
-                            $('#color_id2').prop('disabled', false);
-                        }
-                    });
+            $('#color_id3').change(function() {
+                var brandId = $('#mark_glass_id3').val();
+                var codeId = $('#code_id3').val();
+                var colorId = $(this).val();
+                if (brandId && codeId && colorId) {
+                    enableSizeDropdown(brandId, codeId, colorId);
                 }
             });
 
-            $('#color_id2').on('change', function() {
-                updateFieldStatus($(this), $('#quantity2'));
-                // Get the selected option and its data-price attribute
-                var selectedOption = $(this).find('option:selected');
-                var price = selectedOption.data('price');
-                // Display the price in the input field
-                $('#price_input2').val(price);
-                $('#price_span2').text(price);
+            function resetFields() {
+                $('#code_id3').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Code</option>');
+                $('#color_id3').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Color</option>');
+                $('#size3').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Size</option>');
+            }
+
+            function enableCodeDropdown(brandId) {
+                $.ajax({
+                    url: "{{ route('get-codes3') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $.each(data, function(index, value) {
+                            $('#code_id3').append('<option value="' + value + '">' + value +
+                                '</option>');
+                        });
+                        $('#code_id3').prop('disabled', false);
+                    }
+                });
+            }
+
+            function enableColorDropdown(brandId, codeId) {
+                $.ajax({
+                    url: "{{ route('get-colors3') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        code_id: codeId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#color_id3').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Color</option>');
+                        $.each(data, function(index, value) {
+                            $('#color_id3').append('<option value="' + value.id + '">' + value
+                                .color_name + '</option>');
+                        });
+                    }
+                });
+            }
+
+            function enableSizeDropdown(brandId, codeId, colorId) {
+                $.ajax({
+                    url: "{{ route('get-sizes3') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        code_id: codeId,
+                        color_id: colorId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#size3').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Size</option>');
+                        $.each(data, function(index, value) {
+                            $('#size3').append('<option value="' + value + '">' + value +
+                                '</option>');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
+
+
+
+
+
+    {{-- Handling Reading glasses --}}
+
+    <script>
+        $(document).ready(function() {
+            $('#mark_glass_id4').change(function() {
+                resetFields();
+                var brandId = $(this).val();
+                if (brandId) {
+                    enableCodeDropdown(brandId);
+                }
             });
 
+            $('#code_id4').change(function() {
+                var brandId = $('#mark_glass_id4').val();
+                var codeId = $(this).val();
+                if (brandId && codeId) {
+                    enableColorDropdown(brandId, codeId);
+                }
+            });
+
+            $('#color_id4').change(function() {
+                var brandId = $('#mark_glass_id4').val();
+                var codeId = $('#code_id4').val();
+                var colorId = $(this).val();
+                if (brandId && codeId && colorId) {
+                    enableSizeDropdown(brandId, codeId, colorId);
+                }
+            });
+
+            function resetFields() {
+                $('#code_id4').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Code</option>');
+                $('#color_id4').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Color</option>');
+                $('#size4').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Size</option>');
+            }
+
+            function enableCodeDropdown(brandId) {
+                $.ajax({
+                    url: "{{ route('get-codes4') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $.each(data, function(index, value) {
+                            $('#code_id4').append('<option value="' + value + '">' + value +
+                                '</option>');
+                        });
+                        $('#code_id4').prop('disabled', false);
+                    }
+                });
+            }
+
+            function enableColorDropdown(brandId, codeId) {
+                $.ajax({
+                    url: "{{ route('get-colors4') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        code_id: codeId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#color_id4').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Color</option>');
+                        $.each(data, function(index, value) {
+                            $('#color_id4').append('<option value="' + value.id + '">' + value
+                                .color_name + '</option>');
+                        });
+                    }
+                });
+            }
+
+            function enableSizeDropdown(brandId, codeId, colorId) {
+                $.ajax({
+                    url: "{{ route('get-sizes4') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        code_id: codeId,
+                        color_id: colorId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#size4').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Size</option>');
+                        $.each(data, function(index, value) {
+                            $('#size4').append('<option value="' + value + '">' + value +
+                                '</option>');
+                        });
+                    }
+                });
+            }
+        });
+    </script>
 
 
+
+    {{-- Drop lenses hadling --}}
+    <script>
+        $(document).ready(function() {
+            $('#category_id').change(function() {
+                var category_id = $(this).val();
+                if (category_id) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('get-attributes') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            category_id: category_id
+                        },
+                        success: function(res) {
+                            if (res && res.length > 0) {
+                                $("#attribute_id").empty().append(
+                                    '<option value="" disabled selected>Choose Attribute</option>'
+                                );
+                                $.each(res, function(index, attribute) {
+                                    $("#attribute_id").append('<option value="' +
+                                        attribute.id + '">' + attribute
+                                        .attribute_name + '</option>');
+                                });
+                                $("#attribute_id").prop('disabled', false);
+                            } else {
+                                $("#attribute_id").empty().prop('disabled', true);
+                            }
+                        }
+                    });
+                } else {
+                    $("#attribute_id").empty().prop('disabled', true);
+                }
+            });
+
+            $('#attribute_id').change(function() {
+                var category_id = $('#category_id').val();
+                var attribute_id = $(this).val();
+                if (attribute_id) {
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('get-sph') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            category_id: category_id,
+                            attribute_id: attribute_id
+                        },
+                        success: function(res) {
+                            if (res && res.length > 0) {
+                                $("#power_sph").empty().append(
+                                    '<option value="" disabled selected>SPH</option>'
+                                );
+                                $.each(res, function(index, sph) {
+                                    $("#power_sph").append('<option value="' + sph +
+                                        '">' + sph + '</option>');
+                                });
+                                $("#power_sph").prop('disabled', false);
+                            } else {
+                                $("#power_sph").empty().prop('disabled', true);
+                            }
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('get-cyl') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            category_id: category_id,
+                            attribute_id: attribute_id
+                        },
+                        success: function(res) {
+                            if (res && res.length > 0) {
+                                $("#power_cyl").empty().append(
+                                    '<option value="" disabled selected>CYL</option>'
+                                );
+                                $.each(res, function(index, cyl) {
+                                    $("#power_cyl").append('<option value="' + cyl +
+                                        '">' + cyl + '</option>');
+                                });
+                                $("#power_cyl").prop('disabled', false);
+                            } else {
+                                $("#power_cyl").empty().prop('disabled', true);
+                            }
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('get-axis') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            category_id: category_id,
+                            attribute_id: attribute_id
+                        },
+                        success: function(res) {
+                            if (res && res.length > 0) {
+                                $("#power_axis").empty().append(
+                                    '<option value="" disabled selected>AXIS</option>'
+                                );
+                                $.each(res, function(index, axis) {
+                                    $("#power_axis").append('<option value="' + axis +
+                                        '">' + axis + '</option>');
+                                });
+                                $("#power_axis").prop('disabled', false);
+                            } else {
+                                $("#power_axis").empty().prop('disabled', true);
+                            }
+                        }
+                    });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('get-add') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            category_id: category_id,
+                            attribute_id: attribute_id
+                        },
+                        success: function(res) {
+                            if (res && res.length > 0) {
+                                $("#power_add").empty().append(
+                                    '<option value="" disabled selected>ADD</option>'
+                                );
+                                $.each(res, function(index, add) {
+                                    $("#power_add").append('<option value="' + add +
+                                        '">' + add + '</option>');
+                                });
+                                $("#power_add").prop('disabled', false);
+                            } else {
+                                $("#power_add").empty().prop('disabled', true);
+                            }
+                        }
+                    });
+
+                } else {
+                    $("#power_sph, #power_cyl, #power_axis, #power_add").empty().prop('disabled', true);
+                }
+            });
         });
     </script>
 @endsection

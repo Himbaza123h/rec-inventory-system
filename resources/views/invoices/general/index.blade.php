@@ -116,7 +116,14 @@
                                             @foreach ($data as $index => $item)
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
-                                                    <td>{{ $item->item?->category?->category_name }}</td>
+                                                    @if ($item->product_id == 2)
+                                                        <td>{{ $item->lens?->category?->category_name }} -
+                                                            {{ $item->lens?->attribute?->attribute_name }}
+                                                        </td>
+                                                    @else
+                                                        <td>{{ $item->item?->category?->category_name }} -
+                                                            {{ $item?->item?->code_id }}</td>
+                                                    @endif
                                                     <td>{{ $item->qty }}</td>
                                                     <td>{{ $item->price }}RWF</td>
                                                 </tr>

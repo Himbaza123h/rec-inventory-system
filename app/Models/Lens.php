@@ -10,12 +10,13 @@ use App\Models\LensPower;
 class Lens extends Model
 {
     use HasFactory;
-    protected $fillable = ['mark_lens', 'lens_attribute', 'lens_power', 'price'];
+    protected $fillable = ['mark_lens', 'lens_attribute', 'power_sph','power_cyl','power_axis','power_add', 'price'];
 
     public function category()
     {
         return $this->belongsTo(Category::class, 'mark_lens');
     }
+
 
 
     public function power()

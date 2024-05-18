@@ -66,19 +66,21 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                @php
+                                                {{-- @php
                                                     $code = \App\Models\Code::all();
-                                                @endphp
+                                                @endphp --}}
                                                 <div class="col-md-6">
                                                     <label for="code">Code</label><br>
-                                                    <select name="code_id" id="code" class="form-control select2"
+                                                    {{-- <select name="code_id" id="code" class="form-control select2"
                                                         placeholder="Code">
                                                         <option value="">Select code</option>
                                                         @foreach ($code as $item)
                                                             <option value="{{ $item->id }}">{{ $item->code_name }}
                                                             </option>
                                                         @endforeach
-                                                    </select>
+                                                    </select> --}}
+                                                    <input type="text" name="code_id" id="code"
+                                                        class="form-control" placeholder="ITEM CODE">
                                                 </div>
                                             </div>
                                             <br>
@@ -160,7 +162,7 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->target_client }}</td>
                                                     <td>{{ $item->category?->category_name }}</td>
-                                                    <td>{{ $item->code?->code_name }}</td>
+                                                    <td>{{ $item->code_id }}</td>
                                                     <td>{{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
                                                     </td>
                                                     <td>{{ $item->color?->color_name }}</td>

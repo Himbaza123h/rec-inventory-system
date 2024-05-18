@@ -51,13 +51,13 @@
                                     <div class="col-md-3">
                                         Search Brand / Code
                                         <div class="input-group">
-                                            <input type="text" placeholder="search brand / code"
+                                            <input type="text" id="search-category-1" placeholder="search brand / code"
                                                 class="form-control search-input">
                                         </div><br>
                                     </div>
                                 </div>
                                 <div id="itamePlace">
-                                    <table id="datatable-buttons" class="table table-striped table-bordered">
+                                    <table id="datatable-buttons-1" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>N/O</th>
@@ -73,7 +73,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->code?->code_name }}</td>
+                                                <td>{{ $item->item?->code_id }}</td>
                                                 <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
                                                 <td>{{ $item->item?->color?->color_name }}</td>
                                                 <td>{{ $item->item_quantity }}</td>
@@ -87,6 +87,38 @@
                                     </table>
                                 </div>
                             </div>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    var searchInput = document.getElementById('search-category-1');
+
+                                    searchInput.addEventListener('input', function() {
+                                        var filter = searchInput.value.toLowerCase();
+                                        var table = document.getElementById('datatable-buttons-1');
+                                        var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+                                        for (var i = 0; i < rows.length; i++) { // Loop through all rows in the tbody
+                                            var cells = rows[i].getElementsByTagName('td');
+                                            var match = false;
+
+                                            for (var j = 0; j < cells.length; j++) {
+                                                if (cells[j]) {
+                                                    var cellText = cells[j].textContent || cells[j].innerText;
+                                                    if (cellText.toLowerCase().indexOf(filter) > -1) {
+                                                        match = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            if (match) {
+                                                rows[i].style.display = '';
+                                            } else {
+                                                rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
 
 
@@ -102,13 +134,13 @@
                                     <div class="col-md-3">
                                         Search Brand / Code
                                         <div class="input-group">
-                                            <input type="text" placeholder="search brand / code"
+                                            <input type="text" id="search-category-3" placeholder="search brand / code"
                                                 class="form-control search-input">
                                         </div><br>
                                     </div>
                                 </div>
                                 <div id="itamePlace">
-                                    <table id="datatable-buttons" class="table table-striped table-bordered">
+                                    <table id="datatable-buttons-3" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>N/O</th>
@@ -124,7 +156,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->code?->code_name }}</td>
+                                                <td>{{ $item->item?->code_id }}</td>
                                                 <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
                                                 <td>{{ $item->item?->color?->color_name }}</td>
                                                 <td>{{ $item->item_quantity }}</td>
@@ -138,6 +170,39 @@
                                     </table>
                                 </div>
                             </div>
+
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    var searchInput = document.getElementById('search-category-3');
+
+                                    searchInput.addEventListener('input', function() {
+                                        var filter = searchInput.value.toLowerCase();
+                                        var table = document.getElementById('datatable-buttons-3');
+                                        var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+                                        for (var i = 0; i < rows.length; i++) { // Loop through all rows in the tbody
+                                            var cells = rows[i].getElementsByTagName('td');
+                                            var match = false;
+
+                                            for (var j = 0; j < cells.length; j++) {
+                                                if (cells[j]) {
+                                                    var cellText = cells[j].textContent || cells[j].innerText;
+                                                    if (cellText.toLowerCase().indexOf(filter) > -1) {
+                                                        match = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            if (match) {
+                                                rows[i].style.display = '';
+                                            } else {
+                                                rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
 
 
@@ -154,13 +219,13 @@
                                     <div class="col-md-3">
                                         Search Brand / Code
                                         <div class="input-group">
-                                            <input type="text" placeholder="search brand / code"
+                                            <input type="text" id="search-category-4" placeholder="search brand / code"
                                                 class="form-control search-input">
                                         </div><br>
                                     </div>
                                 </div>
                                 <div id="itamePlace">
-                                    <table id="datatable-buttons" class="table table-striped table-bordered">
+                                    <table id="datatable-buttons-4" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
                                                 <th>N/O</th>
@@ -176,7 +241,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->code?->code_name }}</td>
+                                                <td>{{ $item->item?->code_id }}</td>
                                                 <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
                                                 <td>{{ $item->item?->color?->color_name }}</td>
                                                 <td>{{ $item->item_quantity }}</td>
@@ -190,11 +255,39 @@
                                     </table>
                                 </div>
                             </div>
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    var searchInput = document.getElementById('search-category-4');
+
+                                    searchInput.addEventListener('input', function() {
+                                        var filter = searchInput.value.toLowerCase();
+                                        var table = document.getElementById('datatable-buttons-4');
+                                        var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+                                        for (var i = 0; i < rows.length; i++) { // Loop through all rows in the tbody
+                                            var cells = rows[i].getElementsByTagName('td');
+                                            var match = false;
+
+                                            for (var j = 0; j < cells.length; j++) {
+                                                if (cells[j]) {
+                                                    var cellText = cells[j].textContent || cells[j].innerText;
+                                                    if (cellText.toLowerCase().indexOf(filter) > -1) {
+                                                        match = true;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            if (match) {
+                                                rows[i].style.display = '';
+                                            } else {
+                                                rows[i].style.display = 'none';
+                                            }
+                                        }
+                                    });
+                                });
+                            </script>
                         </div>
-
-
-
-
 
 
                         <div class="panel panel-success product-section" id="2-field">
@@ -206,50 +299,90 @@
                                     <div class="col-md-3">
                                         Search category
                                         <div class="input-group">
-                                            <input type="text" placeholder="search category"
+                                            <input type="text" id="search-category" placeholder="search category"
                                                 class="form-control search-input">
                                         </div><br>
                                     </div>
                                 </div>
                                 <div id="itamePlace">
-                                    <table id="datatable-buttons" class="table table-striped table-bordered">
+                                    <table id="datatable-buttons-2" class="table table-striped table-bordered">
                                         <thead>
                                             <tr>
-                                                <th>N/O</th>
-                                                <th>CATEGORY</th>
-                                                <th>ATTRIBUTES</th>
-                                                <th>POWER</th>
-                                                <th>QUANTITY</th>
+                                                <th rowspan="2">N/O</th>
+                                                <th rowspan="2">CATEGORY</th>
+                                                <th rowspan="2">ATTRIBUTES</th>
+                                                <th colspan="4" class="text-center">POWER</th>
+                                                <th rowspan="2">QUANTITY</th>
+                                            </tr>
+                                            <tr>
+                                                <th>SPH</th>
+                                                <th>CYL</th>
+                                                <th>AXIS</th>
+                                                <th>ADD</th>
                                             </tr>
                                         </thead>
-                                        @foreach ($data2 as $index => $item)
-                                            <tr>
-                                                <td>{{ $index + 1 }}</td>
-                                                <td>{{ $item->item?->category?->category_name }}</td>
-                                                <td>{{ $item->item?->attribute?->attribute_name }}</td>
-                                                <td>{{ $item->item?->power?->sph }} - {{ $item->item?->power?->syl }} -
-                                                    {{ $item->item?->power?->axis }} - {{ $item->item?->power?->add_ }}
-                                                </td>
-                                                <td>{{ $item->item_quantity }}</td>
-                                            </tr>
-                                        @endforeach
-
-                                        <tbody>
-
-
-
+                                        <tbody id="stock-data">
+                                            @foreach ($data2 as $index => $item)
+                                                <tr>
+                                                    <td>{{ $index + 1 }}</td>
+                                                    <td>{{ $item->item?->category?->category_name }}</td>
+                                                    <td>{{ $item->item?->attribute?->attribute_name }}</td>
+                                                    <td>{{ $item->item?->power_sph }}</td>
+                                                    <td>{{ $item->item?->power_cyl }}</td>
+                                                    <td>{{ $item->item?->power_axis }}</td>
+                                                    <td>{{ $item->item?->power_add }}</td>
+                                                    <td>{{ $item->item_quantity }}</td>
+                                                </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
 
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                var searchInput = document.getElementById('search-category');
+
+                                searchInput.addEventListener('input', function() {
+                                    var filter = searchInput.value.toLowerCase();
+                                    var table = document.getElementById('datatable-buttons-2');
+                                    var rows = table.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+
+                                    for (var i = 0; i < rows.length; i++) { // Loop through all rows in the tbody
+                                        var cells = rows[i].getElementsByTagName('td');
+                                        var match = false;
+
+                                        for (var j = 0; j < cells.length; j++) {
+                                            if (cells[j]) {
+                                                var cellText = cells[j].textContent || cells[j].innerText;
+                                                if (cellText.toLowerCase().indexOf(filter) > -1) {
+                                                    match = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        if (match) {
+                                            rows[i].style.display = '';
+                                        } else {
+                                            rows[i].style.display = 'none';
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
+
+
+
+
                         <!-- <div class="alert" id="message-show" style="margin-left: 20px; margin-right: 20px; margin-top: -65px;">
-                                <p>
-                                <br><br><br><h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT TO CHECK STOCK</h4>
-                                </p>
-                                <img src="{{ asset('assets/images/purchase.png') }}" alt="" style="width: 30%; margin-left:35%">
-                            </div> -->
+                                                                <p>
+                                                                <br><br><br><h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT TO CHECK STOCK</h4>
+                                                                </p>
+                                                                <img src="{{ asset('assets/images/purchase.png') }}" alt="" style="width: 30%; margin-left:35%">
+                                                            </div> -->
 
                     </div>
 

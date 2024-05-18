@@ -40,7 +40,10 @@ class MakeSalesController extends Controller
                 'color_id' => 'nullable|string',
                 'attribute_id' => 'nullable|integer',
                 'category_id' => 'nullable|string',
-                'power_id' => 'nullable|string',
+                'power_sph' => 'nullable|string',
+                'power_cyl' => 'nullable|string',
+                'power_axis' => 'nullable|string',
+                'power_add' => 'nullable|string',
                 'seller_id' => 'nullable|integer',
                 'insurance' => 'nullable|integer',
                 'insurance_number' => 'nullable|string',
@@ -51,7 +54,6 @@ class MakeSalesController extends Controller
             $amount = 0;
             $data = $validatedData['insurance'];
             Session::put('insurance_id', $data);
-
 
             // Fetch the product type from the request
             $productType = $request->input('product_id');
@@ -76,10 +78,22 @@ class MakeSalesController extends Controller
                 }
 
                 $amount += $validatedData['sale_price'] * $validatedData['quantity'];
+
+                $existingOrder = CartItem::where('user_id', $user->id)
+                    ->where('status', 1)
+                    ->first();
+
+                if ($existingOrder) {
+                    // Use the current order_number
+                    $random = $existingOrder->sale_code;
+                } else {
+                    // Generate a new order number
+                    $randomNumber = rand(1000, 9999);
+                    $random = 'CUST-SALE-INVOICE' . $randomNumber;
+                }
             } elseif ($productType == 2) {
                 $lensItem = Lens::where('mark_lens', $request->category_id)
                     ->where('lens_attribute', $request->attribute_id)
-                    ->where('lens_power', $request->power_id)
                     ->first();
 
                 if (!$lensItem) {
@@ -95,8 +109,22 @@ class MakeSalesController extends Controller
                 }
 
                 $amount += $validatedData['sale_price'] * $validatedData['quantity'];
+
+                $existingOrder = CartItem::where('user_id', $user->id)
+                    ->where('status', 1)
+                    ->first();
+
+                if ($existingOrder) {
+                    // Use the current order_number
+                    $random = $existingOrder->sale_code;
+                } else {
+                    // Generate a new order number
+                    $randomNumber = rand(1000, 9999);
+                    $random = 'CUST-SALE-INVOICE' . $randomNumber;
+                }
             }
-            $existingCartItem = CartItem::where('item_id', $productType == 1 ? $glassItem->id : $lensItem->id)
+
+            $existingCartItem = CartItem::where('item_id', ($productType == 1 ||  $productType == 3 || $productType == 4) ? $glassItem->id : $lensItem->id)
                 ->where('status', 1)
                 ->where('product_id', $productType)
                 ->first();
@@ -113,20 +141,14 @@ class MakeSalesController extends Controller
                 // Return a redirect with success message
                 return redirect()->back()->with('success', 'Cart updated with new quantity!');
             }
-            // Generate a random sale code
-            $randomNumber = rand(100000, 999999);
-            $random = 'CUST-SALE-INVOICE' . $randomNumber;
-
-
 
             $amountToPay = $amount - $validatedData['covered_amount'];
 
             Session::put('amount_to_pay', $amountToPay);
 
-
             // Create a new cart item with the validated data and generated sale code
             CartItem::create([
-                'item_id' => $productType == 1 ? $glassItem->id : $lensItem->id,
+                'item_id' => ($productType == 1 || $productType == 3 || $productType == 4) ? $glassItem->id : $lensItem->id,
                 'product_id' => $productType,
                 'qty' => $validatedData['quantity'],
                 'sale_code' => $random,

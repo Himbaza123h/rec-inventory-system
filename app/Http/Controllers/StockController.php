@@ -22,4 +22,7 @@ class StockController extends Controller
         $data2 = StockLens::all();
         return view('admin.stock.index', compact('data','data3','data4', 'data2'));
     }
+
+
+
 }

@@ -12,10 +12,10 @@ use App\Models\CartItem;
 use App\Models\PurchaseLens;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use App\Models\PurchaseCart;
 
 class PurchaseController extends Controller
 {
-
     public function edit($id)
     {
         $data = Purchase::where('purchase_code', $id)->get();
@@ -137,5 +137,16 @@ class PurchaseController extends Controller
                 'msg' => $th->getMessage(),
             ]);
         }
+    }
+
+    public function requestNew(Request $request)
+    {
+        $user = Auth::user();
+        $carts = PurchaseCart::where('status', 1)
+            ->where('uwabikoze', $user->id)
+            ->get();
+
+        $number = $request->query('number', 0);
+        return view('purchase.new-item.index', compact('carts', 'number'));
     }
 }

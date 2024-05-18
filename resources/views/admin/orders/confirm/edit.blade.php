@@ -21,7 +21,6 @@
                         </ol>
                     </div>
                 </div>
-
             </div>
             <div class="row">
                 <div class="col-lg-12">
@@ -32,7 +31,7 @@
                                     <thead>
                                         <tr>
                                             <th>N/O</th>
-                                            <th colspan="3">PRODUCT INFO</th>
+                                            <th colspan="3" class="text-center">PRODUCT INFO</th>
                                             <th>Quantity</th>
                                             <th>Price</th>
                                             <th>Total</th>
@@ -46,13 +45,13 @@
                                                 @if ($item->product_id == 2)
                                                     <td>{{ $item->lens?->category?->category_name }}</td>
                                                     <td>{{ $item->lens?->attribute?->attribute_name }}</td>
-                                                    <td>{{ $item->lens?->power?->sph }} - {{ $item->lens?->power?->syl }} -
-                                                        {{ $item->lens?->power?->axis }} - {{ $item->lens?->power?->add_ }}
+                                                    <td>{{ $item->lens?->power_sph }} - {{ $item->lens?->power_cyl }} -
+                                                        {{ $item->lens?->power_axis }} - {{ $item->lens?->power_add }}
                                                     </td>
                                                 @else
                                                     <td>{{ $item->item?->category?->category_name }}</td>
-                                                    <td>{{ $item->item?->code?->code_name }}</td>
-                                                    <td>{{ $item['item']['lens_width'] }}-{{ $item['item']['bridge_width'] }}-{{ $item['item']['temple_length'] }}
+                                                    <td>{{ $item->item?->code_id }}</td>
+                                                    <td>{{ $item?->item?->lens_width }}-{{ $item?->item?->bridge_width }}-{{ $item?->item?->temple_length}}
                                                     </td>
                                                 @endif
                                                 <td>{{ $item->quantity }}</td>

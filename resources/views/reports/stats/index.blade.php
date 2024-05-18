@@ -15,27 +15,31 @@
                     </div>
                     @if (Auth::user()->role == 'admin')
                         <div class="col-md-2">
-                            <label for="">From</label>
+                            <label for="fromDate">From</label>
+                            <div class="input-group">
+                                <input type="date" id="fromDate" class="form-control input-sm">
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <label for="toDate">To</label>
                             <div class="input-group">
                                 <input type="date" id="toDate" class="form-control input-sm">
                             </div>
                         </div>
-                        <div class="col-md-2">
-                            <label for="">To</label>
-                            <div class="input-group">
-                                <input type="date" id="toDate" class="form-control input-sm">
-                            </div>
-                        </div>
-                        <br>
-                        <div class="col-md-2">
-                            <button class="btn btn-primary">Search</button>
+                        <div class="col-md-2" style="margin-top: 25px">
+                            <button id="filterFinancial" class="btn btn-primary">Filter</button>
                         </div>
                     @endif
 
                     <div class="col-sm-8">
                         <ol class="breadcrumb pull-right">
                             <li><a href="{{ route('home') }}">Home</a></li>
-                            <li><a href="{{ route('admin.reports.index') }}">Reports</a></li>
+                            <li>
+                                <a
+                                    href="{{ auth()->user()->role == 'seller' ? route('seller.reports.index') : route('admin.reports.index') }}">
+                                    Reports
+                                </a>
+                            </li>
                             <li class="active">Pending</li>
                         </ol>
                     </div>
@@ -67,10 +71,24 @@
                                                 <td>
                                                     @php
                                                         $insurance = \App\Models\Insurance::find($order->assurance);
+                                                        $covered = App\Models\CartItem::where('item_id', $order->item)
+                                                            ->where('status', 2)
+                                                            ->get();
+                                                        $data = json_decode($covered, true);
+
+                                                        $sum = 0;
+
+                                                        foreach ($data as $item) {
+                                                            if ($item['covered'] !== null) {
+                                                                $sum += (int) $item['covered'];
+                                                            }
+                                                        }
                                                         // $amount = \App\Models\CartItem::where('item_id', );
                                                     @endphp
                                                     @if ($insurance)
-                                                        {{ $insurance->insurance_name }} :
+                                                        {{ $insurance->insurance_name }} : {{ $sum }}
+                                                    @else
+                                                        {{ __('PRIVATE') }}
                                                     @endif
                                                 </td>
                                             </tr>
@@ -92,4 +110,14 @@
         </div>
     </div> <!-- container -->
     </div>
+    <script>
+        $('#filterFinancial').on('click', function() {
+            var fromDate = $('#fromDate').val();
+            var toDate = $('#toDate').val();
+
+            // Redirect to the financial report route with query parameters
+            window.location.href = "{{ route('admin.stats.financial') }}" + "?fromDate=" + fromDate + "&toDate=" +
+                toDate;
+        });
+    </script>
 @endsection

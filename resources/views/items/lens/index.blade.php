@@ -76,7 +76,10 @@
 
 
                                             @php
-                                                $powers = \App\Models\Power::get();
+                                                $power_sph = \App\Models\Power::where('category', 'sph')->get();
+                                                $power_cyl = \App\Models\Power::where('category', 'cyl')->get();
+                                                $power_axis = \App\Models\Power::where('category', 'axis')->get();
+                                                $power_add = \App\Models\Power::where('category', 'add')->get();
                                             @endphp
                                             <div class="row">
 
@@ -87,7 +90,7 @@
                                                     <select name="sph" class="select2 form-control">
                                                         <option value="">SPH
                                                         </option>
-                                                        @foreach ($powers as $item)
+                                                        @foreach ($power_sph as $item)
                                                             <option value="{{ $item->power_value }}">{{ $item->power_name }}
                                                             </option>
                                                         @endforeach
@@ -97,9 +100,9 @@
                                                 <div class="col-md-3">
                                                     {{-- In case of showing placeholder --}}
                                                     <select name="syl" class="select2 form-control">
-                                                        <option value="">SYL
+                                                        <option value="">CYL
                                                         </option>
-                                                        @foreach ($powers as $item)
+                                                        @foreach ($power_cyl as $item)
                                                             <option value="{{ $item->power_value }}">
                                                                 {{ $item->power_name }}
                                                             </option>
@@ -112,7 +115,7 @@
                                                     <select name="axis" class="select2 form-control">
                                                         <option value="">AXIS
                                                         </option>
-                                                        @foreach ($powers as $item)
+                                                        @foreach ($power_axis as $item)
                                                             <option value="{{ $item->power_value }}">
                                                                 {{ $item->power_name }}
                                                             </option>
@@ -125,7 +128,7 @@
                                                     <select name="add_" class="select2 form-control">
                                                         <option value="">ADD
                                                         </option>
-                                                        @foreach ($powers as $item)
+                                                        @foreach ($power_add as $item)
                                                             <option value="{{ $item->power_value }}">
                                                                 {{ $item->power_name }}
                                                             </option>
@@ -168,12 +171,20 @@
                                 <div id="listTable" class="inbox-widget nicescroll mx-box">
                                     <table width="100%" class="table table-striped table-bordered">
                                         <thead>
-                                            <th>N/O</th>
-                                            <th>Lens Category</th>
-                                            <th>Lens Attribute</th>
-                                            <th colspan="4" class="text-center">Lens Power</th>
-                                            <th>Price</th>
-                                            <th>Action</th>
+                                            <tr>
+                                                <th rowspan="2">N/O</th>
+                                                <th rowspan="2">Lens Category</th>
+                                                <th rowspan="2">Lens Attribute</th>
+                                                <th colspan="4" class="text-center">Lens Power</th>
+                                                <th rowspan="2">Price</th>
+                                                <th rowspan="2">Action</th>
+                                            </tr>
+                                            <tr>
+                                                <th>SPH</th>
+                                                <th>CYL</th>
+                                                <th>AXIS</th>
+                                                <th>ADD</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($data as $index => $item)
@@ -182,10 +193,11 @@
                                                     <td>{{ $item->category?->category_name }}</td>
                                                     <td>{{ $item->attribute?->attribute_name }}</td>
                                                     {{-- Placeholders --}}
-                                                    <td>{{ $item->power?->sph }}</td>
-                                                    <td>{{ $item->power?->syl }}</td>
-                                                    <td>{{ $item->power?->add_ }}</td>
-                                                    <td>{{ $item->power?->axis }}</td>
+                                                    <td>{{ $item->power_sph }}</td>
+                                                    <td>{{ $item->power_cyl }}</td>
+
+                                                    <td>{{ $item->power_axis }}</td>
+                                                    <td>{{ $item->power_add }}</td>
                                                     {{-- End of placeholders --}}
                                                     <td>{{ $item->price }}</td>
                                                     <td>

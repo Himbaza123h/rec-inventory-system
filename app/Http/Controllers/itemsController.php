@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Lens;
+use App\Models\Color;
+use App\Models\Attribute;
 
 class itemsController extends Controller
 {
@@ -40,7 +43,7 @@ class itemsController extends Controller
             'target_client' => 'required|string',
             'mark_glasses' => 'required|string',
             'code_id' => 'required|string',
-            'product_type'=> 'required|integer',
+            'product_type' => 'required|integer',
             'lens_width' => 'required|numeric',
             'bridge_width' => 'required|numeric',
             'temple_length' => 'required|numeric',
@@ -119,5 +122,192 @@ class itemsController extends Controller
                 'msg' => $th->getMessage(),
             ]);
         }
+    }
+
+    public function getCodes(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codes = Item::where('product_category', 1)->where('mark_glasses', $brandId)->pluck('code_id')->unique();
+        return response()->json($codes);
+    }
+
+    public function getColors(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codeId = $request->input('code_id');
+        $colorIds = Item::where('product_category', 1)->where('mark_glasses', $brandId)->where('code_id', $codeId)->pluck('color_id')->unique();
+        $colors = Color::whereIn('id', $colorIds)->get();
+        return response()->json($colors);
+    }
+
+    public function getSizes(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codeId = $request->input('code_id');
+        $colorId = $request->input('color_id');
+
+        $items = Item::where('product_category', 1)
+            ->where('mark_glasses', $brandId)
+            ->where('code_id', $codeId)
+            ->where('color_id', $colorId)
+            ->get(['lens_width', 'bridge_width', 'temple_length']);
+
+        $sizes = $items->map(function ($item) {
+            return $item->lens_width . ' - ' . $item->bridge_width . ' - ' . $item->temple_length;
+        });
+
+        return response()->json($sizes);
+    }
+    public function getAttributes(Request $request)
+    {
+        $category_id = $request->category_id;
+        $attributeIds = Lens::where('mark_lens', $category_id)->pluck('lens_attribute')->unique();
+        $attributes = Attribute::whereIn('id', $attributeIds)->get();
+        return response()->json($attributes);
+    }
+
+    public function getSph(Request $request)
+    {
+        $category_id = $request->category_id;
+        $attribute_id = $request->attribute_id;
+
+        $sphValues = Lens::where('mark_lens', $category_id)->where('lens_attribute', $attribute_id)->pluck('power_sph')->unique()->filter()->toArray();
+
+        return response()->json($sphValues);
+    }
+
+    public function getCyl(Request $request)
+    {
+        $category_id = $request->category_id;
+        $attribute_id = $request->attribute_id;
+
+        $cylValues = Lens::where('mark_lens', $category_id)->where('lens_attribute', $attribute_id)->pluck('power_cyl')->unique()->filter()->toArray();
+
+        return response()->json($cylValues);
+    }
+
+    public function getAxis(Request $request)
+    {
+        $category_id = $request->category_id;
+        $attribute_id = $request->attribute_id;
+
+        $axisValues = Lens::where('mark_lens', $category_id)->where('lens_attribute', $attribute_id)->pluck('power_axis')->unique()->filter()->toArray();
+
+        return response()->json($axisValues);
+    }
+
+    public function getAdd(Request $request)
+    {
+        $category_id = $request->category_id;
+        $attribute_id = $request->attribute_id;
+
+        $addValues = Lens::where('mark_lens', $category_id)->where('lens_attribute', $attribute_id)->pluck('power_add')->unique()->filter()->toArray();
+
+        return response()->json($addValues);
+    }
+
+
+
+
+
+    
+
+
+    // Handling Sunglasses
+
+
+
+
+    public function getCodes3(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codes = Item::where('product_category', 3)->where('mark_glasses', $brandId)->pluck('code_id')->unique();
+        return response()->json($codes);
+    }
+
+    public function getColors3(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codeId = $request->input('code_id');
+        $colorIds = Item::where('product_category', 3)->where('mark_glasses', $brandId)->where('code_id', $codeId)->pluck('color_id')->unique();
+        $colors = Color::whereIn('id', $colorIds)->get();
+        return response()->json($colors);
+    }
+
+    public function getSizes3(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codeId = $request->input('code_id');
+        $colorId = $request->input('color_id');
+
+        $items = Item::where('product_category', 3)
+            ->where('mark_glasses', $brandId)
+            ->where('code_id', $codeId)
+            ->where('color_id', $colorId)
+            ->get(['lens_width', 'bridge_width', 'temple_length']);
+
+        $sizes = $items->map(function ($item) {
+            return $item->lens_width . ' - ' . $item->bridge_width . ' - ' . $item->temple_length;
+        });
+
+        return response()->json($sizes);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Handling Sunglasses
+
+
+
+
+    public function getCodes4(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codes = Item::where('product_category', 4)->where('mark_glasses', $brandId)->pluck('code_id')->unique();
+        return response()->json($codes);
+    }
+
+    public function getColors4(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codeId = $request->input('code_id');
+        $colorIds = Item::where('product_category', 4)->where('mark_glasses', $brandId)->where('code_id', $codeId)->pluck('color_id')->unique();
+        $colors = Color::whereIn('id', $colorIds)->get();
+        return response()->json($colors);
+    }
+
+    public function getSizes4(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $codeId = $request->input('code_id');
+        $colorId = $request->input('color_id');
+
+        $items = Item::where('product_category', 4)
+            ->where('mark_glasses', $brandId)
+            ->where('code_id', $codeId)
+            ->where('color_id', $colorId)
+            ->get(['lens_width', 'bridge_width', 'temple_length']);
+
+        $sizes = $items->map(function ($item) {
+            return $item->lens_width . ' - ' . $item->bridge_width . ' - ' . $item->temple_length;
+        });
+
+        return response()->json($sizes);
     }
 }

@@ -14,8 +14,10 @@ use App\Models\Order;
 use App\Models\StockLens;
 use Illuminate\Support\Carbon;
 use App\Models\Sale;
+use App\Models\Supplier;
 use Illuminate\Support\Facades\Session;
 use App\Models\PurchaseLens;
+use App\Models\Item;
 
 class ConfirmOrdersController extends Controller
 {
@@ -87,8 +89,6 @@ class ConfirmOrdersController extends Controller
         return view('admin.orders.pending.index', compact('orders'));
     }
 
-
-
     public function draft()
     {
         // Retrieve pendings grouped by order_number where status is 1
@@ -108,21 +108,30 @@ class ConfirmOrdersController extends Controller
         return view('admin.orders.draft.index', compact('orders'));
     }
 
-
-
     public function accepted()
     {
         // Retrieve pendings grouped by order_number where status is 1
-        $groupedPendings = PurchaseCart::where('status', 2)->get()->groupBy('order_number');
+        $groupedPendings = PurchaseCart::whereIn('status', [2, 5])
+            ->get()
+            ->groupBy('order_number');
 
         // Calculate total amount for each order number
         $orders = [];
         foreach ($groupedPendings as $orderNumber => $pendings) {
             $totalAmount = $pendings->sum('amount');
+            $orderInfo = $pendings->first();
+            $supplier = Supplier::find($orderInfo->supplier_id);
+            $orderDate = $orderInfo->created_at->format('Y-m-d');
+            $orderStatus = $orderInfo->status;
+            $orderPrefix = $orderInfo->prefix;
             $orders[] = [
                 'order_number' => $orderNumber,
                 'total_amount' => $totalAmount,
                 'items' => $pendings,
+                'supplier' => $supplier,
+                'order_date' => $orderDate,
+                'status' => $orderStatus,
+                'prefix' => $orderPrefix,
             ];
         }
         return view('admin.orders.confirm.index', compact('orders'));
@@ -169,6 +178,15 @@ class ConfirmOrdersController extends Controller
         return view('admin.orders.confirm.edit', compact('orderList', 'id'));
     }
 
+    public function reconfirm($id)
+    {
+        $orderList = PurchaseCart::where('order_number', $id)->get();
+        foreach ($orderList as $order) {
+            $order->prefix = 1;
+            $order->save();
+        }
+        return redirect()->back()->with('success', 'Marked as paid');
+    }
     public function confirm(Request $request, $id)
     {
         $request->validate([
@@ -181,6 +199,7 @@ class ConfirmOrdersController extends Controller
         // Update the status of each order to "paid"
         foreach ($orders as $order) {
             $order->status = 5;
+            $order->prefix = $request->payment_method;
             $order->save();
         }
 
@@ -213,7 +232,7 @@ class ConfirmOrdersController extends Controller
 
                 if ($existingStock) {
                     $existingStock->item_quantity += $order->quantity;
-                    $existingStock->remaining += $order->qauntity;
+                    $existingStock->remaining += $order->quantity;
                     $existingStock->save();
                 } else {
                     // If the item does not exist in stock, create a new stock entry
@@ -229,24 +248,53 @@ class ConfirmOrdersController extends Controller
         }
 
         // Redirect back or to any other route as needed
-        return redirect()->back()->with('success', 'Orders confirmed successfully!');
+        return redirect()->route('admin.confirm.orders')->with('success', 'Orders confirmed successfully!');
     }
 
-    public function financial()
+    public function financial(Request $request)
     {
-        $today = Carbon::today();
-        $user = Auth::user();
-
+        $today = \Carbon\Carbon::today();
+        $fromDate = $request->input('fromDate');
+        $toDate = $request->input('toDate');
+    
+        $user = \Illuminate\Support\Facades\Auth::user();
+    
+        // Start the query
+        $query = \App\Models\Sale::select(
+            \Illuminate\Support\Facades\DB::raw('DATE(created_at) as date'),
+            \Illuminate\Support\Facades\DB::raw('item_id as item'),
+            \Illuminate\Support\Facades\DB::raw('SUM(paycash) as cash'),
+            \Illuminate\Support\Facades\DB::raw('SUM(paymomo) as momo'),
+            \Illuminate\Support\Facades\DB::raw('SUM(paypos) as pos'),
+            \Illuminate\Support\Facades\DB::raw('COUNT(insurance_id) as assurance') // Change from SUM to COUNT
+        );
+    
         if ($user->role == 'admin') {
-            $orders = Sale::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(paycash) as cash'), DB::raw('SUM(paymomo) as momo'), DB::raw('SUM(paypos) as pos'), DB::raw('SUM(insurance_id) as assurance'))->groupBy('date')->get();
+            $query->groupBy(\Illuminate\Support\Facades\DB::raw('DATE(created_at)'), 'item_id');
         } else {
-            $orders = Sale::select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(paycash) as cash'), DB::raw('SUM(paymomo) as momo'), DB::raw('SUM(paypos) as pos'), DB::raw('SUM(insurance_id) as assurance'))->groupBy('date')->whereDate('created_at', $today)->get();
+            // If the user is not admin, group by date and item_id
+            $query->groupBy(\Illuminate\Support\Facades\DB::raw('DATE(created_at)'), 'item_id');
+            // Filter by today's date if not provided
+            if (!$fromDate && !$toDate) {
+                $query->whereDate('created_at', $today);
+            }
         }
-
+    
+        // Filter by date range if provided
+        if ($fromDate && $toDate) {
+            $query->whereBetween(\Illuminate\Support\Facades\DB::raw('DATE(created_at)'), [$fromDate, $toDate]);
+        }
+    
+        // Execute the query and get the results
+        $orders = $query->get();
+    
+        // Calculate the total amount
         $totalAmount = $orders->sum(function ($order) {
             return $order->cash + $order->momo + $order->pos + $order->assurance;
         });
-
+    
+        // Return the view with data
         return view('reports.stats.index', compact('orders', 'totalAmount'));
     }
+    
 }

@@ -27,7 +27,7 @@
                                     <label for="mark_glasses">Category:</label>
                                     <select class="form-control select2 code_show_input" name="category_id"
                                         id="mark_glasses">
-                                        <option value="">Choose Cetegory</option>
+                                        <option value="">Choose Category</option>
                                         @php
                                             $lens = \App\Models\StockLens::get();
                                         @endphp

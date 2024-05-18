@@ -143,7 +143,7 @@
 
 
                     <li
-                        class="has_sub {{ request()->routeIs('admin.purchase.order.index') || request()->routeIs('admin.all-draft.list')|| request()->routeIs('admin.single.order.list') || request()->routeIs('admin.pending.order.details') || request()->routeIs('admin.confirm.orders') ? 'active' : '' }}">
+                        class="has_sub {{ request()->routeIs('admin.purchase.order.index') || request()->routeIs('admin.all-draft.list') || request()->routeIs('admin.single.order.list') || request()->routeIs('admin.pending.order.details') || request()->routeIs('admin.confirm.orders') ? 'active' : '' }}">
                         <a href="{{ route('admin.purchase.order.index') }}" class="waves-effect waves-light "><i
                                 class="ion-ios7-pulse-strong"></i><span>Manage Orders</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
@@ -169,6 +169,16 @@
                         <a href="{{ route('admin.invoice.index') }}" class="waves-effect waves-light">
                             <i class="ion-ios7-albums"></i>
                             <span>Invoices</span>
+                        </a>
+                    </li>
+
+
+
+                    <li
+                        class="has_sub {{ request()->routeIs('admin.insurances') ? 'active' : '' }}">
+                        <a href="{{ route('admin.insurances') }}" class="waves-effect waves-light">
+                            <i class="ion-medkit"></i>
+                            <span>Insurances</span>
                         </a>
                     </li>
 

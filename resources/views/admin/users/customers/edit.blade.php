@@ -51,13 +51,6 @@
                                                         class="form-control input-sm" placeholder="New User"
                                                         value="{{ $user->customer_name }}"><br />
                                                 </div>
-                                                <div class="col-md-6">
-                                                    Tin Number<br />
-                                                    <input type="text" required name="customer_tin_number"
-                                                        id="customer_tin_number" class="form-control input-sm"
-                                                        placeholder="TIN NUMBER"
-                                                        value="{{ $user->customer_tin_number }}"><br />
-                                                </div>
                                             </div>
                                             <div class="row">
                                                 <div class="col-md-4">

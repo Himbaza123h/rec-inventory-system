@@ -27,6 +27,9 @@ use App\Http\Controllers\Admin\SellerController;
 use App\Http\Controllers\MakeSalesController;
 use App\Http\Controllers\ConfirmOrdersController;
 use App\Http\Controllers\PurchaseCartController;
+use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\InsuranceController;
+use App\Http\Controllers\PdfController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +54,42 @@ Route::get('dashboard', [HomeController::class, 'index'])
 
 // Admin Controlllers
 
+Route::get('/searchStock', [ConfirmOrdersController::class, 'searchStock'])->name('searchStock');
+
+Route::get('/download-pdf', [PdfController::class, 'index'])->name('download.pdf');
+
+Route::post('/get-codes', [itemsController::class, 'getCodes'])->name('get-codes');
+Route::post('/get-colors', [itemsController::class, 'getColors'])->name('get-colors');
+Route::post('/get-sizes', [itemsController::class, 'getSizes'])->name('get-sizes');
+
+
+
+
+
+
+// Handling glasses
+
+Route::post('/get-codes3', [itemsController::class, 'getCodes3'])->name('get-codes3');
+Route::post('/get-colors3', [itemsController::class, 'getColors3'])->name('get-colors3');
+Route::post('/get-sizes3', [itemsController::class, 'getSizes3'])->name('get-sizes3');
+
+
+
+// Handling reading glasses
+
+Route::post('/get-codes4', [itemsController::class, 'getCodes4'])->name('get-codes4');
+Route::post('/get-colors4', [itemsController::class, 'getColors4'])->name('get-colors4');
+Route::post('/get-sizes4', [itemsController::class, 'getSizes4'])->name('get-sizes4');
+
+
+
+
+Route::post('/get-attributes', [itemsController::class, 'getAttributes'])->name('get-attributes');
+Route::post('/get-power_sph', [itemsController::class, 'getSph'])->name('get-sph');
+Route::post('/get-power_cyl', [itemsController::class, 'getCyl'])->name('get-cyl');
+Route::post('/get-power_axis', [itemsController::class, 'getAxis'])->name('get-axis');
+Route::post('/get-power_add', [itemsController::class, 'getAdd'])->name('get-add');
+
 Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'approvedUser'], 'as' => 'admin.'], function () {
     Route::get('/weekly-report', [WeeklyReportController::class, 'show']);
     Route::get('/categories', [ManageCategoryController::class, 'index'])->name('category.index');
@@ -59,11 +98,24 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::put('/category/update/{id}', [ManageCategoryController::class, 'update'])->name('category.update');
     Route::delete('/category/delete/{id}', [ManageCategoryController::class, 'delete'])->name('category.delete');
 
+    Route::get('/filterData', [HomeController::class, 'filterData'])->name('filterData');
+    Route::get('/filterYearData', [HomeController::class, 'filterYearData'])->name('filterYearData');
+
+    Route::get('api/sales-data', [StatisticController::class, 'getSalesData'])->name('admin.api.sales-data');
+    Route::get('api/lens-sales-data', [StatisticController::class, 'getLensSalesData'])->name('admin.api.lens-sales-data');
+    Route::get('api/frame-sales-data', [StatisticController::class, 'getFrameSalesData'])->name('admin.api.frame-sales-data');
+
     Route::get('/items/glasses', [itemsController::class, 'index'])->name('items.index');
     Route::post('/item/glasses/store', [itemsController::class, 'store'])->name('item.store');
     Route::get('/item/glasses/edit/{id}', [itemsController::class, 'edit'])->name('item.edit');
     Route::put('/item/glasses/update/{id}', [itemsController::class, 'update'])->name('item.update');
     Route::delete('/item/glasses/delete/{id}', [itemsController::class, 'delete'])->name('item.delete');
+
+    Route::get('/show/statistics', [StatisticController::class, 'index'])->name('admin.statistics');
+
+    Route::get('/insurances', [InsuranceController::class, 'index'])->name('insurances');
+    Route::post('/insurance', [InsuranceController::class, 'store'])->name('insurance.store');
+    Route::delete('/insurance/{id}', [InsuranceController::class, 'delete'])->name('insurance.delete');
 
     Route::get('/items/lens', [ItemsLensController::class, 'index'])->name('items.lens.index');
     Route::post('/item/lens/store', [ItemsLensController::class, 'store'])->name('item.lens.store');
@@ -94,22 +146,29 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::put('/customer/update/{id}', [CustomerController::class, 'update'])->name('customer.update');
     Route::delete('/customer/delete/{id}', [CustomerController::class, 'delete'])->name('customer.delete');
 
-    
     Route::get('/request-orders', [PurchaseCartController::class, 'index'])->name('purchase.order.index');
     Route::post('/order/add-cart', [PurchaseCartController::class, 'addCart'])->name('order.add-cart');
     Route::post('/order/lens/add-cart', [PurchaseCartController::class, 'addLensCart'])->name('order.lens.add-cart');
     Route::delete('/remove-cart/{id}', [PurchaseCartController::class, 'remove'])->name('order-cart.remove');
-    Route::post('/accept-cart/{id}', [PurchaseCartController::class, 'accept'])->name('order.list.accept.all');
+    Route::post('/accept-cart', [PurchaseCartController::class, 'accept'])->name('order.list.accept.all');
     Route::post('/draft-cart', [PurchaseCartController::class, 'draft'])->name('order.list.draft.all');
     Route::get('/all-draft-cart', [ConfirmOrdersController::class, 'draft'])->name('all-draft.list');
 
-    
+
+
+    Route::post('/order/add-cart/new-item', [PurchaseCartController::class, 'addCartNew'])->name('order.add-cart.new-item');
+
 
     // Purchase glasses routes to manage controllers
     Route::post('/purchase/glasses/store', [PurchaseController::class, 'store'])->name('purchase.store');
     Route::get('/purchase/glasses/edit/{id}', [PurchaseController::class, 'edit'])->name('purchase.edit');
     Route::post('/purchase/glasses/update/{id}', [PurchaseController::class, 'update'])->name('purchase.update');
     Route::delete('/purchase/glasses/delete/{id}', [PurchaseController::class, 'delete'])->name('purchase.delete');
+
+
+
+    Route::get('/request-orders-new-item', [PurchaseController::class, 'requestNew'])->name('requests-new-item');
+
 
     // Pending order details
     Route::get('/pending-order-details', [ConfirmOrdersController::class, 'details'])->name('pending.order.details');
@@ -127,6 +186,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::post('/order/list/sent', [ConfirmOrdersController::class, 'send'])->name('order.list.send');
     Route::get('/single-order/list/{id}', [ConfirmOrdersController::class, 'singleOrder'])->name('single.order.list');
     Route::put('/single-order/confirm/{id}', [ConfirmOrdersController::class, 'confirm'])->name('single.order.confirm');
+    Route::put('/single-order/reconfirm/{id}', [ConfirmOrdersController::class, 'reconfirm'])->name('single.order.reconfirm');
 
     Route::get('/stats-financial', [ConfirmOrdersController::class, 'financial'])->name('stats.financial');
 

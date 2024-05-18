@@ -19,7 +19,6 @@ class CustomerController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'customer_name' => 'required|string',
-            'customer_tin_number' => 'nullable|string',
             'insurance_id' => 'required|integer',
             'customer_phone' => 'nullable|string|min:10|max:12|regex:/^07\d{8}$/',
             'customer_address' => 'required|string',
@@ -32,7 +31,6 @@ class CustomerController extends Controller
                 $new = new Customer();
                 $new->customer_name = $request->customer_name;
                 $new->insurance_id = $request->insurance_id;
-                $new->customer_tin_number = $request->customer_tin_number;
 
                 // Cleaning customer_phone
                 $phoneDigits = preg_replace('/[^0-9]/', '', $request->customer_phone);
@@ -85,7 +83,6 @@ class CustomerController extends Controller
         // Update customer data with new values
         $customer->customer_name = $request->input('customer_name');
         $customer->insurance_id = $request->input('insurance_id');
-        $customer->customer_tin_number = $request->input('customer_tin_number');
         $customer->customer_phone = $request->input('customer_phone');
         $customer->customer_address = $request->input('customer_address');
         $customer->save();

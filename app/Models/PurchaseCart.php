@@ -11,7 +11,7 @@ use App\Models\Product;
 class PurchaseCart extends Model
 {
     use HasFactory;
-    protected $fillable = ['item_id', 'supplier_id', 'order_number', 'product_id', 'quantity', 'price', 'amount', 'status', 'created_at', 'updated_at'];
+    protected $fillable = ['item_id', 'supplier_id','prefix','uwabikoze', 'order_number', 'product_id', 'quantity', 'price', 'amount', 'status', 'created_at', 'updated_at'];
 
 
     public function item()

@@ -21,7 +21,7 @@ class SalesController extends Controller
     public function fetchCodes(Request $request)
     {
         $markGlassId = $request->input('mark_glass_id');
-        $codes = Item::where('mark_glasses', $markGlassId)->join('codes', 'items.code_id', '=', 'codes.id')->pluck('codes.code_name', 'items.code_id')->toArray();
+        $codes = Item::where('mark_glasses', $markGlassId)->pluck('codes', 'items.code_id')->pluck('codes.code_name', 'items.code_id')->toArray();
         return response()->json($codes);
     }
 
@@ -128,6 +128,9 @@ class SalesController extends Controller
         $data = CartItem::where('user_id', $user->id)
             ->where('status', 1)
             ->get();
+
+        // Generate a random number
+        $randomNumber = rand(1000, 9999);
         return view('seller.make-sales.edit', compact('data'));
     }
 
@@ -214,19 +217,20 @@ class SalesController extends Controller
 
         $buyer = Customer::where('id', $request->buyer_id)->first();
         $names = $buyer->customer_name;
+        $firstName = explode(' ', trim($buyer->customer_name))[0];
         $phone = $buyer->customer_phone;
         $amount = Session::get('amount_to_pay');
 
         //send sms
         $sender = 'REC';
-        $content = 'Dear ' . $names. ' You bill is ' .$amount. ' Rwf. Please proceed to pay, for any questions feel free to contact us on 0788531106 for assistance. Thank you';
+        $content = 'Dear ' . $names . ' You bill is ' . $amount . ' Rwf. Please proceed to pay, for any questions feel free to contact us on 0788531106 for assistance. Thank you';
 
         $params = [
-            'sender'    => $sender,
-            'content'   => $content,
-            'msisdn'    => $phone,
-            'username'  => 'bulksms',
-            'password'  => 'bulksms345',
+            'sender' => $sender,
+            'content' => $content,
+            'msisdn' => $phone,
+            'username' => 'bulksms',
+            'password' => 'bulksms345',
         ];
 
         $smsResponse = $this->sendSms($params);
@@ -251,11 +255,15 @@ class SalesController extends Controller
                     'paycash' => $request->paycash,
                 ]);
 
+                $randomNumber = rand(1000, 9999);
+                $random = $firstName . '-' . $randomNumber;
+
                 // Update all purchases with the specified purchase_code
                 CartItem::where('user_id', $user->id)
                     ->where('status', 1)
                     ->update([
                         'buyer_id' => $request->buyer_id,
+                        'sale_code' => $random,
                         'status' => 2,
                     ]);
 

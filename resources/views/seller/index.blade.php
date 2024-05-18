@@ -20,11 +20,8 @@
             </div>
             <!-- Start Widget -->
             @php
-
             $itemSold = \App\Models\Sale::where('product_id', 1)->count();
             $itemSold1 = \App\Models\Sale::where('product_id', 2)->count();
-            $item = \App\Models\Item::count();
-            $lens = \App\Models\Lens::count();
             @endphp
 
 
@@ -90,20 +87,14 @@
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    // Sample data for demonstration purposes
-    const framesData = [0, 2, 4, 2, 2, 4, 6];
-    const lensData = [2, 6, 2, 6, 2, 0, 2];
-    const labels = ['8am', '10am', '12pm', '2pm', '4pm', '6pm', '8pm'];
-
     // Function to create a chart
     function createChart(chartId, data, label) {
         const ctx = document.getElementById(chartId).getContext('2d');
         new Chart(ctx, {
             type: 'line',
             data: {
-                labels: labels,
+                labels: {!! json_encode($hoursLabels) !!},
                 datasets: [{
                     label: label,
                     data: data,
@@ -114,8 +105,8 @@
             },
             options: {
                 animation: {
-                    duration: 2000, // Animation duration in milliseconds
-                    easing: 'easeOutBounce' // Easing function for the animation
+                    duration: 2000, 
+                    easing: 'easeOutBounce'
                 },
                 scales: {
                     yAxes: [{
@@ -129,9 +120,9 @@
     }
 
     // Create frames sales chart
-    createChart('framesSalesChart', framesData, 'Frames Sales');
+    createChart('framesSalesChart', {!! json_encode($framesData) !!}, 'Frames Sales');
 
     // Create lens sales chart
-    createChart('lensSalesChart', lensData, 'Lens Sales');
+    createChart('lensSalesChart', {!! json_encode($lensData) !!}, 'Lens Sales');
 </script>
 @endsection

@@ -13,17 +13,24 @@ use App\Models\Item;
 
 class ReportController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $user = Auth::user();
 
         if ($user->role == 'admin') {
-            // Get all sales for the admin
-            $sales = Sale::where('product_id', 1)->get();
+            $query = Sale::query();
+
+            // Filter by date range if provided
+            if ($request->has('fromDate') && $request->has('toDate')) {
+                $fromDate = $request->input('fromDate');
+                $toDate = $request->input('toDate');
+                $query->whereBetween('created_at', [$fromDate, $toDate]);
+            }
+
+            $sales = $query->get();
         } else {
             // Get daily sales for other users
-            $sales = Sale::whereDate('created_at', now()->toDateString()) 
-                ->get();
+            $sales = Sale::whereDate('created_at', now()->toDateString())->get();
         }
 
         // Paginate the sales data manually

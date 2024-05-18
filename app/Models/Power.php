@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Power extends Model
 {
     use HasFactory;
+    protected $fillable = ['power_value','power_name','category'];
 }

@@ -21,10 +21,10 @@ class ItemsLensController extends Controller
         $validator = Validator::make($request->all(), [
             'mark_lens' => 'required|string',
             'lens_attribute' => 'required|string',
-            'sph' => 'required|string',
-            'syl' => 'required|string',
-            'axis' => 'required|string',
-            'add_' => 'required|string',
+            'sph' => 'nullable|string',
+            'syl' => 'nullable|string',
+            'axis' => 'nullable|string',
+            'add_' => 'nullable|string',
             'price' => 'required|numeric',
         ]);
 
@@ -34,19 +34,15 @@ class ItemsLensController extends Controller
         }
 
         try {
-            // Create a new LensPower record
-            $lensPower = new LensPower();
-            $lensPower->sph = $request->sph;
-            $lensPower->syl = $request->syl;
-            $lensPower->axis = $request->axis;
-            $lensPower->add_ = $request->add_;
-            $lensPower->save();
 
             $newItem = new Lens();
             $newItem->mark_lens = $request->mark_lens;
             $newItem->lens_attribute = $request->lens_attribute;
             $newItem->price = $request->price;
-            $newItem->lens_power = $lensPower->id;
+            $newItem->power_sph = $request->sph;
+            $newItem->power_cyl = $request->syl;
+            $newItem->power_axis = $request->axis;
+            $newItem->power_add = $request->add_;
             $newItem->save();
 
             return redirect()->back()->with('success', 'New Item successfully created!');

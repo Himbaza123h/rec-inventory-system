@@ -77,33 +77,33 @@
                                                     <div class="col-md-3">
                                                         <select name="sph" class="select2 form-control">
                                                             <option value="">SPH</option>
-                                                            <option value="{{ $item->power?->sph }}"
-                                                                {{ $item->power?->sph ? 'selected' : '' }}>
-                                                                {{ $item->power?->sph }}</option>
+                                                            <option value="{{ $item->power_sph }}"
+                                                                {{ $item->power_sph ? 'selected' : '' }}>
+                                                                {{ $item->power_sph }}</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <select name="syl" class="select2 form-control">
                                                             <option value="">SYL</option>
-                                                            <option value="{{ $item->power?->syl }}"
-                                                                {{ $item->power?->syl ? 'selected' : '' }}>
-                                                                {{ $item->power?->syl }}</option>
+                                                            <option value="{{ $item->power_cyl }}"
+                                                                {{ $item->power_cyl ? 'selected' : '' }}>
+                                                                {{ $item->power_cyl }}</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <select name="axis" class="select2 form-control">
                                                             <option value="">AXIS</option>
-                                                            <option value="{{ $item->power?->axis }}"
-                                                                {{ $item->power?->axis ? 'selected' : '' }}>
-                                                                {{ $item->power?->axis }}</option>
+                                                            <option value="{{ $item->power_axis }}"
+                                                                {{ $item->power_axis ? 'selected' : '' }}>
+                                                                {{ $item->power_axis }}</option>
                                                         </select>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <select name="add_" class="select2 form-control">
                                                             <option value="">ADD</option>
-                                                            <option value="{{ $item->power?->add_ }}"
-                                                                {{ $item->power?->add_ ? 'selected' : '' }}>
-                                                                {{ $item->power?->add_ }}</option>
+                                                            <option value="{{ $item->power_add }}"
+                                                                {{ $item->power_add ? 'selected' : '' }}>
+                                                                {{ $item->power_add }}</option>
                                                         </select>
                                                     </div>
                                                 </div>

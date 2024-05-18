@@ -76,15 +76,9 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label for="code">Code</label><br>
-                                                    <select name="code_id" id="code_id" class="select2 form-control">
-                                                        <option value="">Select Color</option>
-                                                        @foreach ($code as $codeItem)
-                                                            <option value="{{ $codeItem->id }}"
-                                                                {{ $item->code_id == $codeItem->id ? 'selected' : '' }}>
-                                                                {{ $codeItem->code_name }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
+                                                    <input type="text" name="code_id" id="size"
+                                                        class="form-control" placeholder="CODE "
+                                                        value="{{ $item->code_id }}">
                                                 </div>
                                             </div>
                                             <div class="row">
