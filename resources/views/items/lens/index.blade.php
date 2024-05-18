@@ -97,7 +97,7 @@
                                                 <div class="col-md-3">
                                                     {{-- In case of showing placeholder --}}
                                                     <select name="syl" class="select2 form-control">
-                                                        <option value="">SYL
+                                                        <option value="">CYL
                                                         </option>
                                                         @foreach ($powers as $item)
                                                             <option value="{{ $item->power_value }}">

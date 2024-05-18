@@ -58,14 +58,17 @@ class PurchaseCartController extends Controller
                 $supplierName = substr($supplier->supplier_name, 0, 4);
                 $random = strtoupper($supplierName) . '-' . $randomNumber;
             }
+
             // Check if there's an existing cart item with the same item_id
             $existingCartItem = PurchaseCart::where('item_id', $item->id)
+                ->where('supplier_id', $validatedData['supplier_id'])
                 ->where('product_id', $validatedData['product_id'])
                 ->where('status', true)
                 ->first();
 
             if ($existingCartItem) {
                 // Update the quantity and amount of the existing cart item
+                // $random = $existingCartItem->order_number;
                 $existingCartItem->quantity = $validatedData['quantity'];
                 $existingCartItem->supplier_id = $validatedData['supplier_id'];
                 $existingCartItem->order_number = $random;
@@ -74,21 +77,26 @@ class PurchaseCartController extends Controller
 
                 // Return a redirect with success message
                 return redirect()->back()->with('success', 'Cart updated with new quantity!');
+            } else {
+                // $randomNumber = rand(1000, 9999);
+                // $supplier = Supplier::findOrFail($validatedData['supplier_id']);
+                // $supplierName = substr($supplier->supplier_name, 0, 4);
+                // $random = strtoupper($supplierName) . '-' . $randomNumber;
+
+                // Create a new cart item with the validated data and generated sale code
+                $cartItem = PurchaseCart::create([
+                    'item_id' => $item->id,
+                    'quantity' => $validatedData['quantity'],
+                    'supplier_id' => $validatedData['supplier_id'],
+                    'order_number' => $random,
+                    'product_id' => $validatedData['product_id'],
+                    'price' => $validatedData['purchase_price'],
+                    'amount' => $amount,
+                ]);
+
+                // Return a redirect with success message
+                return redirect()->back()->with('success', 'Item added to cart!');
             }
-
-            // Create a new cart item with the validated data and generated sale code
-            $cartItem = PurchaseCart::create([
-                'item_id' => $item->id,
-                'quantity' => $validatedData['quantity'],
-                'supplier_id' => $validatedData['supplier_id'],
-                'order_number' => $random,
-                'product_id' => $validatedData['product_id'],
-                'price' => $validatedData['purchase_price'],
-                'amount' => $amount,
-            ]);
-
-            // Return a redirect with success message
-            return redirect()->back()->with('success', 'Item added to cart!');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Return a redirect with error message if the item is not found
             return redirect()->back()->with('error', 'Item does not exist in stock');
@@ -135,12 +143,14 @@ class PurchaseCartController extends Controller
             }
             // Check if there's an existing cart item with the same item_id
             $existingCartItem = PurchaseCart::where('item_id', $item->id)
+                ->where('supplier_id', $validatedData['supplier_id'])
                 ->where('product_id', 2)
                 ->where('status', true)
                 ->first();
 
             if ($existingCartItem) {
                 // Update the quantity and amount of the existing cart item
+                // $random = $existingCartItem->order_number;
                 $existingCartItem->quantity = $validatedData['quantity'];
                 $existingCartItem->supplier_id = $validatedData['supplier_id'];
                 $existingCartItem->order_number = $random;
@@ -149,21 +159,21 @@ class PurchaseCartController extends Controller
 
                 // Return a redirect with success message
                 return redirect()->back()->with('success', 'Cart updated with new quantity!');
+            } else {
+                // Create a new cart item with the validated data and generated sale code
+                $cartItem = PurchaseCart::create([
+                    'item_id' => $item->id,
+                    'quantity' => $validatedData['quantity'],
+                    'supplier_id' => $validatedData['supplier_id'],
+                    'order_number' => $random,
+                    'product_id' => $validatedData['product_id'],
+                    'price' => $validatedData['purchase_price'],
+                    'amount' => $amount,
+                ]);
+
+                // Return a redirect with success message
+                return redirect()->back()->with('success', 'Item added to cart!');
             }
-
-            // Create a new cart item with the validated data and generated sale code
-            $cartItem = PurchaseCart::create([
-                'item_id' => $item->id,
-                'quantity' => $validatedData['quantity'],
-                'supplier_id' => $validatedData['supplier_id'],
-                'order_number' => $random,
-                'product_id' => $validatedData['product_id'],
-                'price' => $validatedData['purchase_price'],
-                'amount' => $amount,
-            ]);
-
-            // Return a redirect with success message
-            return redirect()->back()->with('success', 'Item added to cart!');
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             // Return a redirect with error message if the item is not found
             return redirect()->back()->with('error', 'Item does not exist in stock');
