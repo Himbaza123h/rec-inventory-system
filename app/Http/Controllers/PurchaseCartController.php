@@ -288,10 +288,10 @@ class PurchaseCartController extends Controller
             $cart->status = 2;
             $cart->save();
         }
-
-        return redirect()
-            ->back()
-            ->with('success', 'All items with order by ' . $user->name . ' accepted successfully.');
+        return redirect()->route('admin.confirm.orders')->with('success', 'All items with order by ' . $user->name . ' accepted successfully.');
+        // return redirect()
+        //     ->back()
+        //     ->with('success', 'All items with order by ' . $user->name . ' accepted successfully.');
     }
 
     public function draft()

@@ -219,9 +219,9 @@
                                         </th>
                                         <th colspan="2">
                                             <div class="" style="margin-left: 10px">
-                                                TOTOL PRICE: {{ $formattedTotalPrice }}<br>
-                                                INSURANCE AMOUNT: {{ $formattedCovered }} <br>
-                                                TOP UP AMOUNT: {{ $topUpAmount }}
+                                                INSURANCE : {{ $formattedCovered }} <br><br>
+                                                TOTOL AMOUNT: {{ $formattedTotalPrice }}<br>
+                                                <!-- TOP UP AMOUNT: {{ $topUpAmount }} -->
                                             </div>
                                     </tr>
                                 </table>

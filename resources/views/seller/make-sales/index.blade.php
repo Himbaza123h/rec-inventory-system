@@ -419,18 +419,15 @@
                                     <div class="col-md-12">
 
                                         @php
-                                            $itemData2 = \App\Models\Lens::get(['mark_lens'])->unique('mark_lens')
-                                            ->join('stocks', 'lenses.id', '=', 'stocks.item_id')
-                                                    ->whereNotNull('lenses.mark_lens')
-                                                    ->select('lenses.mark_lens')
-                                                    ->distinct()
-                                                    ->get();
+                                            $itemData2 = \App\Models\Lens::join('stocks', 'lenses.id', '=', 'stocks.item_id')
+                                                                        ->whereNotNull('lenses.mark_lens')
+                                                                        ->distinct()
+                                                                        ->get(['lenses.mark_lens']);
                                         @endphp
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="category_id">Category:</label>
-                                                <select class="form-control select2 code_show_input" name="category_id"
-                                                    id="category_id">
+                                                <select class="form-control select2 code_show_input" name="category_id" id="category_id">
                                                     <option value="" disabled selected>Choose Category</option>
                                                     @foreach ($itemData2 as $item)
                                                         <option value="{{ $item->mark_lens }}">
