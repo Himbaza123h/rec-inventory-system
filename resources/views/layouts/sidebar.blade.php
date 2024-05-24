@@ -109,33 +109,41 @@
                     <li
                         class="has_sub {{ request()->routeIs('home') || request()->routeIs('dashboard') ? 'active' : '' }}">
                         <a href="{{ route('home') }}" class="waves-effect waves-light "><i
-                                class="ion-ios7-gear"></i><span>Dashboard</span></a>
+                                class="ion-home"></i><span>Dashboard</span></a>
                     </li>
-                    <li
-                        class="has_sub {{ request()->routeIs('admin.category.index') || request()->routeIs('admin.category.edit') ? 'active' : '' }}">
+                    <li class="has_sub {{ request()->routeIs('admin.category.index') ? 'active' : '' }}">
                         <a href="{{ route('admin.category.index') }}" class="waves-effect waves-light "><i
-                                class="ion-document"></i><span>Categories</span></a>
+                                class="ion-pricetags"></i><span>Categories</span></a>
                     </li>
+
+                    <li
+                        class="has_sub {{ request()->routeIs('admin.attribute.index') || request()->routeIs('') ? 'active' : '' }}">
+                        <a href="{{ route('admin.attribute.index') }}" class="waves-effect waves-light "><i
+                                class="ion-pricetags"></i><span>Attributes</span></a>
+                    </li>
+
+
                     <li
                         class="has_sub {{ request()->routeIs('admin.items.index') || request()->routeIs('admin.items.lens.index') || request()->routeIs('admin.item.lens.edit') || request()->routeIs('admin.colors.index') || request()->routeIs('admin.item.edit') ? 'active' : '' }}">
-                        <a href="#" class="waves-effect waves-light"><i class="ion-bag"></i><span>Items</span>
+                        <a href="#" class="waves-effect waves-light"><i class="ion-cube"></i><span>Items</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
                         <ul class="list-unstyle">
                             <li><a href="{{ route('admin.items.index') }}" class="waves-effect waves-light"><i
-                                        class="ion-bag"></i>Frames</a></li>
+                                        class="ion-ios-glasses"></i>Frames</a></li>
 
                             <li><a href="{{ route('admin.items.sunglasses.index') }}"
-                                    class="waves-effect waves-light"><i class="ion-bag"></i>Sun Glasses</a></li>
+                                    class="waves-effect waves-light"><i class="ion-ios-glasses"></i>Sun Glasses</a></li>
                             <li><a href="{{ route('admin.items.readingglasses.index') }}"
-                                    class="waves-effect waves-light"><i class="ion-bag"></i>Reading Glasses</a></li>
+                                    class="waves-effect waves-light"><i class="ion-ios-glasses"></i>Reading Glasses</a>
+                            </li>
 
 
                             <li><a href="{{ route('admin.items.lens.index') }}" class="waves-effect waves-light"><i
-                                        class="ion-bag"></i>Lens</a></li>
+                                        class="ion-ios-glasses"></i>Lens</a></li>
 
                             <li><a href="{{ route('admin.colors.index') }}" class="waves-effect waves-light"><i
-                                        class="ion-bag"></i>Manage Colors</a></li>
+                                        class="ion-ios-glasses"></i>Manage Colors</a></li>
 
                         </ul>
                     </li>
@@ -161,7 +169,7 @@
 
                     <li class="has_sub {{ request()->routeIs('admin.stock.index') ? 'active' : '' }}">
                         <a href="{{ route('admin.stock.index') }}" class="waves-effect waves-light "><i
-                                class="ion-ios7-gear"></i><span>Stock</span></a>
+                                class="ion-stats-bars"></i><span>Stock</span></a>
                     </li>
 
                     <li
@@ -174,8 +182,7 @@
 
 
 
-                    <li
-                        class="has_sub {{ request()->routeIs('admin.insurances') ? 'active' : '' }}">
+                    <li class="has_sub {{ request()->routeIs('admin.insurances') ? 'active' : '' }}">
                         <a href="{{ route('admin.insurances') }}" class="waves-effect waves-light">
                             <i class="ion-medkit"></i>
                             <span>Insurances</span>

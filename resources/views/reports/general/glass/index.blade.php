@@ -219,15 +219,9 @@
                                                         POS
                                                     @endif
                                                     @if ($item->paymomo)
-                                                        @if ($item->paypos)
-                                                            ,
-                                                        @endif
                                                         MOMO
                                                     @endif
                                                     @if ($item->paycash)
-                                                        @if ($item->paypos || $item->paymomo)
-                                                            ,
-                                                        @endif
                                                         Cash
                                                     @endif
                                                 </td>

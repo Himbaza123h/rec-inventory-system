@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AttributeController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -62,27 +63,17 @@ Route::post('/get-codes', [itemsController::class, 'getCodes'])->name('get-codes
 Route::post('/get-colors', [itemsController::class, 'getColors'])->name('get-colors');
 Route::post('/get-sizes', [itemsController::class, 'getSizes'])->name('get-sizes');
 
-
-
-
-
-
 // Handling glasses
 
 Route::post('/get-codes3', [itemsController::class, 'getCodes3'])->name('get-codes3');
 Route::post('/get-colors3', [itemsController::class, 'getColors3'])->name('get-colors3');
 Route::post('/get-sizes3', [itemsController::class, 'getSizes3'])->name('get-sizes3');
 
-
-
 // Handling reading glasses
 
 Route::post('/get-codes4', [itemsController::class, 'getCodes4'])->name('get-codes4');
 Route::post('/get-colors4', [itemsController::class, 'getColors4'])->name('get-colors4');
 Route::post('/get-sizes4', [itemsController::class, 'getSizes4'])->name('get-sizes4');
-
-
-
 
 Route::post('/get-attributes', [itemsController::class, 'getAttributes'])->name('get-attributes');
 Route::post('/get-power_sph', [itemsController::class, 'getSph'])->name('get-sph');
@@ -97,6 +88,11 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::get('/category/edit/{id}', [ManageCategoryController::class, 'edit'])->name('category.edit');
     Route::put('/category/update/{id}', [ManageCategoryController::class, 'update'])->name('category.update');
     Route::delete('/category/delete/{id}', [ManageCategoryController::class, 'delete'])->name('category.delete');
+
+    // Attributes
+    Route::get('/attributes', [AttributeController::class, 'index'])->name('attribute.index');
+    Route::post('/attribute/store', [AttributeController::class, 'store'])->name('attribute.store');
+    Route::delete('/attribute/delete/{id}', [AttributeController::class, 'delete'])->name('attribute.delete');
 
     Route::get('/filterData', [HomeController::class, 'filterData'])->name('filterData');
     Route::get('/filterYearData', [HomeController::class, 'filterYearData'])->name('filterYearData');
@@ -154,10 +150,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::post('/draft-cart', [PurchaseCartController::class, 'draft'])->name('order.list.draft.all');
     Route::get('/all-draft-cart', [ConfirmOrdersController::class, 'draft'])->name('all-draft.list');
 
-
-
     Route::post('/order/add-cart/new-item', [PurchaseCartController::class, 'addCartNew'])->name('order.add-cart.new-item');
-
 
     // Purchase glasses routes to manage controllers
     Route::post('/purchase/glasses/store', [PurchaseController::class, 'store'])->name('purchase.store');
@@ -165,10 +158,7 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::post('/purchase/glasses/update/{id}', [PurchaseController::class, 'update'])->name('purchase.update');
     Route::delete('/purchase/glasses/delete/{id}', [PurchaseController::class, 'delete'])->name('purchase.delete');
 
-
-
     Route::get('/request-orders-new-item', [PurchaseController::class, 'requestNew'])->name('requests-new-item');
-
 
     // Pending order details
     Route::get('/pending-order-details', [ConfirmOrdersController::class, 'details'])->name('pending.order.details');

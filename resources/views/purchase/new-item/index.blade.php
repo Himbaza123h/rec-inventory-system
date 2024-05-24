@@ -21,7 +21,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-3">
-                        <h3 class="pull-right page-title"><b>REGISTER ITEM BY ORDER </b></h3>
+                        <!-- <h3 class="pull-right page-title"><b>REGISTER ITEM BY ORDER </b></h3> -->
                     </div>
                     <div class="col-sm-3" style="margin-bottom: 10px">
                     </div>

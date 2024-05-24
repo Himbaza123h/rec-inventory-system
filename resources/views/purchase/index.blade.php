@@ -540,7 +540,7 @@
                                                         {{ $item->product?->product_name }}
                                                     </td>
                                                     @if ($item->product_id == 1 || $item->product_id == 3 || $item->product_id == 4)
-                                                        <td>{{ $item->item->category->category_name }}</td>
+                                                        <td>{{ $item->item?->category?->category_name }}</td>
                                                     @elseif($item->product_id == 2)
                                                         <td>{{ $item?->lens?->category?->category_name }}</td>
                                                     @endif

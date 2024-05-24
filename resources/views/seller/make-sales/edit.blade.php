@@ -219,9 +219,9 @@
                                         </th>
                                         <th colspan="2">
                                             <div class="" style="margin-left: 10px">
-                                                TOTOL PRICE: {{ $formattedTotalPrice }}<br>
-                                                INSURANCE AMOUNT: {{ $formattedCovered }} <br>
-                                                TOP UP AMOUNT: {{ $topUpAmount }}
+                                                INSURANCE : {{ $formattedCovered }} <br><br>
+                                                TOTOL AMOUNT: {{ $formattedTotalPrice }}<br>
+                                                <!-- TOP UP AMOUNT: {{ $topUpAmount }} -->
                                             </div>
                                     </tr>
                                 </table>
@@ -244,18 +244,20 @@
         $(document).ready(function() {
             $("#trackMode").change(function() {
                 var mode = $(this).val();
+                // Clear existing input fields
+                $("#paymentInputs").empty();
 
-                if (mode === "1") {
+                if (mode === "2") {
                     $("#paymentInputs").append(
-                        '<div class="col-lg-4"><input type="text" class="form-control cash-input" name="paycash" placeholder="Momo"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                        '<div class="col-lg-4"><input type="text" class="form-control cash-input" name="paycash" placeholder="Cash"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
                     );
-                } else if (mode === "2") {
+                } else if (mode === "1") {
                     $("#paymentInputs").append(
-                        '<div class="col-lg-4"><input type="text" class="form-control momo-input" name="paymomo" placeholder="Cash"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                        '<div class="col-lg-4"><input type="text" class="form-control momo-input" name="paymomo" placeholder="Momo"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
                     );
                 } else if (mode === "3") {
                     $("#paymentInputs").append(
-                        '<div class="col-lg-4"><input type="text" class="form-control three-input" name="paypos" placeholder="POS"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                        '<div class="col-lg-4"><input type="text" class="form-control pos-input" name="paypos" placeholder="POS"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
                     );
                 }
             });
@@ -273,11 +275,12 @@
                 $("#paymomo_input").val($(this).val());
             });
 
-            $(document).on("input", ".three-input", function() {
+            $(document).on("input", ".pos-input", function() {
                 $("#paypos_input").val($(this).val());
             });
         });
     </script>
+
     <script>
         $(document).ready(function() {
             const insuranceSelect = $('#insurance_percentage');
