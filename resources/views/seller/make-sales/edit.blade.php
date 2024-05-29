@@ -247,11 +247,11 @@
 
                 if (mode === "1") {
                     $("#paymentInputs").append(
-                        '<div class="col-lg-4"><input type="text" class="form-control cash-input" name="paycash" placeholder="Momo"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                        '<div class="col-lg-4"><input type="text" class="form-control cash-input" name="paycash" placeholder="Cash"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
                     );
                 } else if (mode === "2") {
                     $("#paymentInputs").append(
-                        '<div class="col-lg-4"><input type="text" class="form-control momo-input" name="paymomo" placeholder="Cash"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                        '<div class="col-lg-4"><input type="text" class="form-control momo-input" name="paymomo" placeholder="Momo"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
                     );
                 } else if (mode === "3") {
                     $("#paymentInputs").append(

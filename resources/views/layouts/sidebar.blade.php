@@ -116,11 +116,11 @@
                                 class="ion-pricetags"></i><span>Categories</span></a>
                     </li>
 
-                    <li
+                    <!-- <li
                         class="has_sub {{ request()->routeIs('admin.attribute.index') || request()->routeIs('') ? 'active' : '' }}">
                         <a href="{{ route('admin.attribute.index') }}" class="waves-effect waves-light "><i
                                 class="ion-pricetags"></i><span>Attributes</span></a>
-                    </li>
+                    </li> -->
 
 
                     <li
@@ -144,6 +144,10 @@
 
                             <li><a href="{{ route('admin.colors.index') }}" class="waves-effect waves-light"><i
                                         class="ion-ios-glasses"></i>Manage Colors</a></li>
+
+
+                            <li><a href="{{ route('admin.attribute.index') }}" class="waves-effect waves-light"><i
+                                        class="ion-ios-glasses"></i>Manage Attributes</a></li>
 
                         </ul>
                     </li>
@@ -182,14 +186,6 @@
 
 
 
-                    <li class="has_sub {{ request()->routeIs('admin.insurances') ? 'active' : '' }}">
-                        <a href="{{ route('admin.insurances') }}" class="waves-effect waves-light">
-                            <i class="ion-medkit"></i>
-                            <span>Insurances</span>
-                        </a>
-                    </li>
-
-
 
                     <ul class="list-unstyle">
                         <li>
@@ -208,8 +204,8 @@
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
                         <ul class="list-unstyle">
-                            <!-- <li><a href="{{ route('admin.users.index') }}" class="waves-effect waves-light"><i
-                                        class="ion-android-contact"></i>Users</a></li> -->
+                            <li><a href="{{ route('admin.users.index') }}" class="waves-effect waves-light"><i
+                                        class="ion-android-contact"></i>Users</a></li>
                             <li><a href="{{ route('admin.sellers.index') }}" class="waves-effect waves-light"><i
                                         class="ion-android-social"></i>Sellers</a></li>
                             <li {{ request()->routeIs('admin.suppliers.index') ? 'active' : '' }}><a
@@ -219,6 +215,12 @@
                                         class="ion-android-social-user"></i>Customers</a></li>
 
                         </ul>
+                    </li>
+                    <li class="has_sub {{ request()->routeIs('admin.insurances') ? 'active' : '' }}">
+                        <a href="{{ route('admin.insurances') }}" class="waves-effect waves-light">
+                            <i class="ion-medkit"></i>
+                            <span>Insurances</span>
+                        </a>
                     </li>
                     <li
                         class="has_sub {{ request()->routeIs('admin.reports.index') || request()->routeIs('admin.stats.financial') || request()->routeIs('admin.reports.lens.index') ? 'active' : '' }}">
