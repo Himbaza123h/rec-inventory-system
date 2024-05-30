@@ -46,6 +46,9 @@
                                                 $category = \App\Models\Category::where('product', 1)->get();
                                                 $color = \App\Models\Color::all();
                                                 $code = \App\Models\Code::all();
+                                                $types = \App\Models\Type::where('status', true)
+                                                    ->where('product_category', 1)
+                                                    ->get();
 
                                             @endphp
                                             <div class="row">
@@ -76,9 +79,8 @@
                                                 </div>
                                                 <div class="col-md-4">
                                                     <label for="code">Code</label><br>
-                                                    <input type="text" name="code_id" id="size"
-                                                        class="form-control" placeholder="CODE "
-                                                        value="{{ $item->code_id }}">
+                                                    <input type="text" name="code_id" id="size" class="form-control"
+                                                        placeholder="CODE " value="{{ $item->code_id }}">
                                                 </div>
                                             </div>
                                             <div class="row">
@@ -102,7 +104,7 @@
                                                 </div>
                                             </div>
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <label for="color">Color</label><br>
                                                     <select name="color_id" id="color_id" class="select2 form-control">
                                                         <option value="">Select Color</option>
@@ -115,7 +117,22 @@
                                                     </select>
 
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-4">
+                                                    <label for="color">Type</label><br>
+                                                    <select name="type_name" id="type_name" class="select2 form-control">
+                                                        <option value="">Select Type</option>
+                                                        @foreach ($types as $typeItem)
+                                                            <option value="{{ $typeItem?->id }}"
+                                                                {{ $item?->item_type == $typeItem?->id ? 'selected' : '' }}>
+                                                                {{ $typeItem?->type_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+
+                                                </div>
+
+                                                <div class="col-md-4">
                                                     <label for="price">Price</label><br>
                                                     <input type="text" name="price" id="price" class="form-control"
                                                         placeholder="Price" value="{{ $item->price }}">

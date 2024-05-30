@@ -40,7 +40,7 @@
                                             @method('PUT')
 
                                             <div class="row">
-                                                <div class="col-md-6">
+                                                <div class="col-md-4">
                                                     <label for="mark_lens">Category of Lens</label><br>
                                                     <select name="mark_lens" id="mark_lens" class="select2 form-control">
                                                         <option value="">Category of Lens</option>
@@ -52,23 +52,32 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
-                                                <div class="col-md-6">
+
+                                                <div class="col-md-4">
+                                                    <label for="lens_attribute">Type</label><br>
+                                                    <select name="type_name" id="type_name" class="select2 form-control">
+                                                        <option value="">Select Type</option>
+                                                        @foreach ($types as $type)
+                                                            <option value="{{ $type->id }}"
+                                                                {{ $item->item_type == $type->id ? 'selected' : '' }}>
+                                                                {{ $type->type_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+
+
+                                                <div class="col-md-4">
                                                     <label for="lens_attribute">Lens Attribute</label><br>
                                                     <select name="lens_attribute" id="lens_attribute"
                                                         class="select2 form-control">
                                                         <option value="">Select Attribute</option>
-                                                        <option value="1"
-                                                            {{ $item->lens_attribute == 1 ? 'selected' : '' }}>White
-                                                        </option>
-                                                        <option value="2"
-                                                            {{ $item->lens_attribute == 2 ? 'selected' : '' }}>PhotoChromic
-                                                        </option>
-                                                        <option value="3"
-                                                            {{ $item->lens_attribute == 3 ? 'selected' : '' }}>White BlueCat
-                                                        </option>
-                                                        <option value="4"
-                                                            {{ $item->lens_attribute == 4 ? 'selected' : '' }}>PhotoChromic
-                                                            BlueCat</option>
+                                                        @foreach ($attributes as $attribute)
+                                                            <option value="{{ $attribute->id }}"
+                                                                {{ $item->lens_attribute == $attribute->id ? 'selected' : '' }}>
+                                                                {{ $attribute->attribute_name }}
+                                                            </option>
+                                                        @endforeach
                                                     </select>
                                                 </div>
                                             </div><br>

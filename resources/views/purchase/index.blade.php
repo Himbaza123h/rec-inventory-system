@@ -40,30 +40,30 @@
                     </div>
                     <br>
                     <!-- <div class="col-sm-3">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="panel-heading" style="background-color: #3e4550;">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="row" style="color: #ffffff;">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <a href="{{ route('admin.pending.order.details') }}"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        style="text-decoration: none; color: #fff">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="col-md-12 text-center">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="btn btn-success">VIEW PENDING ORDERS</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="panel-heading" style="background-color: #3e4550;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="row" style="color: #ffffff;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="{{ route('admin.pending.order.details') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                style="text-decoration: none; color: #fff">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="col-md-12 text-center">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <button type="button" class="btn btn-success">VIEW PENDING ORDERS</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div> -->
                     <div class="col-sm-6"></div>
                     <!-- <div class="col-sm-3">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <div class="panel-heading" style="background-color: #3e4550;">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="row" style="color: #ffffff;">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <a href="{{ route('admin.all-draft.list') }}"
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        style="text-decoration: none; color: #fff">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="col-md-12 text-center">
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <button type="button" class="btn btn-warning">VIEW DRAFT ORDERS</button>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </a>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div> -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <div class="panel-heading" style="background-color: #3e4550;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <div class="row" style="color: #ffffff;">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <a href="{{ route('admin.all-draft.list') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                style="text-decoration: none; color: #fff">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <div class="col-md-12 text-center">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <button type="button" class="btn btn-warning">VIEW DRAFT ORDERS</button>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            </a>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                </div> -->
                     <div class="col-sm-3">
                         <h3 class="pull-right page-title"><b>NEW ORDER</b><i class="ion-ios7-cart-outline"></i></h3>
                     </div>
@@ -108,14 +108,20 @@
                                                     <option value="">Choose Brand</option>
                                                     @foreach ($itemData as $item)
                                                         <option value="{{ $item->mark_glasses }}">
-                                                            {{ $item->category?->category_name }}</option>
+                                                            {{ $item->category->category_name }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-2">
+                                            <label for="type_id">Type</label>
+                                            <select class="form-control select2" name="type_id" id="type_id" disabled>
+                                                <option value="" disabled selected>Choose Type</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
                                             <label for="code_id">Code</label>
-                                            <select class="form-group select2" name="code_id" id="code_id" disabled>
+                                            <select class="form-control select2" name="code_id" id="code_id" disabled>
                                                 <option value="" disabled selected>Choose Code</option>
                                             </select>
                                         </div>
@@ -136,15 +142,15 @@
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="quantity">Quantity:</label>
-                                                <input type="number" class="form-control" id="quantity" name="quantity"
-                                                    min="1" placeholder="Qty">
+                                                <input type="number" class="form-control" id="quantity"
+                                                    name="quantity" min="1" placeholder="Qty">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="price_input">Price</label>
@@ -165,6 +171,7 @@
                                     </div>
                                 </div>
                             </form>
+
 
                         </div>
 
@@ -210,6 +217,12 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2">
+                                            <label for="type_id">Type</label>
+                                            <select class="form-control select2" name="type_id" id="type_id3" disabled>
+                                                <option value="" disabled selected>Choose Type</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
                                             <label for="code_id">Code</label>
                                             <select class="form-group select2" name="code_id" id="code_id3" disabled>
                                                 <option value="" disabled selected>Choose Code</option>
@@ -233,6 +246,10 @@
                                                 </select>
                                             </div>
                                         </div>
+
+                                    </div>
+
+                                    <div class="col-md-12">
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="quantity">Quantity:</label>
@@ -240,8 +257,6 @@
                                                     name="quantity" min="1" placeholder="Qty">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="price_input">Price</label>
@@ -308,6 +323,12 @@
                                             </div>
                                         </div>
                                         <div class="col-md-2">
+                                            <label for="type_id">Type</label>
+                                            <select class="form-control select2" name="type_id" id="type_id4" disabled>
+                                                <option value="" disabled selected>Choose Type</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2">
                                             <label for="code_id">Code</label>
                                             <select class="form-group select2" name="code_id" id="code_id4" disabled>
                                                 <option value="" disabled selected>Choose Code</option>
@@ -331,6 +352,8 @@
                                                 </select>
                                             </div>
                                         </div>
+                                    </div>
+                                    <div class="col-md-12">
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="quantity">Quantity:</label>
@@ -338,8 +361,6 @@
                                                     name="quantity" min="1" placeholder="Qty">
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
                                         <div class="col-md-2">
                                             <div class="form-group">
                                                 <label for="price_input">Price</label>
@@ -365,6 +386,8 @@
 
 
                         <div class="panel panel-success product-selection" id="2-field">
+
+
                             <form action="{{ route('admin.order.lens.add-cart') }}" method="POST">
                                 @csrf
                                 <div class="row">
@@ -403,6 +426,21 @@
                                                     @endforeach
                                                 </select>
                                             </div>
+                                        </div>
+
+                                        @php
+                                            $types = \App\Models\Type::where('product_category', 2)
+                                                ->where('status', true)
+                                                ->get();
+                                        @endphp
+                                        <div class="col-md-2">
+                                            <label for="type_id">Type</label>
+                                            <select class="form-control select2" name="type_id">
+                                                <option value="">Choose Type</option>
+                                                @foreach ($types as $item)
+                                                    <option value="{{ $item->id }}">{{ $item->type_name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
 
                                         <div class="col-md-2">
@@ -488,9 +526,6 @@
                                     </div>
                                 </div>
                             </form>
-
-
-
 
                         </div>
                     </div>
@@ -672,13 +707,23 @@
 
         });
     </script>
+
+
     <script>
         $(document).ready(function() {
             $('#mark_glass_id').change(function() {
                 resetFields();
                 var brandId = $(this).val();
                 if (brandId) {
-                    enableCodeDropdown(brandId);
+                    enableTypeDropdown(brandId);
+                }
+            });
+
+            $('#type_id').change(function() {
+                var brandId = $('#mark_glass_id').val();
+                var typeId = $('#type_id').val();
+                if (brandId && typeId) {
+                    enableCodeDropdown(brandId, typeId);
                 }
             });
 
@@ -689,22 +734,26 @@
                     return;
                 }
                 var brandId = $('#mark_glass_id').val();
+                var typeId = $('#type_id').val();
                 var codeId = $(this).val();
-                if (brandId && codeId) {
-                    enableColorDropdown(brandId, codeId);
+                if (brandId && typeId && codeId) {
+                    enableColorDropdown(brandId, typeId, codeId);
                 }
             });
 
             $('#color_id').change(function() {
                 var brandId = $('#mark_glass_id').val();
+                var typeId = $('#type_id').val();
                 var codeId = $('#code_id').val();
                 var colorId = $(this).val();
-                if (brandId && codeId && colorId) {
-                    enableSizeDropdown(brandId, codeId, colorId);
+                if (brandId && typeId && codeId && colorId) {
+                    enableSizeDropdown(brandId, typeId, codeId, colorId);
                 }
             });
 
             function resetFields() {
+                $('#type_id').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Type</option>');
                 $('#code_id').prop('disabled', true).empty().append(
                     '<option value="" disabled selected>Choose Code</option>');
                 $('#color_id').prop('disabled', true).empty().append(
@@ -713,31 +762,53 @@
                     '<option value="" disabled selected>Choose Size</option>');
             }
 
-            function enableCodeDropdown(brandId) {
+            function enableTypeDropdown(brandId) {
                 $.ajax({
-                    url: "{{ route('get-codes') }}",
+                    url: "{{ route('get-types') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(data) {
+                        $('#type_id').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Type</option>');
+                        $.each(data, function(index, value) {
+                            $('#type_id').append('<option value="' + value.id + '">' + value
+                                .type_name + '</option>');
+                        });
+                    }
+                });
+            }
+
+            function enableCodeDropdown(brandId, typeId) {
+                $.ajax({
+                    url: "{{ route('get-codes') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        type_id: typeId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#code_id').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Code</option>');
                         $.each(data, function(index, value) {
                             $('#code_id').append('<option value="' + value + '">' + value +
                                 '</option>');
                         });
                         $('#code_id').append('<option value="new-item">New Item</option>');
-                        $('#code_id').prop('disabled', false);
                     }
                 });
             }
 
-            function enableColorDropdown(brandId, codeId) {
+            function enableColorDropdown(brandId, typeId, codeId) {
                 $.ajax({
                     url: "{{ route('get-colors') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
+                        type_id: typeId,
                         code_id: codeId,
                         _token: '{{ csrf_token() }}'
                     },
@@ -752,12 +823,13 @@
                 });
             }
 
-            function enableSizeDropdown(brandId, codeId, colorId) {
+            function enableSizeDropdown(brandId, typeId, codeId, colorId) {
                 $.ajax({
                     url: "{{ route('get-sizes') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
+                        type_id: typeId,
                         code_id: codeId,
                         color_id: colorId,
                         _token: '{{ csrf_token() }}'
@@ -774,11 +846,6 @@
             }
         });
     </script>
-
-
-
-
-
     {{-- Handling sunglasses --}}
 
     <script>
@@ -787,33 +854,45 @@
                 resetFields();
                 var brandId = $(this).val();
                 if (brandId) {
-                    enableCodeDropdown(brandId);
+                    enableTypeDropdown(brandId);
+                }
+            });
+
+            $('#type_id4').change(function() {
+                var brandId = $('#mark_glass_id4').val();
+                var typeId = $('#type_id4').val();
+                if (brandId && typeId) {
+                    enableCodeDropdown(brandId, typeId);
                 }
             });
 
             $('#code_id4').change(function() {
                 var selectedOption = $(this).val();
                 if (selectedOption === 'new-item') {
-                    window.location.href = "{{ route('admin.requests-new-item') }}?number=4";
+                    window.location.href = "{{ route('admin.requests-new-item') }}?number=3";
                     return;
                 }
                 var brandId = $('#mark_glass_id4').val();
+                var typeId = $('#type_id4').val();
                 var codeId = $(this).val();
-                if (brandId && codeId) {
-                    enableColorDropdown(brandId, codeId);
+                if (brandId && typeId && codeId) {
+                    enableColorDropdown(brandId, typeId, codeId);
                 }
             });
 
-            $('#color_id').change(function() {
+            $('#color_id4').change(function() {
                 var brandId = $('#mark_glass_id4').val();
+                var typeId = $('#type_id4').val();
                 var codeId = $('#code_id4').val();
                 var colorId = $(this).val();
-                if (brandId && codeId && colorId) {
-                    enableSizeDropdown(brandId, codeId, colorId);
+                if (brandId && typeId && codeId && colorId) {
+                    enableSizeDropdown(brandId, typeId, codeId, colorId);
                 }
             });
 
             function resetFields() {
+                $('#type_id4').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Type</option>');
                 $('#code_id4').prop('disabled', true).empty().append(
                     '<option value="" disabled selected>Choose Code</option>');
                 $('#color_id4').prop('disabled', true).empty().append(
@@ -822,31 +901,53 @@
                     '<option value="" disabled selected>Choose Size</option>');
             }
 
-            function enableCodeDropdown(brandId) {
+            function enableTypeDropdown(brandId) {
                 $.ajax({
-                    url: "{{ route('get-codes4') }}",
+                    url: "{{ route('get-types4') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(data) {
+                        $('#type_id4').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Type</option>');
+                        $.each(data, function(index, value) {
+                            $('#type_id4').append('<option value="' + value.id + '">' + value
+                                .type_name + '</option>');
+                        });
+                    }
+                });
+            }
+
+            function enableCodeDropdown(brandId, typeId) {
+                $.ajax({
+                    url: "{{ route('get-codes4') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        type_id: typeId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#code_id4').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Code</option>');
                         $.each(data, function(index, value) {
                             $('#code_id4').append('<option value="' + value + '">' + value +
                                 '</option>');
                         });
                         $('#code_id4').append('<option value="new-item">New Item</option>');
-                        $('#code_id4').prop('disabled', false);
                     }
                 });
             }
 
-            function enableColorDropdown(brandId, codeId) {
+            function enableColorDropdown(brandId, typeId, codeId) {
                 $.ajax({
                     url: "{{ route('get-colors4') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
+                        type_id: typeId,
                         code_id: codeId,
                         _token: '{{ csrf_token() }}'
                     },
@@ -861,12 +962,13 @@
                 });
             }
 
-            function enableSizeDropdown(brandId, codeId, colorId) {
+            function enableSizeDropdown(brandId, typeId, codeId, colorId) {
                 $.ajax({
                     url: "{{ route('get-sizes4') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
+                        type_id: typeId,
                         code_id: codeId,
                         color_id: colorId,
                         _token: '{{ csrf_token() }}'
@@ -896,7 +998,15 @@
                 resetFields();
                 var brandId = $(this).val();
                 if (brandId) {
-                    enableCodeDropdown(brandId);
+                    enableTypeDropdown(brandId);
+                }
+            });
+
+            $('#type_id3').change(function() {
+                var brandId = $('#mark_glass_id3').val();
+                var typeId = $('#type_id3').val();
+                if (brandId && typeId) {
+                    enableCodeDropdown(brandId, typeId);
                 }
             });
 
@@ -907,22 +1017,26 @@
                     return;
                 }
                 var brandId = $('#mark_glass_id3').val();
+                var typeId = $('#type_id3').val();
                 var codeId = $(this).val();
-                if (brandId && codeId) {
-                    enableColorDropdown(brandId, codeId);
+                if (brandId && typeId && codeId) {
+                    enableColorDropdown(brandId, typeId, codeId);
                 }
             });
 
             $('#color_id3').change(function() {
                 var brandId = $('#mark_glass_id3').val();
-                var codeId = $('#code_id').val();
+                var typeId = $('#type_id3').val();
+                var codeId = $('#code_id3').val();
                 var colorId = $(this).val();
-                if (brandId && codeId && colorId) {
-                    enableSizeDropdown(brandId, codeId, colorId);
+                if (brandId && typeId && codeId && colorId) {
+                    enableSizeDropdown(brandId, typeId, codeId, colorId);
                 }
             });
 
             function resetFields() {
+                $('#type_id3').prop('disabled', true).empty().append(
+                    '<option value="" disabled selected>Choose Type</option>');
                 $('#code_id3').prop('disabled', true).empty().append(
                     '<option value="" disabled selected>Choose Code</option>');
                 $('#color_id3').prop('disabled', true).empty().append(
@@ -931,31 +1045,53 @@
                     '<option value="" disabled selected>Choose Size</option>');
             }
 
-            function enableCodeDropdown(brandId) {
+            function enableTypeDropdown(brandId) {
                 $.ajax({
-                    url: "{{ route('get-codes3') }}",
+                    url: "{{ route('get-types3') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
                         _token: '{{ csrf_token() }}'
                     },
                     success: function(data) {
+                        $('#type_id3').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Type</option>');
+                        $.each(data, function(index, value) {
+                            $('#type_id3').append('<option value="' + value.id + '">' + value
+                                .type_name + '</option>');
+                        });
+                    }
+                });
+            }
+
+            function enableCodeDropdown(brandId, typeId) {
+                $.ajax({
+                    url: "{{ route('get-codes3') }}",
+                    type: "POST",
+                    data: {
+                        brand_id: brandId,
+                        type_id: typeId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(data) {
+                        $('#code_id3').prop('disabled', false).empty().append(
+                            '<option value="" disabled selected>Choose Code</option>');
                         $.each(data, function(index, value) {
                             $('#code_id3').append('<option value="' + value + '">' + value +
                                 '</option>');
                         });
                         $('#code_id3').append('<option value="new-item">New Item</option>');
-                        $('#code_id3').prop('disabled', false);
                     }
                 });
             }
 
-            function enableColorDropdown(brandId, codeId) {
+            function enableColorDropdown(brandId, typeId, codeId) {
                 $.ajax({
                     url: "{{ route('get-colors3') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
+                        type_id: typeId,
                         code_id: codeId,
                         _token: '{{ csrf_token() }}'
                     },
@@ -970,12 +1106,13 @@
                 });
             }
 
-            function enableSizeDropdown(brandId, codeId, colorId) {
+            function enableSizeDropdown(brandId, typeId, codeId, colorId) {
                 $.ajax({
                     url: "{{ route('get-sizes3') }}",
                     type: "POST",
                     data: {
                         brand_id: brandId,
+                        type_id: typeId,
                         code_id: codeId,
                         color_id: colorId,
                         _token: '{{ csrf_token() }}'
@@ -992,9 +1129,6 @@
             }
         });
     </script>
-
-
-
 
 
     {{-- Drop lenses hadling --}}
@@ -1028,8 +1162,33 @@
                             }
                         }
                     });
+
+                    $.ajax({
+                        type: "POST",
+                        url: "{{ route('get-type') }}",
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            category_id: category_id
+                        },
+                        success: function(res) {
+                            if (res && res.length > 0) {
+                                $("#type_id").empty().append(
+                                    '<option value="" disabled selected>Choose Type</option>'
+                                );
+                                $.each(res, function(index, type) {
+                                    $("#type_id").append('<option value="' +
+                                        type.id + '">' + type.type_name +
+                                        '</option>');
+                                });
+                                $("#type_id").prop('disabled', false);
+                            } else {
+                                $("#type_id").empty().prop('disabled', true);
+                            }
+                        }
+                    });
                 } else {
                     $("#attribute_id").empty().prop('disabled', true);
+                    $("#type_id").empty().prop('disabled', true);
                 }
             });
 
@@ -1145,4 +1304,5 @@
             });
         });
     </script>
+
 @endsection

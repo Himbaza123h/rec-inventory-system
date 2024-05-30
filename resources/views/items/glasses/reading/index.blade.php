@@ -37,7 +37,7 @@
                                         <form action="{{ route('admin.item.store') }}" method="POST">
                                             @csrf
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <input type="hidden" name="product_type" value="4">
                                                     <label for="target_client">Target Client</label><br>
                                                     <select name="target_client" id="target_client"
@@ -48,13 +48,9 @@
                                                         <option value="Adults">Adults</option>
                                                     </select>
                                                 </div>
-                                            </div><br>
-
-                                            @php
-                                                $category = \App\Models\Category::where('product', 1)->get();
-                                            @endphp
-
-                                            <div class="row">
+                                                @php
+                                                    $category = \App\Models\Category::where('product', 4)->get();
+                                                @endphp
                                                 <div class="col-md-6">
                                                     <label for="mark_glasses">Brand</label><br>
                                                     <select name="mark_glasses" id="mark_glasses"
@@ -66,13 +62,32 @@
                                                         @endforeach
                                                     </select>
                                                 </div>
+                                            </div><br>
+
+                                            @php
+                                                $types = \App\Models\Type::where('product_category', 1)
+                                                    ->where('status', true)
+                                                    ->get();
+                                            @endphp
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label for="type_name">Type</label><br>
+                                                    <select name="type_name" id="type_name" class="select2 form-control">
+                                                        <option value="">Select Type</option>
+                                                        @foreach ($types as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->type_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
                                                 {{-- @php
                                                     $code = \App\Models\Code::all();
                                                 @endphp --}}
                                                 <div class="col-md-6">
                                                     <label for="size">CODE</label><br>
-                                                    <input type="text" name="code_id" id="code"
-                                                        class="form-control" placeholder="ITEM CODE">
+                                                    <input type="text" name="code_id" id="code" class="form-control"
+                                                        placeholder="ITEM CODE">
                                                 </div>
                                             </div>
                                             <br>
@@ -142,6 +157,7 @@
                                             <th>N/O</th>
                                             <th>Target Client</th>
                                             <th>Brand</th>
+                                            <th>Type</th>
                                             <th>Code</th>
                                             <th>Size</th>
                                             <th>Color</th>
@@ -154,6 +170,7 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->target_client }}</td>
                                                     <td>{{ $item->category?->category_name }}</td>
+                                                    <td>{{ $item?->type?->type_name }}</td>
                                                     <td>{{ $item->code_id }}</td>
                                                     <td>{{ $item->lens_width }}-{{ $item->bridge_width }}-{{ $item->temple_length }}
                                                     </td>

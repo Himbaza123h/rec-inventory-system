@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page-title')
-    {{ __('Reports') }}
+    {{ __('Partial Payments Reports') }}
 @endsection
 
 @section('content')
@@ -13,7 +13,7 @@
                         @if (Auth::user()->role == 'admin')
                             <div class="col-md-3">
                                 <a href="{{ route('admin.reports.index') }}"
-                                    class="pull-left page-title btn btn-primary">GENERAL SALES REPORT</a>
+                                    class="pull-left page-title btn btn-secondary">GENERAL SALES REPORT</a>
                             </div>
                             <div class="col-md-3">
                                 <a href="{{ route('admin.reports.orders') }}"
@@ -24,13 +24,13 @@
                                     class="pull-left page-title btn btn-secondary">PENDINGS REPORT</a>
                             </div>
                             <div class="col-md-3">
-                                <a href="route('seller.reports.partials') }}"
-                                    class="pull-left page-title btn btn-secondary">PARTIAL PAYMENT REPORT</a>
+                                <a href="{{ route('admin.reports.partials') }}"
+                                    class="pull-left page-title btn btn-primary">PARTIAL PAYMENT REPORT</a>
                             </div>
                         @else
                             <div class="col-md-3">
                                 <a href="{{ route('seller.reports.index') }}"
-                                    class="pull-left page-title btn btn-primary">GENERAL DAILY REPORT</a>
+                                    class="pull-left page-title btn btn-secondary">GENERAL DAILY REPORT</a>
                             </div>
                             <div class="col-md-3">
                                 <a href="{{ route('seller.reports.orders') }}"
@@ -42,7 +42,7 @@
                             </div>
                             <div class="col-md-3">
                                 <a href="{{ route('seller.reports.partials') }}"
-                                    class="pull-left page-title btn btn-secondary">DAILY PARTIAL PAYMENT REPORT</a>
+                                    class="pull-left page-title btn btn-primary">DAILY PARTIAL PAYMENT REPORT</a>
                             </div>
                         @endif
                     </div>
@@ -186,81 +186,70 @@
                                     <thead>
                                         <tr>
                                             <th>N/O</th>
-                                            <th colspan="4">PRODUCT INFO</th>
-                                            <th>Quantity</th>
-                                            @if (Auth::user()->role == 'admin')
-                                                <th>Seller</th>
-                                            @endif
-                                            <th>Price</th>
-                                            <th>Insurance</th>
+                                            <th>ORDER CODE</th>
+                                            <th>CUSTOMER</th>
+                                            <th colspan="3">PRODUCT</th>
+                                            <th>QUANTITY</th>
                                             <th>MOMO</th>
                                             <th>POS</th>
                                             <th>CASH</th>
-                                            <th>Total</th>
+                                            <th>TOTAL AMOUNT</th>
+                                            <th>AMOUNT PAID</th>
+                                            <th>PENDING AMOUNT</th>
                                             <th>DATE</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($sales as $index => $item)
-                                            <tr data-product-id="{{ $item->product_id }}"
-                                                data-insurance-id="{{ $item->insurance_id }}">
+                                        @foreach ($orders as $index => $order)
+                                            @php
+
+                                                $AmountPaid =
+                                                    $order->payment_method_pos +
+                                                    $order->payment_method_momo +
+                                                    $order->payment_method_cash;
+                                                // Fetch OrderItems for the current order code
+                                                $orderItems = \App\Models\OrderItem::where(
+                                                    'order_code',
+                                                    $order->order_code,
+                                                )->get();
+                                                // Calculate total quantity and total amount for the order
+                                                $totalQuantity = $orderItems->sum('quantity');
+                                                $totalAmount = $orderItems->sum('amount');
+                                                $pendingAmount = $totalAmount - $AmountPaid;
+                                            @endphp
+                                            <tr>
                                                 <td>{{ $index + 1 }}</td>
-                                                @if ($item->product_id == 2)
-                                                    <td>{{ $item['lens']['category']['category_name'] ?? '' }}</td>
-                                                    <td>{{ $item['lens']['attribute']['attribute_name'] }}</td>
-                                                    <td>{{ $item['lens']['power_sph'] }} -
-                                                        {{ $item['lens']['power_cyl'] }}</td>
-                                                    <td>{{ $item['lens']['power_axis'] }} -
-                                                        {{ $item['lens']['power_add'] }}</td>
-                                                @else
-                                                    <td>{{ $item['item']['category']['category_name'] ?? '' }}</td>
-                                                    <td>{{ $item['item']['code_id'] ?? '' }}</td>
-                                                    <td>{{ $item['item']['lens_width'] ?? '' }}-{{ $item['item']['bridge_width'] ?? '' }}-{{ $item['item']['temple_length'] ?? '' }}
-                                                    </td>
-                                                    <td>{{ $item['item']['color']['color_name'] ?? '' }}</td>
-                                                @endif
-                                                <td>{{ $item['item_quantity'] }}</td>
-                                                @if (Auth::user()->role == 'admin')
-                                                    <td>{{ $item->user?->seller_name }}</td>
-                                                @endif
-                                                <td>{{ $item['insurance']['insurance_name'] ?? 'PRIVATE' }}</td>
-                                                <td>{{ number_format($item->paymomo, 0, '.', ',') }} RWF
-                                                <td>{{ number_format($item->paypos, 0, '.', ',') }} RWF
-                                                <td>{{ number_format($item->paycash, 0, '.', ',') }} RWF
+                                                <td>{{ $order->order_code }}</td>
+                                                <td>{{ $order->buyer->customer_name ?? '' }}</td>
+                                                <td colspan="3">
+                                                    @foreach ($orderItems as $item)
+                                                        {{ $item->item->type->type_name }} -
+                                                        {{ $item->item->attribute->attribute_name }}
+                                                        - {{ $item->item->category->category_name }} <br>
+                                                    @endforeach
                                                 </td>
-
-
-                                                @if ($item->product_id == 2)
-                                                    <td>{{ isset($item['lens']['price']) ? number_format($item['lens']['price'], 0, '.', ',') : '' }}
-                                                        RWF</td>
-
-                                                    <td>
-                                                        @if (isset($item['item_quantity'], $item['lens']['price']))
-                                                            {{ number_format($item['item_quantity'] * $item['lens']['price'], 0, '.', ',') }}
-                                                            RWF
-                                                        @endif
-
-                                                    </td>
-                                                @else
-                                                    <td>{{ isset($item['item']['price']) ? number_format($item['item']['price'], 0, '.', ',') : '' }}
-                                                        RWF</td>
-
-                                                    <td>
-                                                        @if (isset($item['item_quantity'], $item['item']['price']))
-                                                            {{ number_format($item['item_quantity'] * $item['item']['price'], 0, '.', ',') }}
-                                                            RWF
-                                                        @endif
-
-                                                    </td>
-                                                @endif
-                                                <td>{{ date('Y-m-d', strtotime($item['created_at'])) }}</td>
+                                                <td>
+                                                    @foreach ($orderItems as $item)
+                                                        {{ $item->quantity }}<br>
+                                                    @endforeach
+                                                </td>
+                                                <td>{{ number_format($order->payment_method_momo, 0, '.', ',') }} RWF
+                                                </td>
+                                                <td>{{ number_format($order->payment_method_pos, 0, '.', ',') }} RWF
+                                                </td>
+                                                <td>{{ number_format($order->payment_method_cash, 0, '.', ',') }} RWF
+                                                </td>
+                                                <td>{{ number_format($totalAmount, 0, '.', ',') }} RWF</td>
+                                                <td>{{ number_format($AmountPaid, 0, '.', ',') }} RWF</td>
+                                                <td>{{ number_format(max(0, $pendingAmount), 0, '.', ',') }} RWF</td>
+                                                <td>{{ $order->created_at->format('Y-m-d') }}</td>
                                             </tr>
                                         @endforeach
-
                                     </tbody>
                                 </table>
+
                             </div>
-                            <div class="text-center">
+                            {{-- <div class="text-center">
                                 <ul class="pagination">
                                     @if ($sales->onFirstPage())
                                         <li class="disabled"><span>&laquo;</span></li>
@@ -280,7 +269,7 @@
                                         <li class="disabled"><span>&raquo;</span></li>
                                     @endif
                                 </ul>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>

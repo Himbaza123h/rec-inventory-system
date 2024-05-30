@@ -20,6 +20,7 @@ class ItemsLensController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'mark_lens' => 'required|string',
+            'type_name' => 'required|integer',
             'lens_attribute' => 'required|string',
             'sph' => 'nullable|string',
             'syl' => 'nullable|string',
@@ -34,9 +35,9 @@ class ItemsLensController extends Controller
         }
 
         try {
-
             $newItem = new Lens();
             $newItem->mark_lens = $request->mark_lens;
+            $newItem->item_type = $request->type_name;
             $newItem->lens_attribute = $request->lens_attribute;
             $newItem->price = $request->price;
             $newItem->power_sph = $request->sph;
@@ -57,15 +58,20 @@ class ItemsLensController extends Controller
     public function edit($id)
     {
         $item = Lens::findOrFail($id);
-        $powers = \App\Models\Power::get(); 
+        $powers = \App\Models\Power::get();
         $categories = \App\Models\Category::where('product', 2)->get();
-        return view('items.lens.edit', compact('item', 'categories', 'powers'));
+        $attributes = \App\Models\Attribute::get();
+        $types = \App\Models\Type::where('status', true)
+        ->where('product_category', 2)
+        ->get();
+        return view('items.lens.edit', compact('item', 'categories', 'attributes', 'powers', 'types'));
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
             'mark_lens' => 'required|string',
+            'type_name' => 'required|integer',
             'lens_attribute' => 'required|string',
             'sph' => 'nullable|string',
             'syl' => 'nullable|string',
@@ -77,24 +83,15 @@ class ItemsLensController extends Controller
         $item = Lens::findOrFail($id);
 
         if (Auth::user()->role == 'admin') {
-            // Update the LensPower record
-            try {
-                $lensPower = LensPower::findOrFail($item->lens_power);
-                $lensPower->update([
-                    'sph' => $request->sph,
-                    'syl' => $request->syl,
-                    'axis' => $request->axis,
-                    'add_' => $request->add_,
-                ]);
-            } catch (\Throwable $th) {
-                return redirect()
-                    ->back()
-                    ->with('error', 'Failed to update Lens Power: ' . $th->getMessage());
-            }
 
             // Update the Lens item
             $item->update([
                 'mark_lens' => $request->mark_lens,
+                'power_sph' => $request->sph,
+                'power_cyl' => $request->syl,
+                'power_axis' => $request->axis,
+                'power_add' => $request->add_,
+                'item_type' => $request->type_name,
                 'lens_attribute' => $request->lens_attribute,
                 'price' => $request->price,
             ]);

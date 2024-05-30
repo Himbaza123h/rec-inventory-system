@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\AttributeController;
+use App\Http\Controllers\ManageReportsController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PendingsController;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\HomeController;
@@ -60,21 +63,25 @@ Route::get('/searchStock', [ConfirmOrdersController::class, 'searchStock'])->nam
 Route::get('/download-pdf', [PdfController::class, 'index'])->name('download.pdf');
 
 Route::post('/get-codes', [itemsController::class, 'getCodes'])->name('get-codes');
+Route::post('/get-types', [itemsController::class, 'getTypes'])->name('get-types');
 Route::post('/get-colors', [itemsController::class, 'getColors'])->name('get-colors');
 Route::post('/get-sizes', [itemsController::class, 'getSizes'])->name('get-sizes');
 
 // Handling glasses
 
 Route::post('/get-codes3', [itemsController::class, 'getCodes3'])->name('get-codes3');
+Route::post('/get-types3', [itemsController::class, 'getTypes3'])->name('get-types3');
 Route::post('/get-colors3', [itemsController::class, 'getColors3'])->name('get-colors3');
 Route::post('/get-sizes3', [itemsController::class, 'getSizes3'])->name('get-sizes3');
 
 // Handling reading glasses
 
 Route::post('/get-codes4', [itemsController::class, 'getCodes4'])->name('get-codes4');
+Route::post('/get-types4', [itemsController::class, 'getTypes4'])->name('get-types4');
 Route::post('/get-colors4', [itemsController::class, 'getColors4'])->name('get-colors4');
 Route::post('/get-sizes4', [itemsController::class, 'getSizes4'])->name('get-sizes4');
 
+Route::post('/get-type', [itemsController::class, 'getType'])->name('get-type');
 Route::post('/get-attributes', [itemsController::class, 'getAttributes'])->name('get-attributes');
 Route::post('/get-power_sph', [itemsController::class, 'getSph'])->name('get-sph');
 Route::post('/get-power_cyl', [itemsController::class, 'getCyl'])->name('get-cyl');
@@ -208,6 +215,12 @@ Route::group(['prefix' => 'admin', 'middleware' => ['auth', 'adminCheck', 'appro
     Route::get('/reports', [ReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/lens', [ReportController::class, 'index2'])->name('reports.lens.index');
     Route::get('/reports/speed', [ReportController::class, 'fastslow'])->name('reports.speed');
+
+    // Other report routes handlings
+
+    Route::get('/reports/orders', [ManageReportsController::class, 'orders'])->name('reports.orders');
+    Route::get('/reports/pendings', [ManageReportsController::class, 'pendings'])->name('reports.pendings');
+    Route::get('/reports/partials', [ManageReportsController::class, 'partials'])->name('reports.partials');
 });
 
 // Seller Controller
@@ -246,6 +259,22 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
 
     //sell lens
 
+    // Make order of an item
+
+    Route::post('/make/store/store', [OrderController::class, 'store'])->name('make.order.store');
+
+    Route::get('/make/order', [OrderController::class, 'index'])->name('make.order');
+
+    Route::delete('/order/delete/{id}', [OrderController::class, 'delete'])->name('make.order.delete');
+
+    Route::put('/place/order/{id}', [OrderController::class, 'place'])->name('place.order');
+
+    Route::get('/make/order/proceed/{id}', [OrderController::class, 'proceed'])->name('make.order.proceed');
+
+    Route::get('/manage/orders/status', [OrderController::class, 'accepted'])->name('manage.orders.status');
+
+    Route::put('/confirm/order/{id}', [OrderController::class, 'confirm'])->name('confirm.order');
+
     Route::get('/invoices', [InvoiceController::class, 'index'])->name('invoice.index');
     Route::get('/invoice-by-sell-code/{id}', [InvoiceController::class, 'InvoivebySellCode'])->name('invoice-by-sell-code.index');
 
@@ -265,9 +294,15 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
     Route::post('/add-to-cart', [SalesController::class, 'addToCart'])->name('add.to.cart');
     Route::delete('/clear-cart', [SalesController::class, 'clearCart'])->name('clear.cart');
     Route::delete('/remove-from-cart/{id}', [SalesController::class, 'removeFromCart'])->name('remove.from.cart');
-    Route::delete('/remove-cart/{id}', [SalesController::class, 'remove'])->name('item-cart.remove');
+    Route::patch('/change-item-status/{id}', [SalesController::class, 'changeStatus'])->name('item-cart.change-status');
 
     // Additional to lens sales controller
+
+    // Other report routes handlings
+
+    Route::get('/reports/orders', [ManageReportsController::class, 'orders'])->name('reports.orders');
+    Route::get('/reports/pendings', [ManageReportsController::class, 'pendings'])->name('reports.pendings');
+    Route::get('/reports/partials', [ManageReportsController::class, 'partials'])->name('reports.partials');
 
     // New Sales Updated controller
 
@@ -281,7 +316,9 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
     Route::delete('/remove-lens-cart/{id}', [LensSalesController::class, 'remove'])->name('lens-cart.remove');
 
     Route::get('/invoice-0781Ca/checkout/{id}', [SalesController::class, 'checkout'])->name('checkout');
+    Route::get('/invoice-0034/checkout/{id}', [SalesController::class, 'pending'])->name('show.checkout.pending');
     Route::put('/update/checkout/{id}', [SalesController::class, 'update'])->name('checkout.update');
+    Route::put('/pending/checkout/{id}', [SalesController::class, 'sendPending'])->name('checkout.pending');
 
     Route::put('/update/performa/{id}', [SalesController::class, 'performa'])->name('performa.update');
     Route::put('/update/lens/performa/{id}', [LensSalesController::class, 'performa'])->name('performa.lens.update');
@@ -291,4 +328,14 @@ Route::group(['prefix' => 'seller', 'as' => 'seller.', 'middleware' => ['auth', 
 
     Route::get('/lens/performa/invoices', [PerformaInvoices::class, 'lens'])->name('lens.performa.invoice');
     Route::get('/lens/performa/by-sell-code/{id}', [PerformaInvoices::class, 'LensbySellCode'])->name('lens-by-sell-code.index');
+
+    // Pendings routes handling
+    Route::get('/pendings/orders', [PendingsController::class, 'index'])->name('pendings.orders');
+    Route::get('/pendings/order/{id}', [PendingsController::class, 'edit'])->name('pendings.orders.edit');
+
+
+    Route::post('/confirm/pendings', [PendingsController::class, 'store'])->name('confirm.pendings');
+    Route::get('/customer/apend', [CustomerController::class, 'append'])->name('customers.append');
+    Route::post('/customer/apend/store', [CustomerController::class, 'storeAppend'])->name('customer.append.store');
+
 });

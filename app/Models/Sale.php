@@ -15,7 +15,7 @@ use App\Models\Insurance;
 class Sale extends Model
 {
     use HasFactory;
-    protected $fillable = ['item_id','insurance_id', 'buyer_id', 'cart_id', 'seller_id','paypos','paymomo','paycash', 'product_id', 'item_quantity', 'payment_method'];
+    protected $fillable = ['item_id', 'covered', 'ticket_modérateur', 'insurance_id', 'buyer_id', 'cart_id', 'seller_id', 'paypos', 'paymomo', 'paycash', 'product_id', 'item_quantity', 'payment_method'];
 
     public function item()
     {
@@ -25,19 +25,21 @@ class Sale extends Model
     public function insurance()
     {
         return $this->belongsTo(Insurance::class, 'insurance_id');
-    } 
+    }
 
     public function lens()
     {
         return $this->belongsTo(Lens::class, 'item_id');
     }
 
-    public function payment(){
-        return $this->belongsTo(Payment::class, 'payment_method');  
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class, 'payment_method');
     }
 
-    public function user(){
-        return $this->belongsTo(Seller::class, 'seller_id');  
+    public function user()
+    {
+        return $this->belongsTo(Seller::class, 'seller_id');
     }
     public function buyer()
     {

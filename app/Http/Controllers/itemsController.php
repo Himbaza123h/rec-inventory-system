@@ -9,6 +9,7 @@ use App\Models\Item;
 use App\Models\Lens;
 use App\Models\Color;
 use App\Models\Attribute;
+use App\Models\Type;
 
 class itemsController extends Controller
 {
@@ -42,6 +43,7 @@ class itemsController extends Controller
         $validator = Validator::make($request->all(), [
             'target_client' => 'required|string',
             'mark_glasses' => 'required|string',
+            'type_name' => 'required|integer',
             'code_id' => 'required|string',
             'product_type' => 'required|integer',
             'lens_width' => 'required|numeric',
@@ -58,6 +60,7 @@ class itemsController extends Controller
                 $newItem = new Item();
                 $newItem->target_client = $request->target_client;
                 $newItem->mark_glasses = $request->mark_glasses;
+                $newItem->item_type = $request->type_name;
                 $newItem->code_id = $request->code_id;
                 $newItem->product_category = $request->product_type;
                 $newItem->lens_width = $request->lens_width;
@@ -82,6 +85,7 @@ class itemsController extends Controller
         $request->validate([
             'target_client' => 'required|string',
             'mark_glasses' => 'required|string',
+            'type_name' => 'required|integer',
             'code_id' => 'required|string',
             'lens_width' => 'required|numeric',
             'bridge_width' => 'required|numeric',
@@ -96,6 +100,7 @@ class itemsController extends Controller
             $item->update([
                 'target_client' => $request->target_client,
                 'mark_glasses' => $request->mark_glasses,
+                'item_type' => $request->type_name,
                 'code_id' => $request->code_id,
                 'lens_width' => $request->lens_width,
                 'bridge_width' => $request->bridge_width,
@@ -104,7 +109,7 @@ class itemsController extends Controller
                 'price' => $request->price,
             ]);
 
-            return redirect()->route('admin.items.index')->with('success', 'Item successfully updated!'); // Corrected success message
+            return redirect()->back()->with('success', 'Item successfully updated!'); // Corrected success message
         } else {
             return redirect()->back()->with('error', 'Unauthorized action!');
         }
@@ -124,10 +129,19 @@ class itemsController extends Controller
         }
     }
 
+    public function getTypes(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $typeIds = Item::where('product_category', 1)->where('mark_glasses', $brandId)->pluck('item_type', 'id')->unique();
+        $types = Type::whereIn('id', $typeIds)->get();
+        return response()->json($types);
+    }
+
     public function getCodes(Request $request)
     {
         $brandId = $request->input('brand_id');
-        $codes = Item::where('product_category', 1)->where('mark_glasses', $brandId)->pluck('code_id')->unique();
+        $typeId = $request->input('type_id');
+        $codes = Item::where('product_category', 1)->where('mark_glasses', $brandId)->where('item_type', $typeId)->pluck('code_id')->unique();
         return response()->json($codes);
     }
 
@@ -135,19 +149,22 @@ class itemsController extends Controller
     {
         $brandId = $request->input('brand_id');
         $codeId = $request->input('code_id');
-        $colorIds = Item::where('product_category', 1)->where('mark_glasses', $brandId)->where('code_id', $codeId)->pluck('color_id')->unique();
+        $typeId = $request->input('type_id');
+        $colorIds = Item::where('product_category', 1)->where('mark_glasses', $brandId)->where('item_type', $typeId)->where('code_id', $codeId)->pluck('color_id')->unique();
         $colors = Color::whereIn('id', $colorIds)->get();
         return response()->json($colors);
     }
 
-    public function getSizes(Request $request)
+   public function getSizes(Request $request)
     {
         $brandId = $request->input('brand_id');
         $codeId = $request->input('code_id');
+        $typeId = $request->input('type_id');
         $colorId = $request->input('color_id');
 
         $items = Item::where('product_category', 1)
             ->where('mark_glasses', $brandId)
+            ->where('item_type', $typeId)
             ->where('code_id', $codeId)
             ->where('color_id', $colorId)
             ->get(['lens_width', 'bridge_width', 'temple_length']);
@@ -158,6 +175,9 @@ class itemsController extends Controller
 
         return response()->json($sizes);
     }
+
+
+
     public function getAttributes(Request $request)
     {
         $category_id = $request->category_id;
@@ -206,22 +226,21 @@ class itemsController extends Controller
         return response()->json($addValues);
     }
 
-
-
-
-
-    
-
-
     // Handling Sunglasses
 
-
-
+    public function getTypes3(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $typeIds = Item::where('product_category', 3)->where('mark_glasses', $brandId)->pluck('item_type', 'id')->unique();
+        $types = Type::whereIn('id', $typeIds)->get();
+        return response()->json($types);
+    }
 
     public function getCodes3(Request $request)
     {
         $brandId = $request->input('brand_id');
-        $codes = Item::where('product_category', 3)->where('mark_glasses', $brandId)->pluck('code_id')->unique();
+        $typeId = $request->input('type_id');
+        $codes = Item::where('product_category', 3)->where('mark_glasses', $brandId)->where('item_type', $typeId)->pluck('code_id')->unique();
         return response()->json($codes);
     }
 
@@ -229,7 +248,8 @@ class itemsController extends Controller
     {
         $brandId = $request->input('brand_id');
         $codeId = $request->input('code_id');
-        $colorIds = Item::where('product_category', 3)->where('mark_glasses', $brandId)->where('code_id', $codeId)->pluck('color_id')->unique();
+        $typeId = $request->input('type_id');
+        $colorIds = Item::where('product_category', 3)->where('mark_glasses', $brandId)->where('item_type', $typeId)->where('code_id', $codeId)->pluck('color_id')->unique();
         $colors = Color::whereIn('id', $colorIds)->get();
         return response()->json($colors);
     }
@@ -238,10 +258,12 @@ class itemsController extends Controller
     {
         $brandId = $request->input('brand_id');
         $codeId = $request->input('code_id');
+        $typeId = $request->input('type_id');
         $colorId = $request->input('color_id');
 
-        $items = Item::where('product_category', 3)
+        $items = Item::where('product_category', 4)
             ->where('mark_glasses', $brandId)
+            ->where('item_type', $typeId)
             ->where('code_id', $codeId)
             ->where('color_id', $colorId)
             ->get(['lens_width', 'bridge_width', 'temple_length']);
@@ -253,33 +275,21 @@ class itemsController extends Controller
         return response()->json($sizes);
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     // Handling Sunglasses
 
-
-
+    public function getTypes4(Request $request)
+    {
+        $brandId = $request->input('brand_id');
+        $typeIds = Item::where('product_category', 4)->where('mark_glasses', $brandId)->pluck('item_type', 'id')->unique();
+        $types = Type::whereIn('id', $typeIds)->get();
+        return response()->json($types);
+    }
 
     public function getCodes4(Request $request)
     {
         $brandId = $request->input('brand_id');
-        $codes = Item::where('product_category', 4)->where('mark_glasses', $brandId)->pluck('code_id')->unique();
+        $typeId = $request->input('type_id');
+        $codes = Item::where('product_category', 4)->where('mark_glasses', $brandId)->where('item_type', $typeId)->pluck('code_id')->unique();
         return response()->json($codes);
     }
 
@@ -287,7 +297,8 @@ class itemsController extends Controller
     {
         $brandId = $request->input('brand_id');
         $codeId = $request->input('code_id');
-        $colorIds = Item::where('product_category', 4)->where('mark_glasses', $brandId)->where('code_id', $codeId)->pluck('color_id')->unique();
+        $typeId = $request->input('type_id');
+        $colorIds = Item::where('product_category', 4)->where('mark_glasses', $brandId)->where('item_type', $typeId)->where('code_id', $codeId)->pluck('color_id')->unique();
         $colors = Color::whereIn('id', $colorIds)->get();
         return response()->json($colors);
     }
@@ -296,10 +307,12 @@ class itemsController extends Controller
     {
         $brandId = $request->input('brand_id');
         $codeId = $request->input('code_id');
+        $typeId = $request->input('type_id');
         $colorId = $request->input('color_id');
 
         $items = Item::where('product_category', 4)
             ->where('mark_glasses', $brandId)
+            ->where('item_type', $typeId)
             ->where('code_id', $codeId)
             ->where('color_id', $colorId)
             ->get(['lens_width', 'bridge_width', 'temple_length']);

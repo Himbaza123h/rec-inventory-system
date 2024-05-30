@@ -42,7 +42,7 @@
                                                 $category = \App\Models\Category::where('product', 2)->get();
                                             @endphp
                                             <div class="row">
-                                                <div class="col-md-12">
+                                                <div class="col-md-6">
                                                     <label for="mark_lens">Category of Lens</label><br>
                                                     <select name="mark_lens" id="target_client"
                                                         class=" select2 form-control">
@@ -50,6 +50,21 @@
                                                         </option>
                                                         @foreach ($category as $item)
                                                             <option value="{{ $item->id }}">{{ $item->category_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                @php
+                                                    $types = \App\Models\Type::where('product_category', 2)
+                                                        ->where('status', true)
+                                                        ->get();
+                                                @endphp
+                                                <div class="col-md-6">
+                                                    <label for="type_name">Type</label><br>
+                                                    <select name="type_name" id="type_name" class="select2 form-control">
+                                                        <option value="">Select Type</option>
+                                                        @foreach ($types as $item)
+                                                            <option value="{{ $item->id }}">{{ $item->type_name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -91,7 +106,8 @@
                                                         <option value="">SPH
                                                         </option>
                                                         @foreach ($power_sph as $item)
-                                                            <option value="{{ $item->power_value }}">{{ $item->power_name }}
+                                                            <option value="{{ $item->power_value }}">
+                                                                {{ $item->power_name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -174,6 +190,7 @@
                                             <tr>
                                                 <th rowspan="2">N/O</th>
                                                 <th rowspan="2">Lens Category</th>
+                                                <th rowspan="2">Type</th>
                                                 <th rowspan="2">Lens Attribute</th>
                                                 <th colspan="4" class="text-center">Lens Power</th>
                                                 <th rowspan="2">Price</th>
@@ -191,7 +208,8 @@
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->category?->category_name }}</td>
-                                                    <td>{{ $item->attribute?->attribute_name }}</td>
+                                                    <td>{{ $item?->type?->type_name }}</td>
+                                                    <td>{{ $item?->attribute?->attribute_name }}</td>
                                                     {{-- Placeholders --}}
                                                     <td>{{ $item->power_sph }}</td>
                                                     <td>{{ $item->power_cyl }}</td>

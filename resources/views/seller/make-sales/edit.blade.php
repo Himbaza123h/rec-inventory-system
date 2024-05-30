@@ -42,13 +42,23 @@
                                         method="POST">
                                         @csrf
                                         <input type="hidden" name="_method" value="PUT">
+                                        @php
+                                            $totalPrice = 0;
+                                            $covered = 0;
+                                            foreach ($data as $item) {
+                                                $totalPrice += $item->amount;
+                                                $covered += $item->covered;
+                                            }
+                                            $toUp = $totalPrice - $covered;
+                                        @endphp
 
+                                        <input type="hidden" name="covered_hidden" value="{{ $toUp }}">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 @php
                                                     $operators = \App\Models\Seller::where('status', true)->get();
                                                 @endphp
-                                                <label for="payment_method">OPERATOR </label><br>
+                                                <label for="payment_method">OPERATOR</label><br>
                                                 <select name="operator_id" id="seller" class="select2 form-control">
                                                     <option>Choose Operator</option>
                                                     @foreach ($operators as $item)
@@ -75,7 +85,7 @@
 
                                             <div class="col-md-2" style="margin-top: 6px">
                                                 <label for=""></label>
-                                                <a href="{{ route('seller.customers.index') }}"
+                                                <a href="{{ route('seller.customers.append', ['sale_code' => $data[0]->sale_code]) }}"
                                                     class="btn btn-primary waves-effect waves-light">New
                                                     <i class="fa fa-plus"></i></a>
                                             </div>
@@ -83,56 +93,109 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label for="insurance_percentage">Insurance (%)</label><br>
-                                                <select id="insurance_percentage" class="select2 form-control">
+                                                <select id="insurance_percentage" class="select2 form-control"
+                                                    name="insurance_percentage">
                                                     <option value="0">Select</option>
-                                                    <option value="5">5</option>
-                                                    <option value="10">10</option>
-                                                    <option value="15">15</option>
-                                                    <option value="20">20</option>
-                                                    <option value="25">25</option>
-                                                    <option value="30">30</option>
-                                                    <option value="35">35</option>
-                                                    <option value="40">40</option>
-                                                    <option value="45">45</option>
-                                                    <option value="50">50</option>
-                                                </select>
-                                            </div>
-                                        </div><br>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label for="ticket_moderateur">Ticket Modérateur</label><br>
-                                                <input type="text" id="ticket_moderateur" class="form-control"
-                                                    placeholder="0" disabled />
-                                            </div>
-                                        </div><br>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <label for="ticket_moderateur">TopUp</label><br>
-                                                <input type="text" id="amount_to_pay" class="form-control"
-                                                    placeholder="0" disabled />
-                                            </div>
-                                        </div><br>
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                @php
-                                                    $payments = \App\Models\Payment::where('status', true)->get();
-                                                @endphp
-                                                <label for="payment_method">PAYMENT METHOD </label><br>
-                                                <select name="payment_method" class="select2 form-control" id="trackMode">
-                                                    <option>Choose Payment</option>
-                                                    @foreach ($payments as $item)
-                                                        <option value="{{ $item->id }}">{{ $item->payment_method }}
+                                                    @for ($i = 5; $i <= 50; $i += 5)
+                                                        <option value="{{ $i }}">{{ $i }}
                                                         </option>
-                                                    @endforeach
+                                                    @endfor
                                                 </select>
-                                                <div class="row"><br>
-                                                    <div id="paymentInputs"></div>
-                                                </div>
-                                                <input type="hidden" name="paypos" id="paypos_input">
-                                                <input type="hidden" name="paymomo" id="paymomo_input">
-                                                <input type="hidden" name="paycash" id="paycash_input">
+                                            </div>
+                                        </div>
+                                        <br>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <label for="ticket_moderateur">Ticket Modérateur</label><br>
+                                                <input type="text" id="ticket_moderateur" name="ticket_moderateur"
+                                                    class="form-control" placeholder="0" disabled />
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <label for="top_up">TopUp</label><br>
+                                                <input type="text" id="top_up" name="top_up_amount"
+                                                    class="form-control" value="{{ $toUp }}"
+                                                    placeholder="{{ $toUp }}" disabled />
                                             </div>
                                         </div><br>
+
+                                        <div class="row" id="total_amount_field">
+                                            <label for="total_amount">Total Amount to Pay</label>
+                                            <input type="text" class="form-control" id="total_amount" name="total_amount"
+                                                value="{{ number_format($toUp, 0, '.', ',') }} RWF" disabled>
+                                        </div> <br>
+                                        <input type="hidden" name="updated_total_amount" id="updated_total_amount_input">
+
+                                        <script>
+                                            // Function to calculate ticket modérateur and update UI
+                                            function calculateTicketModulateur(percentage) {
+                                                var covered = {{ $covered }};
+                                                var ticketModulateur = covered * percentage / 100;
+                                                $('#ticket_moderateur').val(ticketModulateur.toFixed(2));
+                                                updateTotalAmount();
+                                            }
+
+                                            function updateTotalAmount() {
+                                                var ticketModulateur = parseFloat($('#ticket_moderateur').val()) || 0;
+                                                var topUp = parseFloat($('#top_up').val()) || 0;
+                                                var totalAmount = ticketModulateur + topUp;
+                                                $('#total_amount').val(totalAmount.toFixed(2) + ' RWF');
+
+                                                // Update hidden input field
+                                                $('#updated_total_amount_input').val(totalAmount.toFixed(2));
+                                            }
+
+                                            $(document).ready(function() {
+                                                // Event listener for insurance percentage change
+                                                $('#insurance_percentage').change(function() {
+                                                    var percentage = parseFloat($(this).val());
+                                                    if (percentage > 0) {
+                                                        calculateTicketModulateur(percentage);
+                                                    } else {
+                                                        $('#ticket_moderateur').val('0');
+                                                        updateTotalAmount();
+                                                    }
+                                                });
+
+                                                // Event listener for partial payment checkbox
+                                                $('#pay_partial').change(function() {
+                                                    $('#partial_field').toggle($(this).is(':checked'));
+                                                });
+
+                                                // Event listener for input changes
+                                                $('#ticket_moderateur, #top_up').on('input', function() {
+                                                    updateTotalAmount();
+                                                });
+                                            });
+                                        </script>
+                                        <label for="payment_method">PAYMENT METHOD </label><br><br>
+                                        <div class="col-md-4">
+                                            <div class="">
+                                                <label><input type="checkbox" name="payment_method[]" value="1">
+                                                    Momo</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="">
+                                                <label><input type="checkbox" name="payment_method[]" value="2">
+                                                    Cash</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="">
+                                                <label><input type="checkbox" name="payment_method[]" value="3">
+                                                    POS</label>
+                                            </div>
+                                        </div>
+                                        <div class="row"><br>
+                                            <div id="paymentInputs"></div>
+                                        </div>
+                                        <input type="hidden" name="paypos" id="paypos_input">
+                                        <input type="hidden" name="paymomo" id="paymomo_input">
+                                        <input type="hidden" name="paycash" id="paycash_input">
+
+                                        <br>
                                         <button type="submit" class="btn btn-success waves-effect waves-light"
                                             id="purchase_item">CONFIRM <i class="ion-ios7-cart-outline"></i></button>
                                     </form>
@@ -242,67 +305,49 @@
     <!-- Inside the JavaScript -->
     <script>
         $(document).ready(function() {
-            $("#trackMode").change(function() {
-                var mode = $(this).val();
+            $("input[type='checkbox'][name='payment_method[]']").change(function() {
                 // Clear existing input fields
                 $("#paymentInputs").empty();
-
-                if (mode === "2") {
-                    $("#paymentInputs").append(
-                        '<div class="col-lg-4"><input type="text" class="form-control cash-input" name="paycash" placeholder="Cash"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
-                    );
-                } else if (mode === "1") {
-                    $("#paymentInputs").append(
-                        '<div class="col-lg-4"><input type="text" class="form-control momo-input" name="paymomo" placeholder="Momo"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
-                    );
-                } else if (mode === "3") {
-                    $("#paymentInputs").append(
-                        '<div class="col-lg-4"><input type="text" class="form-control pos-input" name="paypos" placeholder="POS"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
-                    );
-                }
+    
+                $("input[type='checkbox'][name='payment_method[]']:checked").each(function() {
+                    var value = $(this).val();
+                    // Append input fields based on selected payment method
+                    if (value === "1") {
+                        $("#paymentInputs").append(
+                            '<div class="col-lg-4"><input type="text" class="form-control momo-input" name="paymomo[]" placeholder="Momo"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                        );
+                    } else if (value === "2") {
+                        $("#paymentInputs").append(
+                            '<div class="col-lg-4"><input type="text" class="form-control cash-input" name="paycash[]" placeholder="Cash"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                        );
+                    } else if (value === "3") {
+                        $("#paymentInputs").append(
+                            '<div class="col-lg-4"><input type="text" class="form-control pos-input" name="paypos[]" placeholder="POS"><button type="button" class="remove-input btn btn-danger"><i class="fa fa-times"></i></button></div>'
+                        );
+                    }
+                });
             });
-
+    
             $(document).on("click", ".remove-input", function() {
                 $(this).closest(".col-lg-4").remove();
             });
-
+    
             // Update hidden input fields when values change
             $(document).on("input", ".cash-input", function() {
                 $("#paycash_input").val($(this).val());
             });
-
+    
             $(document).on("input", ".momo-input", function() {
                 $("#paymomo_input").val($(this).val());
             });
-
+    
             $(document).on("input", ".pos-input", function() {
                 $("#paypos_input").val($(this).val());
             });
         });
     </script>
+    
+    
+    
 
-    <script>
-        $(document).ready(function() {
-            const insuranceSelect = $('#insurance_percentage');
-            const ticketModerateurInput = $('#ticket_moderateur');
-            const coveredElements = $('.covered');
-            const amountToPayInput = $('#amount_to_pay');
-
-            function updateTicketModerateur() {
-                console.log('Updating ticket modérateur');
-                const selectedPercentage = parseFloat(insuranceSelect.val());
-                const totalCovered = Array.from(coveredElements).reduce((acc, td) => acc + parseFloat($(td).text()),
-                    0);
-                const ticketModerateur = (totalCovered * selectedPercentage) / 100;
-                ticketModerateurInput.val(ticketModerateur.toFixed(2));
-
-                const totalPrice = parseFloat('{{ $totalPrice }}');
-                const amountToPay = totalPrice - totalCovered + ticketModerateur;
-                amountToPayInput.val(amountToPay.toFixed(2));
-            }
-
-            insuranceSelect.on('change', updateTicketModerateur);
-            updateTicketModerateur();
-        });
-    </script>
 @endsection

@@ -262,18 +262,17 @@ class ConfirmOrdersController extends Controller
         // Start the query
         $query = \App\Models\Sale::select(
             \Illuminate\Support\Facades\DB::raw('DATE(created_at) as date'),
-            \Illuminate\Support\Facades\DB::raw('item_id as item'),
             \Illuminate\Support\Facades\DB::raw('SUM(paycash) as cash'),
             \Illuminate\Support\Facades\DB::raw('SUM(paymomo) as momo'),
             \Illuminate\Support\Facades\DB::raw('SUM(paypos) as pos'),
-            \Illuminate\Support\Facades\DB::raw('COUNT(insurance_id) as assurance') // Change from SUM to COUNT
+            \Illuminate\Support\Facades\DB::raw('SUM(insurance_id) as assurance')
         );
     
         if ($user->role == 'admin') {
-            $query->groupBy(\Illuminate\Support\Facades\DB::raw('DATE(created_at)'), 'item_id');
+            $query->groupBy(\Illuminate\Support\Facades\DB::raw('DATE(created_at)'));
         } else {
-            // If the user is not admin, group by date and item_id
-            $query->groupBy(\Illuminate\Support\Facades\DB::raw('DATE(created_at)'), 'item_id');
+            // If the user is not admin, group by date
+            $query->groupBy(\Illuminate\Support\Facades\DB::raw('DATE(created_at)'));
             // Filter by today's date if not provided
             if (!$fromDate && !$toDate) {
                 $query->whereDate('created_at', $today);
@@ -296,5 +295,6 @@ class ConfirmOrdersController extends Controller
         // Return the view with data
         return view('reports.stats.index', compact('orders', 'totalAmount'));
     }
+    
     
 }

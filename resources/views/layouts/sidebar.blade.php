@@ -105,7 +105,7 @@
         <!--- Divider -->
         <div id="sidebar-menu">
             @if (Auth::user()->role == 'admin')
-                <ul>
+                <ul style="">
                     <li
                         class="has_sub {{ request()->routeIs('home') || request()->routeIs('dashboard') ? 'active' : '' }}">
                         <a href="{{ route('home') }}" class="waves-effect waves-light "><i
@@ -124,7 +124,7 @@
 
 
                     <li
-                        class="has_sub {{ request()->routeIs('admin.items.index') || request()->routeIs('admin.items.lens.index') || request()->routeIs('admin.item.lens.edit') || request()->routeIs('admin.colors.index') || request()->routeIs('admin.item.edit') ? 'active' : '' }}">
+                        class="has_sub {{ request()->routeIs('admin.items.index') || request()->routeIs('admin.items.readingglasses.index') || request()->routeIs('admin.items.sunglasses.index') || request()->routeIs('admin.items.lens.index') || request()->routeIs('admin.item.lens.edit') || request()->routeIs('admin.colors.index') || request()->routeIs('admin.item.edit') ? 'active' : '' }}">
                         <a href="#" class="waves-effect waves-light"><i class="ion-cube"></i><span>Items</span>
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
@@ -144,6 +144,10 @@
 
                             <li><a href="{{ route('admin.colors.index') }}" class="waves-effect waves-light"><i
                                         class="ion-ios-glasses"></i>Manage Colors</a></li>
+
+
+                            <li><a href="{{ route('admin.attribute.index') }}" class="waves-effect waves-light"><i
+                                        class="ion-ios-glasses"></i>Manage Attributes</a></li>
 
                         </ul>
                     </li>
@@ -208,8 +212,8 @@
                             <span class="pull-right"><i class="md md-add"></i></span>
                         </a>
                         <ul class="list-unstyle">
-                            <!-- <li><a href="{{ route('admin.users.index') }}" class="waves-effect waves-light"><i
-                                        class="ion-android-contact"></i>Users</a></li> -->
+                            <li><a href="{{ route('admin.users.index') }}" class="waves-effect waves-light"><i
+                                        class="ion-android-contact"></i>Users</a></li>
                             <li><a href="{{ route('admin.sellers.index') }}" class="waves-effect waves-light"><i
                                         class="ion-android-social"></i>Sellers</a></li>
                             <li {{ request()->routeIs('admin.suppliers.index') ? 'active' : '' }}><a
@@ -221,26 +225,49 @@
                         </ul>
                     </li>
                     <li
-                        class="has_sub {{ request()->routeIs('admin.reports.index') || request()->routeIs('admin.stats.financial') || request()->routeIs('admin.reports.lens.index') ? 'active' : '' }}">
+                        class="has_sub {{ request()->routeIs('admin.reports.index') || request()->routeIs('admin.stats.financial') || request()->routeIs('admin.reports.lens.index') || request()->routeIs('admin.reports.partials') || request()->routeIs('admin.reports.pendings') || request()->routeIs('admin.reports.orders') ? 'active' : '' }}">
                         <a href="{{ route('admin.reports.index') }}" class="waves-effect waves-light"><i
                                 class="ion-ios7-pulse-strong"></i><span>Reports</span>
                         </a>
                     </li>
-                </ul>
-            @else
-                <ul>
-                    <li
-                        class="has_sub {{ request()->routeIs('home') || request()->routeIs('dashboard') ? 'active' : '' }}">
-                        <a href="{{ route('home') }}" class="waves-effect waves-light "><i
-                                class="ion-ios7-gear"></i><span>Dashboard</span></a>
-                    </li>
-                    <li
-                        class="has_sub {{ request()->routeIs('seller.make.sales.index') || request()->routeIs('seller.checkout') || request()->routeIs('seller.lens.checkout') || request()->routeIs('seller.lens.sales.index') || request()->routeIs('seller.checkout.update') ? 'active' : '' }}">
-                        <a href="{{ route('seller.make.sales.index') }}" class="waves-effect waves-light"><i
-                                class="ion-bag"></i><span>Make Sales</span>
-                            <span class="pull-right"></span></a>
-                    </li>
-                    {{-- <ul class="list-unstyle">
+                @else
+                    <ul>
+                        <li
+                            class="has_sub {{ request()->routeIs('home') || request()->routeIs('dashboard') ? 'active' : '' }}">
+                            <a href="{{ route('home') }}" class="waves-effect waves-light "><i
+                                    class="ion-ios7-gear"></i><span>Dashboard</span></a>
+                        </li>
+                        <li
+                            class="has_sub {{ request()->routeIs('seller.make.sales.index') || request()->routeIs('seller.show.checkout.pending') || request()->routeIs('seller.checkout') || request()->routeIs('seller.lens.checkout') || request()->routeIs('seller.lens.sales.index') || request()->routeIs('seller.checkout.update') ? 'active' : '' }}">
+                            <a href="{{ route('seller.make.sales.index') }}" class="waves-effect waves-light"><i
+                                    class="ion-bag"></i><span>Make Sales</span>
+                                <span class="pull-right"></span></a>
+                        </li>
+
+
+                        <li
+                            class="has_sub {{ request()->routeIs('seller.pendings.orders') || request()->routeIs('seller.pendings.orders.edit') ? 'active' : '' }}">
+                            <a href="{{ route('seller.pendings.orders') }}" class="waves-effect waves-light"><i
+                                    class="ion-ios7-gear"></i><span>Pendings</span>
+                                <span class="pull-right"></span></a>
+                        </li>
+
+                        <li
+                            class="has_sub {{ request()->routeIs('seller.make.order') || request()->routeIs('seller.manage.orders.status') || request()->routeIs('seller.make.order.proceed') ? 'active' : '' }}">
+                            <a href="{{ route('seller.make.order') }}" class="waves-effect waves-light "><i
+                                    class="ion-ios7-pulse-strong"></i><span>Manage Orders</span>
+                                <span class="pull-right"><i class="md md-add"></i></span>
+                            </a>
+                            <ul class="list-unstyle">
+                                <li><a href="{{ route('seller.make.order') }}" class="waves-effect waves-light"><i
+                                            class="ion-ios7-pulse-strong"></i>New
+                                        Order</a></li>
+                                <li><a href="{{ route('seller.manage.orders.status') }}"
+                                        class="waves-effect waves-light"><i class="ion-ios7-pulse-strong"></i>Order
+                                        Status</a></li>
+                            </ul>
+                        </li>
+                        {{-- <ul class="list-unstyle">
                             <li>
                                 <a href="{{ route('seller.sales.index') }}" class="waves-effect waves-light">
                                     <i class="ion-ios7-pulse-strong"></i> Frame Sales
@@ -258,17 +285,17 @@
 
 
 
-                    <li class="has_sub {{ request()->routeIs('seller.stock.index') ? 'active' : '' }}">
-                        <a href="{{ route('seller.stock.index') }}" class="waves-effect waves-light "><i
-                                class="ion-ios7-gear"></i><span>Manage Stock</span></a>
-                    </li>
-                    <li
-                        class="has_sub {{ request()->routeIs('seller.invoice.index') || request()->routeIs('seller.invoice-by-sell-code.index') ? 'active' : '' }}">
-                        <a href="{{ route('seller.invoice.index') }}" class="waves-effect waves-light"><i
-                                class="ion-document"></i><span>Invoices</span></a>
-                    </li>
+                        <li class="has_sub {{ request()->routeIs('seller.stock.index') ? 'active' : '' }}">
+                            <a href="{{ route('seller.stock.index') }}" class="waves-effect waves-light "><i
+                                    class="ion-ios7-gear"></i><span>Manage Stock</span></a>
+                        </li>
+                        <li
+                            class="has_sub {{ request()->routeIs('seller.invoice.index') || request()->routeIs('seller.invoice-by-sell-code.index') ? 'active' : '' }}">
+                            <a href="{{ route('seller.invoice.index') }}" class="waves-effect waves-light"><i
+                                    class="ion-document"></i><span>Invoices</span></a>
+                        </li>
 
-                    {{-- <li
+                        {{-- <li
                         class="has_sub {{ request()->routeIs('seller.glass.performa.invoice') || request()->routeIs('seller.lens.performa.invoice') ? 'active' : '' }}">
                         <a href="{{ route('seller.reports.index') }}" class="waves-effect waves-light"><i
                                 class="ion-ios7-pulse-strong"></i><span>Proforma</span>
@@ -291,20 +318,20 @@
                     </li> --}}
 
 
-                    <li
-                        class="has_sub {{ request()->routeIs('seller.customers.index') || request()->routeIs('seller.customer.edit') ? 'active' : '' }}">
-                        <a href="{{ route('seller.customers.index') }}" class="waves-effect waves-light"><i
-                                class="ion-android-social-user"></i>Customers</a>
-                    </li>
+                        <li
+                            class="has_sub {{ request()->routeIs('seller.customers.index') || request()->routeIs('seller.customer.edit') ? 'active' : '' }}">
+                            <a href="{{ route('seller.customers.index') }}" class="waves-effect waves-light"><i
+                                    class="ion-android-social-user"></i>Customers</a>
+                        </li>
 
-                    <li
-                        class="has_sub {{ request()->routeIs('seller.reports.index') || request()->routeIs('seller.stats.financial') || request()->routeIs('seller.reports.lens.index') ? 'active' : '' }}">
-                        <a href="{{ route('seller.reports.index') }}" class="waves-effect waves-light"><i
-                                class="ion-ios7-pulse-strong"></i><span>Reports</span>
-                        </a>
-                    </li>
+                        <li
+                            class="has_sub {{ request()->routeIs('seller.reports.index') || request()->routeIs('seller.stats.financial') || request()->routeIs('seller.reports.lens.index') || request()->routeIs('seller.reports.partials') || request()->routeIs('seller.reports.pendings') || request()->routeIs('seller.reports.orders') ? 'active' : '' }}">
+                            <a href="{{ route('seller.reports.index') }}" class="waves-effect waves-light"><i
+                                    class="ion-ios7-pulse-strong"></i><span>Reports</span>
+                            </a>
+                        </li>
 
-                </ul>
+                    </ul>
             @endif
             <div class="clearfix"></div>
         </div>

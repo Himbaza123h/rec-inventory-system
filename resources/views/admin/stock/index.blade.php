@@ -62,6 +62,7 @@
                                             <tr>
                                                 <th>N/O</th>
                                                 <th>BRAND</th>
+                                                <th>TYPE</th>
                                                 <th>CODE</th>
                                                 <th>SIZE</th>
                                                 <th>COLOR</th>
@@ -73,6 +74,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
+                                                <td>{{ $item->item?->type?->type_name }}</td>
                                                 <td>{{ $item->item?->code_id }}</td>
                                                 <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
                                                 <td>{{ $item->item?->color?->color_name }}</td>
@@ -145,6 +147,7 @@
                                             <tr>
                                                 <th>N/O</th>
                                                 <th>BRAND</th>
+                                                <th>TYPE</th>
                                                 <th>CODE</th>
                                                 <th>SIZE</th>
                                                 <th>COLOR</th>
@@ -156,6 +159,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
+                                                <td>{{ $item->item?->type?->type_name }}</td>
                                                 <td>{{ $item->item?->code_id }}</td>
                                                 <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
                                                 <td>{{ $item->item?->color?->color_name }}</td>
@@ -230,6 +234,7 @@
                                             <tr>
                                                 <th>N/O</th>
                                                 <th>BRAND</th>
+                                                <th>TYPE</th>
                                                 <th>CODE</th>
                                                 <th>SIZE</th>
                                                 <th>COLOR</th>
@@ -241,6 +246,7 @@
                                             <tr>
                                                 <td>{{ $index + 1 }}</td>
                                                 <td>{{ $item->item?->category?->category_name }}</td>
+                                                <td>{{ $item->item?->type?->type_name }}</td>
                                                 <td>{{ $item->item?->code_id }}</td>
                                                 <td>{{ $item->item?->lens_width }}-{{ $item->item?->bridge_width }}-{{ $item->item?->temple_length }}
                                                 <td>{{ $item->item?->color?->color_name }}</td>
@@ -326,6 +332,7 @@
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->item?->category?->category_name }}</td>
+                                                    <td>{{ $item->item?->type?->type_name }}</td>
                                                     <td>{{ $item->item?->attribute?->attribute_name }}</td>
                                                     <td>{{ $item->item?->power_sph }}</td>
                                                     <td>{{ $item->item?->power_cyl }}</td>
@@ -378,11 +385,11 @@
 
 
                         <!-- <div class="alert" id="message-show" style="margin-left: 20px; margin-right: 20px; margin-top: -65px;">
-                                                                <p>
-                                                                <br><br><br><h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT TO CHECK STOCK</h4>
-                                                                </p>
-                                                                <img src="{{ asset('assets/images/purchase.png') }}" alt="" style="width: 30%; margin-left:35%">
-                                                            </div> -->
+                                                                            <p>
+                                                                            <br><br><br><h4 class="text-center" style="color: #000"><i class="fa fa-exclamation-triangle"></i> SELECT PRODUCT TO CHECK STOCK</h4>
+                                                                            </p>
+                                                                            <img src="{{ asset('assets/images/purchase.png') }}" alt="" style="width: 30%; margin-left:35%">
+                                                                        </div> -->
 
                     </div>
 

@@ -102,7 +102,6 @@
                                         <thead>
                                             <th>#</th>
                                             <th>Names</th>
-                                            <th>Tin Number</th>
                                             <th>Phone</th>
                                             <th>Address</th>
                                             <th>Insurance</th>
@@ -113,7 +112,6 @@
                                                 <tr>
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>{{ $item->customer_name }}</td>
-                                                    <td>{{ $item->customer_tin_number }}</td>
                                                     <td>{{ $item->customer_phone }}</td>
                                                     <td>{{ $item->customer_address }}</td>
                                                     <td>{{ $item->insurance?->insurance_name }}</td>

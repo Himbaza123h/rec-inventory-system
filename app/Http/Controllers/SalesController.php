@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer;
+use App\Models\Pending;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use Illuminate\Support\Facades\Session;
@@ -134,6 +135,18 @@ class SalesController extends Controller
         return view('seller.make-sales.edit', compact('data'));
     }
 
+    public function pending($id)
+    {
+        $user = Auth::user();
+        $data = CartItem::where('user_id', $user->id)
+            ->where('status', 1)
+            ->get();
+
+        // Generate a random number
+        $randomNumber = rand(1000, 9999);
+        return view('seller.make-sales.pending', compact('data'));
+    }
+
     public function clearCart()
     {
         try {
@@ -199,6 +212,29 @@ class SalesController extends Controller
         }
     }
 
+    public function changeStatus($id)
+    {
+        $user = Auth::user();
+        try {
+            $item = CartItem::where('id', $id)
+                ->where('user_id', $user->id)
+                ->first();
+
+            if ($item) {
+                $item->status = 5; // Change status to 5 (or any desired status)
+                $item->save();
+
+                return redirect()->back()->with('success', 'Item  deleted successfully!');
+            } else {
+                return redirect()->back()->with('error', 'Item not found in cart!');
+            }
+        } catch (\Throwable $th) {
+            return redirect()
+                ->back()
+                ->with('error', 'An error occurred while deleting item: ' . $th->getMessage());
+        }
+    }
+
     // Controller
     public function update(Request $request, $id)
     {
@@ -208,7 +244,9 @@ class SalesController extends Controller
         // Validate the form data
         $validator = Validator::make($request->all(), [
             'buyer_id' => 'required|integer',
+            'insurance_percentage' => 'nullable',
             'operator_id' => 'required|integer',
+            'updated_total_amount' => 'required',
         ]);
 
         if ($validator->fails()) {
@@ -221,19 +259,7 @@ class SalesController extends Controller
         $phone = $buyer->customer_phone;
         $amount = Session::get('amount_to_pay');
 
-        //send sms
-        $sender = 'REC';
-        $content = 'Dear ' . $names . ' You bill is ' . $amount . ' Rwf. Please proceed to pay, for any questions feel free to contact us on 0788531106 for assistance. Thank you';
-
-        $params = [
-            'sender' => $sender,
-            'content' => $content,
-            'msisdn' => $phone,
-            'username' => 'bulksms',
-            'password' => 'bulksms345',
-        ];
-
-        $smsResponse = $this->sendSms($params);
+        $totari = $request->updated_total_amount;
 
         try {
             // Update stock based on updated purchases
@@ -242,6 +268,7 @@ class SalesController extends Controller
                 ->get();
 
             foreach ($cartItems as $cartItem) {
+                $ticketModelateur = ($cartItem->covered * $request->insurance_percentage) / 100;
                 Sale::create([
                     'item_id' => $cartItem->item_id,
                     'buyer_id' => $request->buyer_id,
@@ -253,6 +280,8 @@ class SalesController extends Controller
                     'insurance_id' => $insuranceId,
                     'paymomo' => $request->paymomo,
                     'paycash' => $request->paycash,
+                    'covered' => $cartItem->covered,
+                    'ticket_modérateur' => $ticketModelateur,
                 ]);
 
                 $randomNumber = rand(1000, 9999);
@@ -275,7 +304,66 @@ class SalesController extends Controller
                 }
             }
 
+            //send sms
+            $sender = 'REC';
+            $content = 'Dear ' . $names . ' You bill is ' . $totari . ' Rwf. Please proceed to pay, for any questions feel free to contact us on 0788531106 for assistance. Thank you';
+
+            $params = [
+                'sender' => $sender,
+                'content' => $content,
+                'msisdn' => $phone,
+                'username' => 'bulksms',
+                'password' => 'bulksms345',
+            ];
+
+            $smsResponse = $this->sendSms($params);
             return redirect()->route('seller.invoice.index')->with('success', 'Items sold successfully!');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', $th->getMessage());
+        }
+    }
+
+    public function sendPending(Request $request, $id)
+    {
+        $user = Auth::user();
+
+        // Validate the form data
+        $validator = Validator::make($request->all(), [
+            'buyer_id' => 'required|integer',
+            'operator_id' => 'required|integer',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()->with('error', $validator->errors()->first());
+        }
+
+        try {
+            // Update stock based on updated purchases
+            $cartItems = CartItem::where('user_id', $user->id)
+                ->where('status', 1)
+                ->get();
+
+            foreach ($cartItems as $cartItem) {
+                Pending::create([
+                    'item_id' => $cartItem->item_id,
+                    'buyer_id' => $request->buyer_id,
+                    'cart_id' => $cartItem->id,
+                    'seller_id' => $request->operator_id,
+                    'covered' => $cartItem->covered,
+                    'product_id' => $cartItem->product_id,
+                    'item_quantity' => $cartItem->qty,
+                    'amount' => $cartItem->amount,
+                    'insurance_id' => $cartItem->insurance,
+                ]);
+
+                CartItem::where('user_id', $user->id)
+                    ->where('status', 1)
+                    ->update([
+                        'status' => 5,
+                    ]);
+            }
+
+            return redirect()->route('seller.make.sales.index')->with('success', 'Items send to pending successfully!');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', $th->getMessage());
         }
